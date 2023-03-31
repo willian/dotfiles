@@ -1,0 +1,3 @@
+function git-on-master {
+  git-on-branch master
+}

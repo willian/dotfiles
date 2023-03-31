@@ -1,0 +1,72 @@
+# Unix
+if [[ -x "$(which colorls)" ]]; then
+  alias ls="colorls -h --group-directories-first"
+  alias l="colorls --group-directories-first --almost-all"
+  alias ll="colorls --group-directories-first --almost-all --long --all"
+else
+  alias ll="ls -FGlahs"
+fi
+
+alias ln="ln -v"
+alias e="$EDITOR"
+alias v="$VISUAL"
+
+alias cat='bat'
+alias mkdir="mkdir -p"
+alias mux='tmuxinator'
+alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | printf '=> Public key copied to pasteboard.\n'"
+alias vi='nvim'
+alias vim='nvim'
+
+# Bundler
+alias b="bundle"
+alias be='bundle exec'
+alias bu='bundle update'
+
+# Ruby
+alias irb='irb --readline -r irb/completion'
+
+# Rails
+alias migrate="bin/rails db:migrate db:rollback && bin/rails db:migrate db:test:prepare"
+alias s="rspec"
+alias rc='rails console'
+alias ss='spring stop'
+
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
+
+# Git
+alias amend='git commit --amend'
+alias gp='git push'
+alias gpr='git pull --rebase'
+alias grc='git rebase --continue'
+alias hpr='hub pull-request'
+
+# Docker
+alias dm="docker-machine"
+alias dc="docker-compose"
+alias dcrun="dc run --rm"
+alias dcstop="dc stop && dc rm -f"
+alias dcrunu="dc run --rm --user=$(id -u):$(id -g)"
+
+# Utils
+alias tz="\
+printf 'local:\t\t ';\
+date;\
+printf 'London:\t\t ';\
+TZ='Europe/London' date;\
+printf 'Sao Paulo:\t ';\
+TZ='America/Sao_Paulo' date;\
+printf 'New York:\t ';\
+TZ='America/New_York' date;\
+printf 'San Francisco:\t ';\
+TZ='America/Los_Angeles' date;\
+"
+
+# Linux
+alias dtsync="sudo chronyc -a makestep"
+
+alias nvim-lazy="NVIM_APPNAME=LazyVim nvim"
+alias nvim-kick="NVIM_APPNAME=kickstart nvim"
+alias nvim-chad="NVIM_APPNAME=NvChad nvim"
+alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"

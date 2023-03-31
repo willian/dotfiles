@@ -1,0 +1,45 @@
+# Main Colors
+unrecognized_file: "#e64d49" # darkred
+recognized_file:   "#08916a" # darkgreen
+executable_file:   "#1a7f1a" # green
+dir:               "#288ed7" # navyblue
+
+# Link
+dead_link: "#f76e6e" # red
+link:      "#2aa298" # cyan
+
+# special files
+socket:    "#403f53" # darkgray
+blockdev:  "#403f53" # darkgray
+chardev:   "#403f53" # darkgray
+
+# Access Modes
+write:     "#f76e6e" # red
+read:      "#c96765" # sienna
+exec:      "#288ed7" # navyblue
+no_access: "#111111" # black
+
+# Age
+day_old:     "#e64d49" # darkred
+hour_old:    "#895503" # saddlebrown
+no_modifier: "#403f53" # black
+
+# File Size
+file_large:  "#e64d49" # darkred
+file_medium: "#895503" # saddlebrown
+file_small:  "#111111" # black
+
+# Random
+report: "#111111" # black
+user:   "#4876d6" # darkblue
+tree:   "#2aa298" # cyan
+empty:  "#daaa01" # yellow
+error:  "#f76e6e" # red
+normal: "#111111" # black
+
+# Git
+addition:     "#e4fa45" # chartreuse
+modification: "#b7cb3c" # darkkhaki
+deletion:     "#e64d49" # darkred
+untracked:    "#da6901" # darkorange
+unchanged:    "#08916a" # darkgreen

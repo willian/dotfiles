@@ -1,0 +1,7 @@
+# Rebases a branch ($1) with the current branch
+function git-on-branch {
+  branch=`git_branch_name`
+  git checkout $1 && git pull --rebase
+  git checkout $branch
+  git rebase $1
+}

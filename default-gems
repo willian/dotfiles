@@ -1,0 +1,13 @@
+brakeman
+byebug
+colorls
+debase
+neovim
+pry
+rails_best_practices
+rcodetools
+reek
+rubocop-airbnb 3.0.1
+ruby-debug-ide
+solargraph
+tmuxinator

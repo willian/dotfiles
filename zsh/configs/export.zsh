@@ -1,0 +1,17 @@
+export CDPATH=.:~:~/Projects:~/Code:~/GitHub
+export LC_ALL="en_US.UTF-8"
+export GOPATH=$HOME/.go
+export SHELL=/usr/local/bin/zsh
+
+local node_bin_path=`npm config get prefix`/bin
+PATH="./bin:$HOME/local/node/npm/bin:$node_bin_path:/usr/local/sbin:/Applications/VMware Fusion.app/Contents/Library:$GOPATH/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH"
+
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export DOCKER_CLIENT_TIMEOUT=120
+export COMPOSE_HTTP_TIMEOUT=120
+
+export BAT_THEME=night-owlish
+
+export RUST_WITHOUT=rust-docs
