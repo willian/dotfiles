@@ -55,30 +55,30 @@ key_bindings:
   - { chars: "\x1BB", key: Left, mods: Alt }
 
   # Tmux
-  - { chars: "\x02\x73", key: K, mods: Command } # Select a new tmux session for the attached client interactively
-  - { chars: "\x02\x31", key: Key1, mods: Command } # Select window 1
-  - { chars: "\x02\x32", key: Key2, mods: Command } # Select window 2
-  - { chars: "\x02\x33", key: Key3, mods: Command } # Select window 3
-  - { chars: "\x02\x34", key: Key4, mods: Command } # Select window 4
-  - { chars: "\x02\x35", key: Key5, mods: Command } # Select window 5
-  - { chars: "\x02\x36", key: Key6, mods: Command } # Select window 6
-  - { chars: "\x02\x37", key: Key7, mods: Command } # Select window 7
-  - { chars: "\x02\x38", key: Key8, mods: Command } # Select window 8
-  - { chars: "\x02\x39", key: Key9, mods: Command } # Select window 9
-  - { chars: "\x02\x4c", key: L, mods: Command } # Switch to last tmux session
-  - { chars: "\x02\x5b", key: LBracket, mods: Command } # Switch to last tmux session
-  - { chars: "\x02\x70", key: LBracket, mods: Command|Shift } # Change to the previous tmux window
-  - { chars: "\x02\x25", key: N, mods: Command|Shift } # Split the current pane into two, left and right
-  - { chars: "\x02\x25", key: D, mods: Command } # Split the current pane into two, left and right
-  - { chars: "\x02\x22", key: N, mods: Command } # Split the current pane into two, top and bottom
-  - { chars: "\x02\x22", key: D, mods: Command|Shift } # Split the current pane into two, top and bottom
-  - { chars: "\x02\x64", key: Q, mods: Command } # Detach the current tmux client
-  - { chars: "\x02\x6e", key: RBracket, mods: Command|Shift } # Change to the next tmux window
+  - { chars: "\x01\x73", key: K, mods: Command } # Select a new tmux session for the attached client interactively
+  - { chars: "\x01\x31", key: Key1, mods: Command } # Select window 1
+  - { chars: "\x01\x32", key: Key2, mods: Command } # Select window 2
+  - { chars: "\x01\x33", key: Key3, mods: Command } # Select window 3
+  - { chars: "\x01\x34", key: Key4, mods: Command } # Select window 4
+  - { chars: "\x01\x35", key: Key5, mods: Command } # Select window 5
+  - { chars: "\x01\x36", key: Key6, mods: Command } # Select window 6
+  - { chars: "\x01\x37", key: Key7, mods: Command } # Select window 7
+  - { chars: "\x01\x38", key: Key8, mods: Command } # Select window 8
+  - { chars: "\x01\x39", key: Key9, mods: Command } # Select window 9
+  - { chars: "\x01\x4c", key: L, mods: Command } # Switch to last tmux session
+  - { chars: "\x01\x5b", key: LBracket, mods: Command } # Switch to last tmux session
+  - { chars: "\x01\x70", key: LBracket, mods: Command|Shift } # Change to the previous tmux window
+  - { chars: "\x01\x25", key: N, mods: Command|Shift } # Split the current pane into two, left and right
+  - { chars: "\x01\x25", key: D, mods: Command } # Split the current pane into two, left and right
+  - { chars: "\x01\x22", key: N, mods: Command } # Split the current pane into two, top and bottom
+  - { chars: "\x01\x22", key: D, mods: Command|Shift } # Split the current pane into two, top and bottom
+  - { chars: "\x01\x64", key: Q, mods: Command } # Detach the current tmux client
+  - { chars: "\x01\x6e", key: RBracket, mods: Command|Shift } # Change to the next tmux window
   - { chars: "\x1b\x3a\x77\x0a", key: S, mods: Command } # Type <escape>:w<enter> to save neovim
-  - { chars: "\x02\x63", key: T, mods: Command } # Create a new tmux window
-  - { chars: "\x02\x21", key: T, mods: Command|Shift } # Break the current tmux pane out of the tmux window
-  - { chars: "\x02\x78", key: W, mods: Command } # Kill the current tmux pane (and window if last pane)
-  - { chars: "\x02\x7a", key: Z, mods: Command } # Toggle the zoom state of the current tmux pane
+  - { chars: "\x01\x63", key: T, mods: Command } # Create a new tmux window
+  - { chars: "\x01\x21", key: T, mods: Command|Shift } # Break the current tmux pane out of the tmux window
+  - { chars: "\x01\x78", key: W, mods: Command } # Kill the current tmux pane (and window if last pane)
+  - { chars: "\x01\x7a", key: Z, mods: Command } # Toggle the zoom state of the current tmux pane
 
 live_config_reload: true
 
