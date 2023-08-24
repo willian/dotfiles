@@ -4,6 +4,7 @@ eslint_d
 fkill-cli
 fx
 neovim
+prisma
 serve
 serverless
 typescript
