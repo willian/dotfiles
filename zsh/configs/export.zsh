@@ -4,7 +4,7 @@ export GOPATH=$HOME/.go
 export SHELL=/usr/local/bin/zsh
 
 local node_bin_path="$HOME/.asdf/installs/nodejs/lts/.npm/bin"
-PATH="$HOME/.config/bin:./bin:$HOME/local/node/npm/bin:$node_bin_path:/usr/local/sbin:/Applications/VMware Fusion.app/Contents/Library:$GOPATH/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin:$PATH"
+PATH="$HOME/.config/bin:./bin:$HOME/local/node/npm/bin:$node_bin_path:/usr/local/sbin:$GOPATH/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin:$PATH"
 
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
