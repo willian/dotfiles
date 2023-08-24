@@ -1,0 +1,5 @@
+# Creates a new TMUX session with the current directory name
+
+function tn() {
+  tmux new -s `pwd | sed 's/.*\///g'`
+}

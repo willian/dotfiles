@@ -34,11 +34,20 @@ alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
 # float / unfloat window and center on screen
 alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
+# float / unfloat window and center on top screen
+shift + alt - t : yabai -m window --toggle float --grid 5:5:1:0:3:3
+
 # toggle window split type
 alt - e : yabai -m window --toggle split
 
 # balance size of windows
 shift + alt - 0 : yabai -m space --balance
+
+# set size of windows so my terminal takes 75% of the screen
+shift + alt - v : yabai -m window first --toggle float --grid 4:4:0:0:3:4 && \
+                    yabai -m window last --toggle float --grid 4:4:3:0:1:4 && \
+                    yabai -m window first --toggle float && \
+                    yabai -m window last --toggle float
 
 # move window and focus desktop
 shift + alt - 1 : yabai -m window --space 1; yabai -m space --focus 1

@@ -7,34 +7,27 @@ cursor:
 draw_bold_text_with_bright_colors: true
 
 env:
+  # TERM: alacritty-direct
   TERM: xterm-256color
 
 font:
   bold:
-    family: "DankMono Nerd Font Mono"
+    family: "DankMono Nerd Font"
     style: Bold
   builtin_box_drawing: true
   italic:
-    family: "DankMono Nerd Font Mono"
+    family: "DankMono Nerd Font"
     style: Italic
   normal:
-    family: "DankMono Nerd Font Mono"
+    family: "DankMono Nerd Font"
     style: Regular
   offset:
     x: 0
     y: 0
-  size: 22.0
+  size: 20.0
 
 import:
-  # - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
-  - ~/.config/alacritty/catppuccin/catppuccin-macchiato.yml
-  # - ~/.config/alacritty/catppuccin/catppuccin-frappe.yml
-  # - ~/.config/alacritty/catppuccin/catppuccin-latte.yml
-  # - ~/.config/alacritty/nightfly/nightfly.yml
-  # - ~/.config/alacritty/tokyonight/tokyonight-day.yml
-  # - ~/.config/alacritty/tokyonight/tokyonight-moon.yml
-  # - ~/.config/alacritty/tokyonight/tokyonight-night.yml
-  # - ~/.config/alacritty/tokyonight/tokyonight-storm.yml
+  - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
 
 key_bindings:
   # macOS
@@ -55,7 +48,9 @@ key_bindings:
   - { chars: "\x1BB", key: Left, mods: Alt }
 
   # Tmux
-  - { chars: "\x01\x73", key: K, mods: Command } # Select a new tmux session for the attached client interactively
+  # - { chars: "\x01\x73", key: K, mods: Command } # Select a new tmux session for the attached client interactively
+  - { chars: "\x01g", key: G, mods: Command } # open git manager 'jesseduffield/lazygit'
+  - { chars: "\x01\x54", key: K, mods: Command } # Select a new tmux session for the attached client interactively
   - { chars: "\x01\x31", key: Key1, mods: Command } # Select window 1
   - { chars: "\x01\x32", key: Key2, mods: Command } # Select window 2
   - { chars: "\x01\x33", key: Key3, mods: Command } # Select window 3
@@ -88,14 +83,14 @@ selection:
 shell:
   args:
     - -l
-    - -c
-    - "tmux attach -t Personal || tmux new -s Personal"
+    # - -c
+    # - "tmux attach -t willian || tmux new -s willian"
   program: /usr/local/bin/zsh
 
 window:
   decorations: buttonless
   dynamic_padding: false
-  opacity: 1.0
+  opacity: 0.8
   padding:
-    x: 0
-    y: 4
+    x: 14
+    y: 10
