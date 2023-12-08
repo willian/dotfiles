@@ -53,6 +53,7 @@ key_bindings:
   # Tmux
   # - { chars: "\x01\x73", key: K, mods: Command } # Select a new tmux session for the attached client interactively
   - { chars: "\x01g", key: G, mods: Command } # open git manager 'jesseduffield/lazygit'
+  - { chars: "\x01u", key: O, mods: Command } # open URLs 'joshmedeski/tmux-fzf-url'
   - { chars: "\x01\x54", key: K, mods: Command } # Select a new tmux session for the attached client interactively
   - { chars: "\x01\x31", key: Key1, mods: Command } # Select window 1
   - { chars: "\x01\x32", key: Key2, mods: Command } # Select window 2
