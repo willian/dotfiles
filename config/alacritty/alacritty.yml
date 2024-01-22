@@ -24,7 +24,7 @@ font:
   offset:
     x: 0
     y: 0
-  size: 20.0
+  size: 18
 
 import:
   # - ~/.config/alacritty/catppuccin/catppuccin-latte.yml
@@ -94,7 +94,7 @@ shell:
 window:
   decorations: buttonless
   dynamic_padding: false
-  opacity: 0.90
+  opacity: 0.95
   padding:
     x: 20
     y: 20
