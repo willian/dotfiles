@@ -1,8 +1,5 @@
 tap "arl/arl"
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-drivers"
-tap "homebrew/core"
 tap "homebrew/services"
 tap "koekeishiya/formulae"
 brew "bash"
