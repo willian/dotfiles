@@ -1,7 +1,7 @@
 export CDPATH=.:~:~/Projects:~/Code:~/GitHub
 export LC_ALL="en_US.UTF-8"
 export GOPATH=$HOME/.go
-export SHELL=/usr/local/bin/zsh
+export SHELL=/opt/homebrew/bin/zsh
 
 local node_bin_path="$HOME/.asdf/installs/nodejs/lts/.npm/bin"
 PATH="$HOME/.config/bin:./bin:$HOME/local/node/npm/bin:$node_bin_path:/usr/local/sbin:$GOPATH/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin:$PATH"
