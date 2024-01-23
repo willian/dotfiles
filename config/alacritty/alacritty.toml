@@ -245,7 +245,7 @@ save_to_clipboard = true
 
 [shell]
 args = ["-l"]
-program = "/usr/local/bin/zsh"
+program = "/opt/homebrew/bin/zsh"
 
 [window]
 decorations = "buttonless"
