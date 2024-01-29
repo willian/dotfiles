@@ -15,7 +15,7 @@ TERM = "xterm-256color"
 
 [font]
 builtin_box_drawing = true
-size = 18
+size = 20
 
 [font.bold]
 family = "DankMono Nerd Font"
