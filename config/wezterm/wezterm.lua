@@ -24,18 +24,20 @@ local config = {
     b.get_background(),
   },
 
-  font_size = 18,
+  font_size = 20,
   font = f.get_font({
     "DankMono Nerd Font",
   }),
 
+  harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+
   color_scheme = cs.get_color_scheme(),
 
   window_padding = {
-    left = 30,
-    right = 30,
+    left = 20,
+    right = 20,
     top = 20,
-    bottom = 10,
+    bottom = 20,
   },
 
   set_environment_variables = {
@@ -151,6 +153,10 @@ local config = {
         act.SendKey({ key = "p" }),
       }),
     },
+
+    { key = "LeftArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bb" }) },
+
+    { key = "RightArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bf" }) },
   },
 }
 
