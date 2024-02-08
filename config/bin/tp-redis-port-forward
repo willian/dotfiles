@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+gum spin --show-output --spinner minidot --title "Connecting kubectl to tech-myandela-v2-prod..." -- gcloud container clusters get-credentials prod-matching-cluster --zone us-central1-c --project tech-myandela-v2-prod -q
+printf "\n"
+
+gum spin --show-output --spinner minidot --title "Port forwarding to Redis..." -- kubectl port-forward -n production svc/talent-backend-service 8000:80
+
