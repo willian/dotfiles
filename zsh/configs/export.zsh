@@ -14,6 +14,4 @@ export FZF_TMUX_OPTS="-p"
 export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120
 
-export BAT_THEME=Catppuccin-mocha
-
 export RUST_WITHOUT=rust-docs
