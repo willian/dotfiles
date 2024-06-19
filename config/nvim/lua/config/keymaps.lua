@@ -51,6 +51,9 @@ map("n", "<C-k>", ":<C-U>TmuxNavigateUp<CR>", { silent = true })
 map("n", "<C-l>", ":<C-U>TmuxNavigateRight<CR>", { silent = true })
 map("n", "<C-\\>", ":<C-U>TmuxNavigatePrevious<CR>", { silent = true })
 
+-- Easier way to delete current buffer
+map("n", "<S-q>", LazyVim.ui.bufremove, { desc = "Delete Buffer" })
+
 -- Visual --
 
 -- move selected lines
