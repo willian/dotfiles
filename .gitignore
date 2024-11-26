@@ -6,3 +6,5 @@ debug
 foo.*
 *.log
 data
+config/karabiner/assets
+config/karabiner/automatic_backups
