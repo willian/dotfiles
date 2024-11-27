@@ -63,3 +63,13 @@ map("c", "WQa", "wqa")
 map("c", "Wa", "wa")
 map("c", "Wq", "wq")
 map("c", "X", "x")
+
+-- Copied from https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua#L148C1-L150C37
+-- TODO: Remove it in the future and use the native keymap from LazyVim instead
+map({ "n", "x" }, "<leader>gY", function()
+  Snacks.gitbrowse({
+    open = function(url)
+      vim.fn.setreg("+", url)
+    end,
+  })
+end, { desc = "Git Browse (copy)" })
