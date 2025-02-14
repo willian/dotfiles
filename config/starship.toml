@@ -15,9 +15,7 @@ $elixir\
 $nodejs\
 $php\
 $python\
-[](fg:surface1 bg:surface2)\
-$docker_context\
-[](fg:surface2 bg:peach)\
+[](fg:surface1 bg:peach)\
 $time\
 [ ](fg:peach)\
 $line_break$character"""
