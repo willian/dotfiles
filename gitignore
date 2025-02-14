@@ -1,2 +1,3 @@
 *.http
 .tool-versions
+mise.toml
