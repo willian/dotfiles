@@ -3,6 +3,7 @@
 -- Add any additional options here
 vim.opt.shell = "zsh"
 
+vim.g.lazyvim_picker = "snacks"
 -- Prettier formatter options
 -- For reference: https://www.lazyvim.org/extras/formatting/prettier#options
 vim.g.lazyvim_prettier_needs_config = false
