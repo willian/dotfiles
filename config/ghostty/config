@@ -16,9 +16,10 @@ keybind = global:ctrl+grave_accent=toggle_quick_terminal
 
 ## TMux Keybindings
 ## `\x01` represents Ctrl+a
+## Get codes with `xxd -psd`
 
 # CMD+t > Ctrl+a T
-keybind = super+k=text:\x01\x54
+# keybind = super+k=text:\x01\x54
 keybind = super+1=text:\x01\x31
 keybind = super+2=text:\x01\x32
 keybind = super+3=text:\x01\x33
@@ -35,7 +36,7 @@ keybind = super+d=text:\x01\x25
 keybind = super+D=text:\x01\x22
 keybind = super+G=text:\x01\x47
 keybind = super+g=text:\x01\x67
-keybind = super+k=text:\x01\x54
+keybind = super+k=text:\x01\x4b
 keybind = super+l=text:\x01\x4c
 keybind = super+n=text:\x01\x22
 keybind = super+N=text:\x01\x25
