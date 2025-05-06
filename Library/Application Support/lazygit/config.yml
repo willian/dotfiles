@@ -1,2 +1,4 @@
+git:
+  autoForwardBranches: allBranches
 gui:
   nerdFontsVersion: "3"
