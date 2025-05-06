@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Kill process running on provided port
+#
+# kill-in-port 3000
+
+if [ -n "$1" ]; then
+  kill -9 $(lsof -t -i:"$1")
+else
+  echo >&2 Usage: kill-in-port port-number
+  exit 1
+fi
