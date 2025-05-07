@@ -1,13 +1,15 @@
-local wt_action = require("wezterm").action
+local wezterm = require("wezterm")
+
+local act = wezterm.action
 local M = {}
 
 M.multiple_actions = function(keys)
   local actions = {}
   for key in keys:gmatch(".") do
-    table.insert(actions, wt_action.SendKey({ key = key }))
+    table.insert(actions, act.SendKey({ key = key }))
   end
-  table.insert(actions, wt_action.SendKey({ key = "\n" }))
-  return wt_action.Multiple(actions)
+  table.insert(actions, act.SendKey({ key = "\n" }))
+  return act.Multiple(actions)
 end
 
 M.key_table = function(mods, key, action)
@@ -19,15 +21,27 @@ M.key_table = function(mods, key, action)
 end
 
 M.cmd_key = function(key, action)
-  return M.key_table("CMD", key, action)
+  return M.key_table("CMD", key, act.SendKey(action))
 end
 
-M.cmd_to_tmux_prefix = function(key, tmux_key)
-  return M.cmd_key(
+M.cmd_to_nvim = function(key, action)
+  return M.key_table(
+    "CMD",
     key,
-    wt_action.Multiple({
-      wt_action.SendKey({ mods = "CTRL", key = "a" }),
-      wt_action.SendKey({ key = tmux_key }),
+    act.Multiple({
+      act.SendKey({ key = "\x1b" }), -- Escape
+      M.multiple_actions(action),
+    })
+  )
+end
+
+M.cmd_to_tmux = function(key, tmux_key)
+  return M.key_table(
+    "CMD",
+    key,
+    act.Multiple({
+      act.SendKey({ mods = "CTRL", key = "a" }), -- My tmux prefix
+      act.SendKey({ key = tmux_key }),
     })
   )
 end
