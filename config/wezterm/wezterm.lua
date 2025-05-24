@@ -64,6 +64,9 @@ local config = {
     keys.cmd_to_nvim("p", " ff"),
     keys.cmd_to_nvim("R", ":source %"),
     keys.cmd_to_nvim("s", ":w"),
+
+    keys.key_table("OPT", "LeftArrow", wezterm.action({ SendString = "\x1bb" })),
+    keys.key_table("OPT", "RightArrow", wezterm.action({ SendString = "\x1bf" })),
   },
 }
 
