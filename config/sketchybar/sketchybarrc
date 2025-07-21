@@ -38,13 +38,12 @@ sketchybar --default icon.font="CaskaydiaCove Nerd Font:Regular:16.0" \
                      padding_left=4 \
                      padding_right=4 \
                      label.padding_left=4 \
-                     label.padding_right=4 \
-                     icon.padding_left=4 \
+                     label.padding_right=8 \
+                     icon.padding_left=8 \
                      icon.padding_right=4
 
 # -- Left Side Items --
 source $ITEM_DIR/spaces.sh
-sketchybar --add item chevron left --set chevron icon= label.drawing=off background.color=$BAR_COLOR icon.color=$ACCENT_COLOR
 source $ITEM_DIR/front_app.sh
 
 # -- Right Side Of Notch Items --

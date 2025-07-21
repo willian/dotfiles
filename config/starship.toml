@@ -1,13 +1,13 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](blue)\
+[](surface0)\
 $os\
 $directory\
-[](fg:blue bg:surface0)\
+[](fg:surface0 bg:green)\
 $git_branch\
 $git_status\
-[](fg:surface0 bg:surface1)\
+[](fg:green bg:teal)\
 $rust\
 $golang\
 $ruby\
@@ -15,9 +15,9 @@ $elixir\
 $nodejs\
 $php\
 $python\
-[](fg:surface1 bg:peach)\
+[](fg:teal bg:blue)\
 $time\
-[ ](fg:peach)\
+[ ](fg:blue)\
 $line_break$character"""
 
 palette = "catppuccin_mocha"
@@ -52,7 +52,7 @@ crust = "#11111b"
 
 [os]
 disabled = false
-style = "bg:blue fg:mantle"
+style = "bg:surface0 fg:text"
 
 [os.symbols]
 Windows = "󰍲"
@@ -76,7 +76,7 @@ Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 
 [directory]
-style = "fg:mantle bg:blue"
+style = "fg:text bg:surface0"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -90,47 +90,47 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:suface0"
-format = '[[ $symbol $branch ](fg:peach bg:surface0)]($style)'
+style = "bg:green"
+format = '[[ $symbol $branch ](bg:green fg:surface0)]($style)'
 
 [git_status]
-style = "bg:surface0"
-format = '[[($all_status$ahead_behind )](fg:peach bg:surface0)]($style)'
+style = "bg:green"
+format = '[[($all_status$ahead_behind )](bg:green fg:surface0)]($style)'
 
 [nodejs]
-symbol = ""
-style = "bg:surface1"
-format = '[[ $symbol( $version) ](fg:green bg:surface1)]($style)'
+symbol = "󰎙"
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [ruby]
 symbol = ""
-style = "bg:surface1"
-format = '[[ $symbol( $version) ](fg:red bg:surface1)]($style)'
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [rust]
 symbol = ""
-style = "bg:surface1"
-format = '[[ $symbol( $version) ](fg:peach bg:surface1)]($style)'
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [golang]
 symbol = ""
-style = "bg:surface1"
-format = '[[ $symbol( $version) ](fg:sapphire bg:surface1)]($style)'
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [php]
 symbol = ""
-style = "bg:surface1"
-format = '[[ $symbol( $version) ](fg:lavender bg:surface1)]($style)'
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [python]
 symbol = ""
-style = "bg:surface1"
-format = '[[ $symbol( $version) ](fg:blue bg:surface1)]($style)'
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [elixir]
 symbol = ""
-style = "bg:surface1"
-format = '[[ $symbol( $version) ](fg:lavender bg:surface1)]($style)'
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [docker_context]
 symbol = "󰡨"
@@ -140,8 +140,8 @@ format = '[[ $symbol( $context) ](fg:blue bg:surface2)]($style)'
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:peach"
-format = '[[  $time](fg:mantle bg:peach)]($style)'
+style = "bg:blue"
+format = '[[  $time](fg:mantle bg:blue)]($style)'
 
 [line_break]
 disabled = false

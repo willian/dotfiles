@@ -126,6 +126,7 @@ alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
 alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace 1'
@@ -145,6 +146,7 @@ alt-shift-semicolon = 'mode service'
 # App launcher
 alt-b = 'exec-and-forget open /Applications/Zen.app'
 alt-c = 'exec-and-forget open /Applications/Notion\ Calendar.app'
+alt-d = 'exec-and-forget open /Applications/Figma.app'
 alt-e = 'exec-and-forget open /Applications/Spark.app'
 alt-m = 'exec-and-forget open /Applications/Spotify.app'
 alt-o = 'exec-and-forget open /Applications/OrbStack.app'
@@ -186,6 +188,10 @@ if.app-name-regex-substring = 'OrbStack'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-name-regex-substring = '1Password'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'Zen'
 run = 'move-node-to-workspace 1'
 
@@ -206,13 +212,17 @@ if.app-name-regex-substring = 'Spark'
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'Spotify'
+if.app-name-regex-substring = 'Figma'
 run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Spotify'
+run = 'move-node-to-workspace 6'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'X'
-run = 'move-node-to-workspace 5'
+run = 'move-node-to-workspace 6'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Vivaldi'
-run = 'move-node-to-workspace 5'
+run = 'move-node-to-workspace 6'

@@ -7,13 +7,17 @@ local config = {
   color_scheme = colorscheme.get(),
   font = wezterm.font_with_fallback({
     {
-      family = "Cascadia Code NF",
+      family = "CaskaydiaCove Nerd Font",
       weight = nil,
     },
-    {
-      family = "DankMono Nerd Font",
-      weight = "Bold",
-    },
+    -- {
+    --   family = "Cascadia Code NF",
+    --   weight = nil,
+    -- },
+    -- {
+    --   family = "DankMono Nerd Font",
+    --   weight = "Bold",
+    -- },
   }),
   font_size = 22,
   -- disable ligatures in most fonts
