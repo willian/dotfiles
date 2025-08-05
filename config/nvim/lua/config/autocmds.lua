@@ -15,3 +15,20 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   pattern = { "*zshrc", "config.zsh" },
   command = "execute 'silent !source <afile> --silent'",
 })
+
+-- Reload AeroSpace after change its configurations
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = { "aerospace.toml" },
+  command = "execute 'silent !aerospace reload-config'",
+})
+
+-- Reload SketchyBar after change its configurations
+vim.api.nvim_create_autocmd("BufWritePost", {
+  callback = function()
+    local file_path = vim.fn.expand("%:p:h")
+    local is_sketchybar = file_path:match("sketchybar")
+    if is_sketchybar then
+      vim.api.nvim_command("silent !sketchybar --reload")
+    end
+  end,
+})
