@@ -2,7 +2,7 @@
 
 reset -Q
 
-if [ -f "$HOME/.git_template/HEAD" ] && \
+if [ -f "$HOME/.git_template/HEAD" ] &&
   [ "$(cat "$HOME/.git_template/HEAD")" = "ref: refs/heads/main" ]; then
   echo "Removing ~/.git_template/HEAD in favor of defaultBranch" >&2
   rm -f ~/.git_template/HEAD
@@ -21,4 +21,10 @@ rename the file to \`zprofile':
 (called from ${dir}/post-up:${LINENO})
 
 MSG
+fi
+
+if [ ! -f "$HOME/Library/LaunchAgents/com.willian.audioinput.plist" ]; then
+  cp "$HOME/dotfiles/Library/LaunchAgents/com.willian.audioinput.plist" "$HOME/Library/LaunchAgents/com.willian.audioinput.plist"
+  launchctl load "$HOME/Library/LaunchAgents/com.willian.audioinput.plist"
+  launchctl start com.willian.audioinput
 fi
