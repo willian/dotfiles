@@ -9,7 +9,7 @@ return {
       local myopts = {
         auto_integrations = true,
         flavour = flavour,
-        transparent_background = false,
+        transparent_background = true,
         float = {
           transparent = true,
           solid = false,

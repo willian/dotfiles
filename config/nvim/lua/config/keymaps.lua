@@ -48,19 +48,19 @@ map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move up" })
 --  Command mode  --
 --------------------
 
-map("c", "Q", "q")
-map("c", "Qa", "qa")
-map("c", "W", "w")
-map("c", "WA", "wa")
-map("c", "WQ", "wq")
-map("c", "wQ", "wq")
-map("c", "WQA", "wqa")
-map("c", "Wqa", "wqa")
-map("c", "wQA", "wqa")
-map("c", "WQa", "wqa")
-map("c", "Wa", "wa")
-map("c", "Wq", "wq")
-map("c", "X", "x")
+-- map("c", "Q", "q")
+-- map("c", "Qa", "qa")
+-- map("c", "W", "w")
+-- map("c", "WA", "wa")
+-- map("c", "WQ", "wq")
+-- map("c", "wQ", "wq")
+-- map("c", "WQA", "wqa")
+-- map("c", "Wqa", "wqa")
+-- map("c", "wQA", "wqa")
+-- map("c", "WQa", "wqa")
+-- map("c", "Wa", "wa")
+-- map("c", "Wq", "wq")
+-- map("c", "X", "x")
 
 ----------------------
 --  Terminal model  --

@@ -7,6 +7,7 @@ return {
           { "<leader>T", group = "terminals" },
           { "<leader>cn", group = "packages" },
           { "<leader>ct", group = "tailwind" },
+          { "<leader>o", group = "opencode AI" },
         },
       },
     },
