@@ -161,6 +161,10 @@ alt-t = 'exec-and-forget open /Applications/WezTerm.app'
 alt-v = 'exec-and-forget open /Applications/Vivaldi.app'
 alt-x = 'exec-and-forget open ~/Applications/X.app'
 
+# Services laucher
+ctrl-shift-p = "exec-and-forget /bin/bash -c '/Users/willian/.config/bin/db pg start'"
+ctrl-shift-r = "exec-and-forget /bin/bash -c '/Users/willian/.config/bin/db redis start'"
+
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
