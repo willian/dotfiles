@@ -1,34 +1,28 @@
 [default_session]
-# startup_command = "nvim -c ':Telescope find_files'"
 startup_command = "nvim"
 
 [[session]]
-name = "Home 🏡"
+name = "Home "
 path = "~"
-startup_command = "l"
+startup_command = "fastfetch"
 
 [[session]]
-name = "Code 💻"
+name = "Code "
 path = "~/Code"
-startup_command = "l"
+startup_command = ""
 
 [[session]]
-name = "tmux config"
+name = "tmux config "
 path = "~/dotfiles/config/tmux"
 startup_command = "nvim tmux.conf"
 
 [[session]]
-name = "gitmux config"
-path = "~/dotfiles/config/tmux"
-startup_command = "nvim gitmux.conf"
-
-[[session]]
-name = "neovim config"
+name = "neovim config "
 path = "~/dotfiles/config/nvim"
 startup_command = "nvim"
 
 [[session]]
-name = "wezterm config"
+name = "wezterm config "
 path = "~/dotfiles/config/wezterm"
 startup_command = "nvim wezterm.lua"
 
@@ -38,9 +32,9 @@ path = "~/dotfiles/config/sesh"
 startup_command = "nvim sesh.toml"
 
 [[session]]
-name = "my custom binaries"
+name = "my custom binaries "
 path = "~/dotfiles/config/bin"
 
 [[session]]
-name = "dotfiles"
+name = "dotfiles 󰘓"
 path = "~/dotfiles"
