@@ -10,7 +10,7 @@ return {
       { "<leader>cni", "<cmd>lua require('package-info').install()<CR>", desc = "Install a new package" },
       { "<leader>cnc", "<cmd>lua require('package-info').change_version()<CR>", desc = "Change package version" },
     },
-    config = {
+    opts = {
       hide_unstable_versions = true,
       hide_up_to_date = true,
       package_manager = "npm",

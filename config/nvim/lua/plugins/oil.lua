@@ -3,12 +3,15 @@ return {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
-      skip_confirm_for_simple_edits = true,
-      win_options = {
-        signcolumn = "yes:2",
+      float = {
+        border = "rounded",
       },
+      skip_confirm_for_simple_edits = true,
       view_options = {
         show_hidden = true,
+      },
+      win_options = {
+        signcolumn = "yes:2",
       },
     },
     init = function()

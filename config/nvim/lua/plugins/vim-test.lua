@@ -10,7 +10,8 @@ return {
     { "<leader>tg", "<CMD>TestVisit<CR>", desc = "Open the last run test in the current buffer" },
   },
   config = function()
-    vim.cmd('let g:VimuxOrientation = "v"')
     vim.cmd('let test#strategy = "vimux"')
+    vim.cmd("let g:test#preserve_screen = 0")
+    vim.cmd('let g:VimuxOrientation = "v"')
   end,
 }
