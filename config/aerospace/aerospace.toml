@@ -161,9 +161,13 @@ alt-t = 'exec-and-forget open /Applications/WezTerm.app'
 alt-v = 'exec-and-forget open /Applications/Vivaldi.app'
 alt-x = 'exec-and-forget open ~/Applications/X.app'
 
-# Services laucher
+alt-ctrl-r = 'exec-and-forget open /Applications/Raycast.app'
+
+# Databases management
 ctrl-shift-p = "exec-and-forget /bin/bash -c '/Users/willian/.config/bin/db pg start'"
 ctrl-shift-r = "exec-and-forget /bin/bash -c '/Users/willian/.config/bin/db redis start'"
+alt-ctrl-shift-p = "exec-and-forget /bin/bash -c '/Users/willian/.config/bin/db pg stop'"
+alt-ctrl-shift-r = "exec-and-forget /bin/bash -c '/Users/willian/.config/bin/db redis stop'"
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes

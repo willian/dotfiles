@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 run_docker() {
-  /usr/local/bin/docker "$@"
+  /usr/local/bin/docker "$@" 2>/dev/null
 }
 
 validate_args() {
@@ -42,8 +42,17 @@ handle_postgres() {
     osascript -e 'display notification "PostgreSQL container started successfully." with title "PostgreSQL Status"'
     ;;
   stop)
+    if ! run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "PostgreSQL is not running" with title "PostgreSQL Status"'
+      exit 0
+    fi
+
+    osascript -e 'display notification "Stopping PostgreSQL" with title "PostgreSQL Status"'
+
     run_docker stop $container_name 2>/dev/null
     run_docker rm $container_name 2>/dev/null
+
+    osascript -e 'display notification "PostgreSQL is stopped" with title "PostgreSQL Status"'
     ;;
   restart)
     handle_postgres stop
@@ -77,8 +86,17 @@ handle_redis() {
     osascript -e 'display notification "Redis is running on port '"$port"'" with title "Redis Status"'
     ;;
   stop)
+    if ! run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "Redis is not running" with title "Redis Status"'
+      exit 0
+    fi
+
+    osascript -e 'display notification "Stopping Redis" with title "Redis Status"'
+
     run_docker stop $container_name 2>/dev/null
     run_docker rm $container_name 2>/dev/null
+
+    osascript -e 'display notification "Redis is stopped" with title "Redis Status"'
     ;;
   restart)
     handle_redis stop
@@ -108,4 +126,3 @@ redis)
   handle_redis "$action" "${port:-6379}"
   ;;
 esac
-
