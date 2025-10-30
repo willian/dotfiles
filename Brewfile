@@ -32,6 +32,7 @@ brew "libpq", link: true
 brew "llvm"
 brew "luarocks"
 brew "neovim"
+brew "pinentry-mac"
 brew "pkg-config"
 brew "plantuml"
 brew "poppler"

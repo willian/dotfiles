@@ -1,9 +1,11 @@
 [user]
   email = eu@willianfernandes.com.br
   name = Willian Fernandes
+  signingkey = AD9EC61B183B7F8D
 
 [commit]
   template = ~/.gitmessage
+	gpgsign = true
 
 [core]
   autocrlf = input
@@ -84,6 +86,7 @@
 
 [tag]
   sort = -taggerdate
+	gpgSign = true
 
 # Colors
 [color]
