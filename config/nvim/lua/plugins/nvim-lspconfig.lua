@@ -12,6 +12,9 @@ return {
         border = "rounded",
       },
     },
+    inlay_hints = {
+      enabled = false,
+    },
     -- servers = {
     --   ruby_lsp = {
     --     cmd = { os.getenv("HOME") .. "/.local/share/mise/shims/ruby-lsp" },

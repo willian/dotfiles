@@ -1,4 +1,4 @@
-local headers = {
+local header = {
   [[
                                                                      
        ████ ██████           █████      ██                     
@@ -16,7 +16,7 @@ return {
   opts = {
     dashboard = {
       preset = {
-        header = headers[math.random(#headers)],
+        header = header,
       },
     },
     picker = {
