@@ -1,25 +1,33 @@
 local wezterm = require("wezterm")
 
 local colorscheme = require("utils.colorscheme")
+local h = require("utils.helpers")
 local keys = require("utils.keys")
 
 local config = {
+  default_prog = {
+    "bash",
+    "-l",
+    "-c",
+    'sesh connect "Home "',
+  },
   color_scheme = colorscheme.get(),
+  colors = h.is_dark() and {
+    cursor_bg = "#89b4fa",
+    cursor_fg = "#1e1e2e",
+    cursor_border = "#89b4fa",
+  } or {
+    cursor_bg = "#1e66f5",
+    cursor_fg = "#eff1f5",
+    cursor_border = "#1e66f5",
+  },
   font = wezterm.font_with_fallback({
     {
       family = "CaskaydiaCove Nerd Font",
       weight = nil,
     },
-    -- {
-    --   family = "Cascadia Code NF",
-    --   weight = nil,
-    -- },
-    -- {
-    --   family = "DankMono Nerd Font",
-    --   weight = "Bold",
-    -- },
   }),
-  font_size = 22,
+  font_size = 20,
   -- disable ligatures in most fonts
   harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
 
@@ -27,6 +35,7 @@ local config = {
   adjust_window_size_when_changing_font_size = false,
   enable_tab_bar = false,
   native_macos_fullscreen_mode = false,
+  window_background_opacity = 0.95,
   window_close_confirmation = "NeverPrompt",
   window_decorations = "RESIZE",
   window_padding = {

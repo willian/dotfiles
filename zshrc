@@ -86,6 +86,7 @@ unset key
 # Custom settings
 # ---------------
 
+source <(fzf --zsh)
 eval "$(~/.local/bin/mise activate zsh)"
 
 [[ -f ${HOME}/.config/zsh/export.zsh ]] && source ${HOME}/.config/zsh/export.zsh
@@ -103,6 +104,3 @@ done
 [[ -f ${HOME}/Downloads/Andela/google-cloud-sdk/path.zsh.inc ]] && source ${HOME}/Downloads/Andela/google-cloud-sdk/path.zsh.inc
 # The next line enables shell command completion for gcloud.
 [[ -f ${HOME}/Downloads/Andela/google-cloud-sdk/completion.zsh.inc ]] && source ${HOME}/Downloads/Andela/google-cloud-sdk/completion.zsh.inc
-
-
-PATH="$HOME/.local/share/nvim/mason/bin:$PATH"

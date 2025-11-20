@@ -1,11 +1,2 @@
-@fsouza/prettierd
-diagnostic-languageserver
-eslint_d
-fkill-cli
-fx
 neovim
-prisma
-serve
-serverless
-typescript
-typescript-language-server
+herb-language-server
