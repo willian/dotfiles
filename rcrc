@@ -1,4 +1,4 @@
 EXCLUDES="*.md LICENSE config/tmux-plugins skhdrc tool-versions yabairc Library/LaunchAgents"
 DOTFILES_DIRS="$HOME/dotfiles"
 COPY_ALWAYS="git_template/HEAD"
-SYMLINK_DIRS="config/aerospace config/bin config/borders config/ghostty config/karabiner config/lazygit config/mise config/nvim config/sesh config/tmux config/wezterm config/zsh"
+SYMLINK_DIRS="config/aerospace config/bin config/borders config/karabiner config/lazygit config/mise config/nvim config/opencode/command config/sesh config/tmux config/wezterm config/zsh"
