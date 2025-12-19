@@ -207,6 +207,10 @@ if.app-name-regex-substring = 'Finder'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-name-regex-substring = 'Insta360 Link Controller'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'Kap'
 run = 'layout floating'
 

@@ -13,29 +13,31 @@ gum style \
 gum spin --show-output --spinner minidot --title "Updating brew..." -- brew update
 printf "\n"
 
-OUTDATED=$(gum spin --show-output --spinner minidot --title "Checking for outdated brew packages" -- brew outdated)
+FORMULAE_OUTDATED=$(gum spin --show-output --spinner minidot --title "Checking for outdated formulae..." -- brew outdated)
+CASK_OUTDATED=$(gum spin --show-output --spinner minidot --title "Checking for outdated casks..." -- brew outdated --cask --greedy --verbose)
 
-if [[ -n "$OUTDATED" ]]; then
-  echo "$OUTDATED"
-  gum confirm --selected.background=2 --selected.foreground=0 "Upgrade the outdated formulae above?" && brew upgrade
-  printf "\n"
-  brew cleanup --prune=all
-  printf "\n"
-else
+if [[ -z "$FORMULAE_OUTDATED" && -z "$CASK_OUTDATED" ]]; then
   echo "All brew packages are up to date."
   printf "\n"
-fi
-
-CASK_OUTDATED=$(gum spin --show-output --spinner minidot --title "Checking for outdated brew cack packages" -- brew outdated --cask --greedy --verbose)
-
-if [[ -n "$CASK_OUTDATED" ]]; then
-  echo "$CASK_OUTDATED"
-  gum confirm --selected.background=2 --selected.foreground=0 "Upgrade the outdated cask above?" && brew outdated --cask --greedy --verbose | grep -v '(latest)' | awk '{print $1}' | xargs brew reinstall --cask
-  printf "\n"
-  brew cleanup --prune=all
-  printf "\n"
 else
-  echo "All brew cask packages are up to date."
+  if [[ -n "$FORMULAE_OUTDATED" ]]; then
+    gum style --foreground 4 --bold "Outdated formulae:"
+    echo "$FORMULAE_OUTDATED"
+    printf "\n"
+  fi
+
+  if [[ -n "$CASK_OUTDATED" ]]; then
+    gum style --foreground 4 --bold "Outdated casks:"
+    echo "$CASK_OUTDATED"
+    printf "\n"
+  fi
+
+  if gum confirm --selected.background=2 --selected.foreground=0 "Upgrade all outdated packages?"; then
+    [[ -n "$FORMULAE_OUTDATED" ]] && brew upgrade
+    [[ -n "$CASK_OUTDATED" ]] && echo "$CASK_OUTDATED" | grep -v '(latest)' | awk '{print $1}' | xargs brew reinstall --cask
+    printf "\n"
+    brew cleanup --prune=all
+  fi
   printf "\n"
 fi
 

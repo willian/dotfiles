@@ -16,22 +16,14 @@ return {
     { '<leader>of', function() require('opencode').prompt('Fix these @diagnostics') end, desc = 'Fix errors', },
     { '<leader>oo', function() require('opencode').prompt('Optimize @this for performance and readability') end, desc = 'Optimize selection', mode = 'x', },
     { '<leader>or', function() require('opencode').prompt('Review @buffer for correctness and readability') end, desc = 'Review file', },
-    { '<leader>os', function() require('opencode').command('session.share') end, desc = 'Share session', },
+    { '<leader>os', function() require('opencode').prompt('Read the guidelines from CLAUDE.md or AGENTS.md file. The guidelines file can be located in parent directories (up to repository root). Then, simplify @buffer based on the guidelines. Later, run formatters and linters on the modified files (if any).') end, desc = 'Simplify file', },
+    { '<leader>oS', function() require('opencode').command('session.share') end, desc = 'Share session', },
     { '<leader>oy', function() require('opencode').command('messages.copy') end, desc = 'Copy last message', },
     { '<S-C-u>',    function() require('opencode').command('session.half.page.up') end, desc = 'Scroll messages up', },
     { '<S-C-d>',    function() require('opencode').command('session.half.page.down') end, desc = 'Scroll messages down', },
   },
   config = function()
-    vim.g.opencode_opts = {
-      provider = {
-        enabled = "snacks",
-        snacks = {
-          win = {
-            width = 0.35, -- 35% of total width
-          },
-        },
-      },
-    }
+    vim.g.opencode_opts = {}
 
     -- Required for `opts.auto_reload`
     vim.opt.autoread = true

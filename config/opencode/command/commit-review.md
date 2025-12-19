@@ -1,5 +1,5 @@
 ---
-description: Commit current changes
+description: Review and propose rewrite for current commit message
 agent: build
 ---
 
@@ -7,12 +7,20 @@ agent: build
 
 Follow these steps in order:
 
-### Step 1: Check Repository State
+### Step 1: Read Current Commit Information
 
-- [ ] Run `git status`, `git diff --cached`, `git diff`, and `git log --oneline -5` in parallel
-- [ ] Review all changes and determine if this is a simple or complex change
+- [ ] Run `git log -1 --format="%H%n%s%n%b"` to get the commit hash, title, and body
+- [ ] Run `git diff-tree --no-commit-id --name-status -r HEAD` to get all files changed, added, or deleted
+- [ ] Run `git show --stat HEAD` to get a summary of changes
+- [ ] Run `git show HEAD` to read the full diff of the commit
 
-### Step 2: Draft Commit Message
+### Step 2: Analyze the Commit
+
+- [ ] Review the current commit title and description
+- [ ] Analyze all file changes to understand what was done and why
+- [ ] Identify if this is a simple or complex change
+
+### Step 3: Draft Improved Commit Message
 
 - [ ] Write title (50 chars max, imperative mood)
 - [ ] Verify title is exactly 50 characters or less (count characters if unsure)
@@ -20,17 +28,21 @@ Follow these steps in order:
 - [ ] Write body following style guidelines below
 - [ ] Display with "**First pass:**" label
 
-### Step 3: Simplify Message
+### Step 4: Simplify Message
 
 - [ ] Remove redundant/unnecessary details
 - [ ] Check for repeated information across paragraphs
 - [ ] Display simplified version with "**Second pass (simplified):**" label
 
-### Step 4: Get Confirmation and Commit
+### Step 5: Save Review to File
 
-- [ ] Ask: "Proceed with this commit message?"
-- [ ] If confirmed: stage files with `git add` and commit using HEREDOC format
-- [ ] Run `git status` to verify success
+- [ ] Extract the commit hash (short form, 7 characters)
+- [ ] Create a markdown file named `{commit-hash}-reviewed.md` in the current directory
+- [ ] Include in the file:
+  - Original commit title and description
+  - List of files changed (added/modified/deleted)
+  - Proposed new title and description
+  - Brief explanation of why the changes were suggested
 
 ## Commit Message Style
 
@@ -94,17 +106,49 @@ user-friendly error messages, and improves the overall upload
 experience by providing better feedback to users.
 ```
 
+## Output File Format
+
+The review file should follow this structure:
+
+```markdown
+# Commit Review: {commit-hash}
+
+## Original Commit Message
+
+**Title:** {original title}
+
+**Description:**
+{original description or "No description provided"}
+
+## Files Changed
+
+- `A` {file path} (added)
+- `M` {file path} (modified)
+- `D` {file path} (deleted)
+
+## Proposed Commit Message
+
+**Title:** {proposed title}
+
+**Description:**
+{proposed description}
+
+## Review Notes
+
+{Brief explanation of why the changes were suggested, what was improved}
+```
+
 ## Key Requirements
 
 - NEVER update git config
 - NEVER use interactive git commands (-i flag)
+- NEVER modify the actual commit - only create the review file
 - Use HEREDOC format for commit messages to ensure proper formatting
-- Only commit staged/modified files, never create empty commits
-- If pre-commit hooks modify files, amend the commit to include them
-- Do NOT push unless explicitly requested
-- Never include any co-author trailers, AI attribution, or references to Claude Code (or any other model) in commit messages unless explicitly asked to do so
+- Always use the short commit hash (7 characters) for the filename
+- Include all changed files in the review
+- If the original commit message is already well-written, acknowledge this in the review notes
 - Write commit messages as if they were written entirely by the human developer
-- Title MUST be 50 characters or fewer, if a title exceeds this, shorten it by:
+- Title MUST be 50 characters or fewer - if a draft title exceeds this, shorten it by:
   1. Removing articles (a, an, the) where grammatically acceptable
   2. Using shorter synonyms (e.g., "Add" instead of "Implement")
   3. Removing scope qualifiers if the change is obvious from context
