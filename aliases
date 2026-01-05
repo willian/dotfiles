@@ -1,0 +1,77 @@
+alias ls="eza --group-directories-first --icons -s Name"
+alias l="eza --group-directories-first --icons -A -s Name"
+alias ll="eza --group-directories-first --icons -A -s Name -l -a"
+
+alias ln="ln -v"
+alias e="$EDITOR"
+alias v="$VISUAL"
+
+alias tree="eza --tree --icons -A -s Name"
+alias cat='bat'
+alias mkdir="mkdir -p"
+alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | printf '=> Public key copied to pasteboard.\n'"
+alias vi='nvim'
+alias vim='nvim'
+
+# Bundler
+alias b="bundle"
+alias be='bundle exec'
+alias bu='bundle update'
+
+# Ruby
+alias irb='irb --readline -r irb/completion'
+
+# Rails
+alias r="bin/rails"
+alias migrate="bin/rails db:migrate db:rollback && bin/rails db:migrate db:test:prepare"
+
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
+
+# Git
+alias ga='git add'
+alias gap='ga --patch'
+alias gb='git branch'
+alias gba='gb --all'
+alias gc='git commit'
+alias gca='gc --amend --no-edit'
+alias gce='gc --amend'
+alias gco='git checkout'
+alias gcl='git clone --recursive'
+alias gd='git diff --output-indicator-new=" " --output-indicator-old=" "'
+alias gds='gd --staged'
+alias gi='git init'
+alias gl='git log --graph --all --pretty=format:"%C(magenta)%h %C(white) %an  %ar%C(blue)  %D%n%s%n"'
+alias gm='git merge'
+alias gn='git checkout -b'  # new branch
+alias gp='git push'
+alias gr='git reset'
+alias gs='git status --short'
+alias gu='git pull'
+alias gur='git pull --rebase'
+
+# Docker
+alias dc="docker-compose"
+alias dcrun="dc run --rm"
+alias dcstop="dc stop && dc rm -f"
+alias dcrunu="dc run --rm --user=$(id -u):$(id -g)"
+
+# Utils
+alias tz="\
+printf 'local:\t\t ';\
+date;\
+printf 'London:\t\t ';\
+TZ='Europe/London' date;\
+printf 'Sao Paulo:\t ';\
+TZ='America/Sao_Paulo' date;\
+printf 'New York:\t ';\
+TZ='America/New_York' date;\
+printf 'San Francisco:\t ';\
+TZ='America/Los_Angeles' date;\
+"
+
+alias nvim-lazy="NVIM_APPNAME=LazyVim nvim"
+alias nvim-kick="NVIM_APPNAME=kickstart nvim"
+alias nvim-chad="NVIM_APPNAME=NvChad nvim"
+alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"
+alias nnvim="NVIM_APPNAME=new-neovim nvim"

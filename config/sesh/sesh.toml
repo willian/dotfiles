@@ -1,0 +1,31 @@
+[default_session]
+startup_command = "nvim"
+
+[[session]]
+name = "Home "
+path = "~"
+startup_command = "fastfetch"
+
+[[session]]
+name = "Code "
+path = "~/Code"
+startup_command = ""
+
+[[session]]
+name = "Andela Project "
+path = "~/Code/Andela/andela"
+startup_command = "ls"
+
+[[session]]
+name = "neovim config "
+path = "~/dotfiles/config/nvim"
+startup_command = "nvim"
+
+[[session]]
+name = "wezterm config "
+path = "~/dotfiles/config/wezterm"
+startup_command = "nvim wezterm.lua"
+
+[[session]]
+name = "dotfiles 󰘓"
+path = "~/dotfiles"

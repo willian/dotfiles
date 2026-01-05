@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+run_docker() {
+  /usr/local/bin/docker "$@" 2>/dev/null
+}
+
+validate_args() {
+  if [ $# -lt 2 ]; then
+    osascript -e 'display notification "Usage: db <pg|redis> <start|stop|restart|status> [port]" with title "Invalid Arguments"'
+    exit 1
+  fi
+
+  db_type=$1
+  action=$2
+
+  if [ "$db_type" != "pg" ] && [ "$db_type" != "redis" ]; then
+    osascript -e 'display notification "Invalid database type. Must be `pg` or `redis`" with title "Invalid Arguments"'
+    exit 1
+  fi
+
+  if [ "$action" != "start" ] && [ "$action" != "stop" ] && [ "$action" != "restart" ] && [ "$action" != "status" ]; then
+    osascript -e 'display notification "Invalid action. Must be `start`, `stop`, `restart`, or `status`" with title "Invalid Arguments"'
+    exit 1
+  fi
+}
+
+handle_postgres() {
+  local action=$1
+  local port=${2:-5432}
+  local container_name="postgres"
+  local image_name="postgres:17.6-alpine"
+
+  case $action in
+  start)
+    if run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "PostgreSQL is running on port '"$port"'" with title "PostgreSQL Status"'
+      exit 0
+    fi
+
+    osascript -e 'display notification "Launching PostgreSQL on port '"$port"'" with title "PostgreSQL Status"'
+    run_docker run -q --name $container_name -e POSTGRES_PASSWORD=postgres -d -p "$port":5432 --restart always -v "${HOME}/Code/pgdata":/var/lib/postgresql/data $image_name
+    osascript -e 'display notification "PostgreSQL container started successfully." with title "PostgreSQL Status"'
+    ;;
+  stop)
+    if ! run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "PostgreSQL is not running" with title "PostgreSQL Status"'
+      exit 0
+    fi
+
+    osascript -e 'display notification "Stopping PostgreSQL" with title "PostgreSQL Status"'
+
+    run_docker stop $container_name 2>/dev/null
+    run_docker rm $container_name 2>/dev/null
+
+    osascript -e 'display notification "PostgreSQL is stopped" with title "PostgreSQL Status"'
+    ;;
+  restart)
+    handle_postgres stop
+    handle_postgres start "$port"
+    ;;
+  status)
+    if run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "PostgreSQL is running on port '"$port"'" with title "PostgreSQL Status"'
+    else
+      osascript -e 'display notification "PostgreSQL is not running" with title "PostgreSQL Status"'
+    fi
+    ;;
+  esac
+}
+
+handle_redis() {
+  local action=$1
+  local port=${2:-6379}
+  local container_name="redis"
+  local image_name="redis:8.0-alpine"
+
+  case $action in
+  start)
+    if run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "Redis is running on port '"$port"'" with title "Redis Status"'
+      exit 0
+    fi
+
+    osascript -e 'display notification "Launching Redis on port '"$port"'" with title "Redis Status"'
+    run_docker run -q --name $container_name -d -p "$port":6379 --restart always -v "${HOME}/Code/redis_data":/data $image_name
+    osascript -e 'display notification "Redis is running on port '"$port"'" with title "Redis Status"'
+    ;;
+  stop)
+    if ! run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "Redis is not running" with title "Redis Status"'
+      exit 0
+    fi
+
+    osascript -e 'display notification "Stopping Redis" with title "Redis Status"'
+
+    run_docker stop $container_name 2>/dev/null
+    run_docker rm $container_name 2>/dev/null
+
+    osascript -e 'display notification "Redis is stopped" with title "Redis Status"'
+    ;;
+  restart)
+    handle_redis stop
+    handle_redis start "$port"
+    ;;
+  status)
+    if run_docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+      osascript -e 'display notification "Redis is running on port '"$port"'" with title "Redis Status"'
+    else
+      osascript -e 'display notification "Redis is not running" with title "Redis Status"'
+    fi
+    ;;
+  esac
+}
+
+validate_args "$@"
+
+db_type=$1
+action=$2
+port=$3
+
+case $db_type in
+pg)
+  handle_postgres "$action" "${port:-5432}"
+  ;;
+redis)
+  handle_redis "$action" "${port:-6379}"
+  ;;
+esac

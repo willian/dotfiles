@@ -1,0 +1,37 @@
+#!/bin/sh
+
+source "$CONFIG_DIR/colors.sh"
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+ITEM_DIR="$CONFIG_DIR/items"
+
+sketchybar --bar blur_radius=0 \
+  color=$BAR_COLOR \
+  height=38 \
+  padding_left=16 \
+  padding_right=16 \
+  position=top \
+  sticky=off
+
+# Defaults
+sketchybar --default \
+  background.color=$ITEM_BG_COLOR_WITH_OPACITY \
+  background.corner_radius=12 \
+  background.height=24 \
+  icon.align=center \
+  icon.font="CaskaydiaCove Nerd Font:Regular:14.0" \
+  label.align=center \
+  label.color=$WHITE \
+  label.font="CaskaydiaCove Nerd Font:Regular:14.0" \
+  label.highlight_color=$ACCENT_COLOR
+
+# Left
+source $ITEM_DIR/spaces.sh
+source $ITEM_DIR/front_app.sh
+#
+# # Right
+source $ITEM_DIR/clock.sh
+source $ITEM_DIR/battery.sh
+source $ITEM_DIR/volume.sh
+
+sketchybar --update

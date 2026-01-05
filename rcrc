@@ -1,0 +1,5 @@
+COPY_ALWAYS=""
+DOTFILES_DIRS="$HOME/dotfiles"
+EXCLUDES="*.md LICENSE config/tmux-plugins Library/LaunchAgents"
+SYMLINK_DIRS="config/aerospace config/bin config/borders config/karabiner config/mise config/nvim config/opencode/command config/sesh config/tmux config/wezterm config/zsh"
+UNDOTTED="Brewfile Library"

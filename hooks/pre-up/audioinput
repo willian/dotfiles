@@ -1,0 +1,7 @@
+#!/bin/sh
+
+src="$HOME/dotfiles/Library/LaunchAgents/com.willian.audioinput.plist"
+dst="$HOME/Library/LaunchAgents/com.willian.audioinput.plist"
+
+mkdir -p "$HOME/Library/LaunchAgents"
+cp "$src" "$dst"

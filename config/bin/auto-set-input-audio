@@ -1,0 +1,17 @@
+#!/bin/bash
+
+while true; do
+  # Priority list
+  PRIORITY=("fifine Ampli1" "Willian’s AirPods Pro" "MacBook Pro Microphone")
+
+  # Get available input sources
+  AVAILABLE=$(/opt/homebrew/bin/SwitchAudioSource -a -t input)
+
+  for DEVICE in "${PRIORITY[@]}"; do
+    if echo "$AVAILABLE" | grep -Fq "$DEVICE"; then
+      /opt/homebrew/bin/SwitchAudioSource -s "$DEVICE" -t input
+      break
+    fi
+  done
+  sleep 1
+done
