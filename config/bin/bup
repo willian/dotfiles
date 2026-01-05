@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+gum style \
+  --foreground 12 --border-foreground 12 --border double \
+  --align center --width 50 --margin "1 0" --padding "1 2" \
+  '██████╗ ██████╗ ███████╗██╗    ██╗
+██╔══██╗██╔══██╗██╔════╝██║    ██║
+██████╔╝██████╔╝█████╗  ██║ █╗ ██║
+██╔══██╗██╔══██╗██╔══╝  ██║███╗██║
+██████╔╝██║  ██║███████╗╚███╔███╔╝
+╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝'
+
+gum spin --show-output --spinner minidot --title "Updating brew..." -- brew update
+printf "\n"
+
+FORMULAE_OUTDATED=$(gum spin --show-output --spinner minidot --title "Checking for outdated formulae..." -- brew outdated)
+CASK_OUTDATED=$(gum spin --show-output --spinner minidot --title "Checking for outdated casks..." -- brew outdated --cask --greedy --verbose)
+
+if [[ -z "$FORMULAE_OUTDATED" && -z "$CASK_OUTDATED" ]]; then
+  echo "All brew packages are up to date."
+  printf "\n"
+else
+  if [[ -n "$FORMULAE_OUTDATED" ]]; then
+    gum style --foreground 4 --bold "Outdated formulae:"
+    echo "$FORMULAE_OUTDATED"
+    printf "\n"
+  fi
+
+  if [[ -n "$CASK_OUTDATED" ]]; then
+    gum style --foreground 4 --bold "Outdated casks:"
+    echo "$CASK_OUTDATED"
+    printf "\n"
+  fi
+
+  if gum confirm --selected.background=2 --selected.foreground=0 "Upgrade all outdated packages?"; then
+    [[ -n "$FORMULAE_OUTDATED" ]] && brew upgrade
+    [[ -n "$CASK_OUTDATED" ]] && echo "$CASK_OUTDATED" | grep -v '(latest)' | awk '{print $1}' | xargs brew reinstall --cask
+    printf "\n"
+    brew cleanup --prune=all
+  fi
+  printf "\n"
+fi
+
+gum spin --show-output --spinner minidot --title "Checking for brew issues..." -- brew doctor

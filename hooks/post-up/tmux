@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ -x "$HOME/.tmux/plugins/tpm/bin/install_plugins" ]; then
+  "$HOME/.tmux/plugins/tpm/bin/install_plugins"
+fi

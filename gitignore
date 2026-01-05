@@ -1,0 +1,7 @@
+**/.DS_Store
+*.http
+.bundle
+.mise.local.toml
+.tool-versions
+lazy-lock.json
+mise.local.toml

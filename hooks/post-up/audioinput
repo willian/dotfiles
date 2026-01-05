@@ -1,0 +1,23 @@
+##!/bin/sh
+#
+#if [ -f "$HOME/Library/LaunchAgents/com.willian.audioinput.plist" ]; then
+#  launchctl load "$HOME/Library/LaunchAgents/com.willian.audioinput.plist"
+#  # launchctl enable com.willian.audioinput
+#  # launchctl start com.willian.audioinput
+#
+#  # launchctl bootstrap gui/$UID "$HOME/Library/LaunchAgents/com.willian.audioinput.plist"
+#  launchctl enable gui/$UID/com.willian.audioinput
+#  launchctl start gui/$UID/com.willian.audioinput
+#fi
+
+plist="$HOME/Library/LaunchAgents/com.willian.audioinput.plist"
+service="gui/$UID/com.willian.audioinput"
+
+if [ -f "$plist" ]; then
+  # unload if already loaded — prevents duplicate bootstrap errors
+  launchctl bootout "$service" 2>/dev/null || true
+
+  launchctl bootstrap "gui/$UID" "$plist"
+  launchctl enable "$service"
+  launchctl kickstart -k "$service"
+fi

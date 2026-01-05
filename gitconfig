@@ -1,0 +1,134 @@
+[user]
+  email = eu@willianfernandes.com.br
+  name = Willian Fernandes
+  signingkey = AD9EC61B183B7F8D
+
+[commit]
+  template = ~/.gitmessage
+	gpgsign = true
+
+[core]
+  autocrlf = input
+  compression = 9
+  editor = nvim
+  excludesfile = ~/.gitignore
+  dsync = none
+  ignorecase = false
+  whitespace = error
+
+[alias]
+  aa = add --all
+  ap = add --patch
+  b = branch
+  branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+  ci = commit -v
+  cleanup = !git remote prune origin && git gc && git clean -df && git stash clear
+  co = checkout
+  dw = diff --word-diff
+  fl = log -p
+  lg = log --oneline --decorate
+  pf = push --force-with-lease
+  sb = status -sb
+  sh = !git-sh
+  st = status --short
+  who = shortlog -s -n --
+
+[blame]
+  coloring = highlightRecent
+  date = relative
+
+[branch]
+  autosetuprebase = always
+
+[diff]
+  colorMoved = zebra
+  context = 3
+  renames = copies
+  interHunkContext = 10
+
+[fetch]
+  prune = true
+
+[init]
+  defaultBranch = main
+
+[log]
+  abbrevCommit = true
+  graphColors = blue,yellow,cyan,magenta,green,red
+
+[pager]
+  diff = diff-so-fancy | $PAGER
+  branch = false
+  tag = false
+
+[pull]
+  default = current
+  rebase = true
+
+[push]
+  autoSetupeRemove = true
+  default = current
+  followTags = true
+
+[rebase]
+  autoStash = true
+  missingCommitsCheck = warn
+
+[status]
+  branch = true
+  short = true
+  showStash = true
+  showUntrackedFiles = all
+  sort = -committerdate
+
+[submodule]
+  fetchJobs = 16
+
+[tag]
+  sort = -taggerdate
+	gpgSign = true
+
+# Colors
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+  ui = auto
+
+[color "blame"]
+  highlightRecent = black bold,1 year ago,white,1 month ago,default,7 days ago,blue
+
+[color "branch"]
+  current = magenta
+  local = default
+  remote = yellow
+  upstream = green
+  plain = blue
+
+[color "diff"]
+  meta = black bold
+  frag = magenta
+  context = white
+  whitespace = yellow reverse
+  old = red
+
+[color "decorate"]
+  HEAD = red
+  branch = blue
+  tag = yellow
+  remoteBranch = magenta
+
+[interactive]
+  difffilter = diff-so-fancy --patch
+  singlekey = true
+
+# Third-party: diff-so-fancy
+[diff-so-fancy]
+  markEmptyLines = false
+
+# URL shortcuts
+[url "git@github.com:"]
+    insteadOf = "gh:"
+
+[url "git@andela-github:andela-technology"]
+  insteadOf = "andela:"

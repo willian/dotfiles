@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if command -v zimfw >/dev/null 2>&1; then
+  zimfw install
+fi
