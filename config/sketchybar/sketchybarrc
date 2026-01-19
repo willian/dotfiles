@@ -35,5 +35,6 @@ source $ITEM_DIR/battery.sh
 source $ITEM_DIR/bluetooth.sh
 source $ITEM_DIR/wifi.sh
 source $ITEM_DIR/volume.sh
+source $ITEM_DIR/display.sh
 
 sketchybar --update
