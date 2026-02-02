@@ -1,6 +1,6 @@
 return {
   "vim-test/vim-test",
-  dependencies = { "preservim/vimux" },
+  dependencies = { "preservim/vimux", "tpope/vim-dispatch" },
   keys = {
     { "<leader>tT", "<CMD>TestSuite<CR>", desc = "Run test suite of the current file" },
     { "<leader>tg", "<CMD>TestVisit<CR>", desc = "Open the last run test in the current buffer" },
@@ -10,10 +10,13 @@ return {
     { "<leader>vq", "<CMD>VimuxCloseRunner<CR>", desc = "Close vim tmux runner pane" },
   },
   config = function()
-    vim.cmd('let test#strategy = "vimux"')
-    vim.cmd("let g:test#preserve_screen = 0")
-    vim.cmd('let g:VimuxOrientation = "v"')
-    vim.cmd("let g:VimuxCloseOnExit = 1")
-    vim.cmd("let g:VimuxCommandShell = 1")
+    vim.cmd('let test#strategy = "dispatch"')
   end,
+  -- config = function()
+  --   vim.cmd('let test#strategy = "vimux"')
+  --   vim.cmd("let g:test#preserve_screen = 0")
+  --   vim.cmd('let g:VimuxOrientation = "v"')
+  --   vim.cmd("let g:VimuxCloseOnExit = 1")
+  --   vim.cmd("let g:VimuxCommandShell = 1")
+  -- end,
 }

@@ -3,7 +3,7 @@
   "theme": "catppuccin",
   "plugin": [
     "opencode-anthropic-auth@latest",
-    "opencode-antigravity-auth@beta",
+    "opencode-antigravity-auth@latest",
   ],
   "provider": {
     "google": {
