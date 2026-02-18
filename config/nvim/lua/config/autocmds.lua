@@ -35,3 +35,19 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end
   end,
 })
+
+-- Auto-recover from swap files and delete swap after saving
+vim.api.nvim_create_autocmd("SwapExists", {
+  callback = function()
+    vim.v.swapchoice = "r"
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+  callback = function()
+    local swapname = vim.fn.swapname("")
+    if swapname ~= "" and vim.fn.filereadable(swapname) == 1 then
+      vim.fn.delete(swapname)
+    end
+  end,
+})
