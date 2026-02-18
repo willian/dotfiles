@@ -5,6 +5,9 @@ agent: build
 
 ## Behavior
 
+This command reviews an existing commit and writes a review file. For creating a
+new commit from staged changes, use the `commit` command instead.
+
 Follow these steps in order:
 
 ### Step 1: Read Current Commit Information
@@ -19,24 +22,20 @@ Follow these steps in order:
 ### Step 2: Analyze the Commit
 
 - [ ] Review the current commit title and description
-- [ ] Analyze all file changes to understand what was done and why
-- [ ] Identify if this is a simple or complex change
+- [ ] Analyze all file changes thoroughly to understand what was done and why
 
 ### Step 3: Draft Improved Commit Message
 
-- [ ] Write title (50 chars max, imperative mood)
-- [ ] **Verify title is ≤50 characters by counting** - if over, rewrite shorter
-- [ ] Write body following style guidelines, wrapped at 72 characters
-- [ ] **Verify each body line wraps at 72 characters** - rewrap if needed
-- [ ] Display with "**First pass:**" label
+Follow the three-pass writing process from the style guide:
 
-### Step 4: Simplify Message
+- [ ] **Pass 1 (Draft)**: Identify commit type, write title and body
+  - Display with "**First pass:**" label
+- [ ] **Pass 2 (Simplify)**: Remove redundancy and repeated information
+  - Display with "**Second pass (simplified):**" label
+- [ ] **Pass 3 (Review and Refine)**: Check for quality issues per style guide
+  - Use the refined version for the proposed commit message
 
-- [ ] Remove redundant/unnecessary details
-- [ ] Check for repeated information across paragraphs
-- [ ] Display simplified version with "**Second pass (simplified):**" label
-
-### Step 5: Save Review to File
+### Step 4: Save Review to File
 
 - [ ] Extract the commit hash (short form, 7 characters)
 - [ ] Create a markdown file named `{commit-hash}-reviewed.md` in the current
