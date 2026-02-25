@@ -20,11 +20,11 @@ map("n", "N", "Nzzzv")
 
 -- overwrite lazyvim mappings with vim-tmux-navigator mappings
 -- see: https://github.com/christoomey/vim-tmux-navigator/blob/master/plugin/tmux_navigator.vim
-map("n", "<C-h>", ":<C-U>TmuxNavigateLeft<CR>", { silent = true })
-map("n", "<C-j>", ":<C-U>TmuxNavigateDown<CR>", { silent = true })
-map("n", "<C-k>", ":<C-U>TmuxNavigateUp<CR>", { silent = true })
-map("n", "<C-l>", ":<C-U>TmuxNavigateRight<CR>", { silent = true })
-map("n", "<C-\\>", ":<C-U>TmuxNavigatePrevious<CR>", { silent = true })
+map({ "n", "t" }, "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { silent = true })
+map({ "n", "t" }, "<C-j>", "<cmd>TmuxNavigateDown<CR>", { silent = true })
+map({ "n", "t" }, "<C-k>", "<cmd>TmuxNavigateUp<CR>", { silent = true })
+map({ "n", "t" }, "<C-l>", "<cmd>TmuxNavigateRight<CR>", { silent = true })
+map({ "n", "t" }, "<C-\\>", "<cmd>TmuxNavigatePrevious<CR>", { silent = true })
 
 -- Easier way to delete current buffer
 map("n", "<S-q>", function()
