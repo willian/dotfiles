@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Compress an MP4 using H.264 + AAC, outputting compact-<filename>
+#
+# optimize-video input.mp4
+
+if ! command -v ffmpeg >/dev/null 2>&1; then
+  echo >&2 "Error: ffmpeg is not installed. Install it with: brew install ffmpeg"
+  exit 1
+fi
+
+if ! command -v gum >/dev/null 2>&1; then
+  echo >&2 "Error: gum is not installed. Install it with: brew install gum"
+  exit 1
+fi
+
+if [ -z "$1" ]; then
+  echo >&2 "Usage: optimize-video <input.mp4>"
+  exit 1
+fi
+
+input="$1"
+dir="$(dirname "$input")"
+base="$(basename "$input")"
+output="${dir}/compact-${base}"
+
+gum spin --spinner minidot --title "Optimizing $base..." -- \
+  ffmpeg -i "$input" \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -acodec aac \
+    -b:a 128k \
+    "$output"
