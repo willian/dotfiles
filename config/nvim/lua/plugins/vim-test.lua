@@ -13,6 +13,7 @@ return {
     vim.cmd('let test#strategy = "vimux"')
     vim.cmd("let g:test#preserve_screen = 0")
     vim.cmd('let g:VimuxOrientation = "v"')
+    vim.cmd('let g:VimuxRunnerName = "VimuxRunner"')
     vim.cmd("let g:VimuxCloseOnExit = 1")
   end,
 }
