@@ -1,7 +1,9 @@
 [tools]
+bun = ["latest"]
 node = ["lts"]
 ruby = "4.0.0"
 rust = ["1.92.0"]
+yarn = "1.22.22"
 
 [settings]
 idiomatic_version_file_enable_tools = ["ruby"]
