@@ -29,8 +29,9 @@ local config = {
   -- UI settings
   adjust_window_size_when_changing_font_size = false,
   enable_tab_bar = false,
+  macos_window_background_blur = 30,
   native_macos_fullscreen_mode = false,
-  window_background_opacity = 0.95,
+  window_background_opacity = 0.90,
   window_close_confirmation = "NeverPrompt",
   window_decorations = "RESIZE",
   window_padding = {
