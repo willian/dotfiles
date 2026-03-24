@@ -28,7 +28,8 @@ handle_postgres() {
   local action=$1
   local port=${2:-5432}
   local container_name="postgres"
-  local image_name="postgres:17.6-alpine"
+  local image_name="postgres:18-alpine"
+  local volume_path="${HOME}/Code/LocalDatabases/postgresql"
 
   case $action in
   start)
@@ -38,7 +39,7 @@ handle_postgres() {
     fi
 
     osascript -e 'display notification "Launching PostgreSQL on port '"$port"'" with title "PostgreSQL Status"'
-    run_docker run -q --name $container_name -e POSTGRES_PASSWORD=postgres -d -p "$port":5432 --restart always -v "${HOME}/Code/pgdata":/var/lib/postgresql/data $image_name
+    run_docker run -q --name $container_name -e POSTGRES_PASSWORD=postgres -d -p "$port":5432 --restart always -v "${volume_path}":/var/lib/postgresql $image_name
     osascript -e 'display notification "PostgreSQL container started successfully." with title "PostgreSQL Status"'
     ;;
   stop)
@@ -73,6 +74,7 @@ handle_redis() {
   local port=${2:-6379}
   local container_name="redis"
   local image_name="redis:8.0-alpine"
+  local volume_path="${HOME}/Code/LocalDatabases/redis"
 
   case $action in
   start)
@@ -82,7 +84,7 @@ handle_redis() {
     fi
 
     osascript -e 'display notification "Launching Redis on port '"$port"'" with title "Redis Status"'
-    run_docker run -q --name $container_name -d -p "$port":6379 --restart always -v "${HOME}/Code/redis_data":/data $image_name
+    run_docker run -q --name $container_name -d -p "$port":6379 --restart always -v "${volume_path}":/data $image_name
     osascript -e 'display notification "Redis is running on port '"$port"'" with title "Redis Status"'
     ;;
   stop)
