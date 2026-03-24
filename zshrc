@@ -105,3 +105,12 @@ done
 [[ -f ${HOME}/Downloads/Andela/google-cloud-sdk/completion.zsh.inc ]] && source ${HOME}/Downloads/Andela/google-cloud-sdk/completion.zsh.inc
 
 eval "$(~/.local/bin/mise activate zsh)"
+eval "$(direnv hook zsh)"
+
+# pnpm
+export PNPM_HOME="/Users/willian/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

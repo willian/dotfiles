@@ -10,10 +10,11 @@
 [core]
   autocrlf = input
   compression = 9
+  dsync = none
   editor = nvim
   excludesfile = ~/.gitignore
-  dsync = none
   ignorecase = false
+  pager = delta
   whitespace = error
 
 [alias]
@@ -57,7 +58,7 @@
   graphColors = blue,yellow,cyan,magenta,green,red
 
 [pager]
-  diff = diff-so-fancy | $PAGER
+  diff = delta | $PAGER
   branch = false
   tag = false
 
@@ -119,8 +120,15 @@
   remoteBranch = magenta
 
 [interactive]
-  difffilter = diff-so-fancy --patch
+  diffFilter = delta --color-only
   singlekey = true
+
+[merge]
+  conflictStyle = zdiff3
+
+[delta]
+  navigate = true  # use n and N to move between diff sections
+  dark = true      # or light = true, or omit for auto-detection
 
 # Third-party: diff-so-fancy
 [diff-so-fancy]

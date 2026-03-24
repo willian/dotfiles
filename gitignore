@@ -5,3 +5,4 @@
 .tool-versions
 lazy-lock.json
 mise.local.toml
+.envrc
