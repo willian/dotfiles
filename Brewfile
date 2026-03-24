@@ -1,7 +1,9 @@
 tap "FelixKratz/formulae"
+tap "anomalyco/tap"
 tap "arl/arl"
 
 brew "act"
+brew "anomalyco/tap/opencode"
 brew "arl/arl/gitmux"
 brew "bat"
 brew "blueutil"
@@ -27,7 +29,6 @@ brew "libpq", link: true
 brew "llvm"
 brew "luarocks"
 brew "neovim"
-brew "opencode"
 brew "pinentry-mac"
 brew "pkg-config"
 brew "poppler"

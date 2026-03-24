@@ -1,0 +1,12 @@
+#!/bin/sh
+
+command_dir="$HOME/.config/opencode/command"
+skills_dir="$HOME/.claude/skills"
+
+for file in "$command_dir"/*.md; do
+  [ -f "$file" ] || continue
+  name=$(basename "$file" .md)
+  skill_dir="$skills_dir/$name"
+  mkdir -p "$skill_dir"
+  ln -sf "$file" "$skill_dir/SKILL.md"
+done

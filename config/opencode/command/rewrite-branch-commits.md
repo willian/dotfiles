@@ -1,6 +1,5 @@
 ---
 description: Interactively rewrite commit messages for all commits on current branch
-agent: build
 ---
 
 ## Behavior

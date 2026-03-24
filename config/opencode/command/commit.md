@@ -1,6 +1,5 @@
 ---
 description: Commit current changes
-agent: build
 ---
 
 ## Behavior

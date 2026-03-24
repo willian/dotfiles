@@ -1,6 +1,5 @@
 ---
 description: Generate PR title and description
-agent: build
 ---
 
 ## Behavior

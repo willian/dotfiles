@@ -1,6 +1,5 @@
 ---
 description: Review current branch code changes and generate a review report for each commit
-agent: build
 ---
 
 # PR Review Command

@@ -1,6 +1,5 @@
 ---
 description: Review and propose rewrite for current commit message
-agent: build
 ---
 
 ## Behavior
