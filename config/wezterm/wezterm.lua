@@ -58,6 +58,7 @@ local config = {
     keys.cmd_to_tmux("9", "9"),
     keys.cmd_to_tmux("d", "d"),
     keys.cmd_to_tmux("g", "g"),
+    keys.cmd_to_tmux("G", "G"),
     keys.cmd_to_tmux("k", "K"),
     keys.cmd_to_tmux("l", "L"),
     keys.cmd_to_tmux("n", '"'),
