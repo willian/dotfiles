@@ -1,5 +1,21 @@
+#:schema https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json
+
 [default_session]
-startup_command = "nvim"
+startup_command = "nvim -c ':lua Snacks.picker.files()'"
+preview_command = "eza --all --color=always --git --group-directories-first --icons --no-filesize --no-permissions --no-time --no-user -l -s Name {}"
+
+[[session]]
+name = "Andela Project 󰫢"
+path = "~/Code/Andela/andela"
+
+[[session]]
+name = "Code "
+path = "~/Code"
+startup_command = ""
+
+[[session]]
+name = "dotfiles "
+path = "~/dotfiles"
 
 [[session]]
 name = "Home "
@@ -7,25 +23,15 @@ path = "~"
 startup_command = "fastfetch"
 
 [[session]]
-name = "Code "
-path = "~/Code"
-startup_command = ""
-
-[[session]]
-name = "Andela Project "
-path = "~/Code/Andela/andela"
-startup_command = "ls"
-
-[[session]]
 name = "neovim config "
 path = "~/dotfiles/config/nvim"
-startup_command = "nvim"
+
+[[session]]
+name = "tmux config "
+path = "~/dotfiles/config/tmux"
+startup_command = "nvim tmux.conf"
 
 [[session]]
 name = "wezterm config "
 path = "~/dotfiles/config/wezterm"
 startup_command = "nvim wezterm.lua"
-
-[[session]]
-name = "dotfiles 󰘓"
-path = "~/dotfiles"
