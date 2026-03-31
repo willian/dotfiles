@@ -35,6 +35,11 @@ return {
         simplify = "Read the guidelines from CLAUDE.md or AGENTS.md file. The guidelines file can be located in parent directories (up to repository root). Then, simplify {file} based on the guidelines. Later, run formatters and linters on the modified files (if any).",
         tests = "Add tests for {this}",
       },
+      win = {
+        keys = {
+          escape = { "<Esc>", "<c-[>", mode = "t" },
+        },
+      },
     },
     nes = {
       enabled = false, -- Disable Next Edit Suggestions (requires GitHub Copilot subscription)
