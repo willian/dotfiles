@@ -10,10 +10,33 @@ return {
     { "<leader>vq", "<CMD>VimuxCloseRunner<CR>", desc = "Close vim tmux runner pane" },
   },
   config = function()
-    vim.cmd('let test#strategy = "vimux"')
-    vim.cmd("let g:test#preserve_screen = 0")
-    vim.cmd('let g:VimuxOrientation = "v"')
-    vim.cmd('let g:VimuxRunnerName = "VimuxRunner"')
-    vim.cmd("let g:VimuxCloseOnExit = 1")
+    vim.g["test#strategy"] = "vimux"
+    vim.g["test#preserve_screen"] = 0
+    vim.g.VimuxOrientation = "v"
+    vim.g.VimuxRunnerName = "VimuxRunner"
+    vim.g.VimuxCloseOnExit = 1
+
+    local subdirs = { "backend", "frontend" }
+
+    -- Cache escaped patterns at config time for performance
+    local patterns = vim.tbl_map(function(subdir)
+      return vim.pesc(subdir .. "/")
+    end, subdirs)
+
+    vim.g["test#custom_transformations"] = {
+      subdirectory = function(cmd)
+        local filepath = vim.fn.expand("%:p")
+        local cwd = vim.fn.getcwd()
+
+        for i, subdir in ipairs(subdirs) do
+          if vim.startswith(filepath, cwd .. "/" .. subdir .. "/") then
+            return ("cd %s && %s"):format(subdir, cmd:gsub(patterns[i], "", 1))
+          end
+        end
+
+        return cmd
+      end,
+    }
+    vim.g["test#transformation"] = "subdirectory"
   end,
 }
