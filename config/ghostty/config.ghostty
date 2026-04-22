@@ -1,0 +1,99 @@
+# Default command (equivalent to default_prog in Wezterm)
+command = zsh -lc 'sesh connect "Home "'
+
+# Theme
+# Supports light/dark mode switching based on system appearance
+theme = light:Catppuccin Latte,dark:Catppuccin Mocha
+
+# Font
+font-family = CaskaydiaCove Nerd Font
+font-size = 20
+
+# Disable ligatures (equivalent to harfbuzz_features = { "calt=0", "clig=0", "liga=0" } in Wezterm)
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+# Minimal UI (ported from Wezterm)
+confirm-close-surface = false
+macos-titlebar-style = hidden
+quit-after-last-window-closed = true
+window-padding-x = 10,0
+window-padding-y = 10,0
+window-show-tab-bar = never
+
+# Keybindings (ported from Wezterm)
+# Uses text:action to send raw byte sequences to the terminal.
+# \x01 = Ctrl+A (tmux prefix), \x1b = Escape, \n = Enter
+
+# Navigation
+# CMD+[ -> Sends Ctrl+O (\x0f) to the terminal. In Vim/Neovim, this goes back to the previous location in the jump list.
+keybind = cmd+[=text:\x0f
+# CMD+] -> Sends Ctrl+I (\x09) to the terminal. In Vim/Neovim, this goes forward to the next location in the jump list.
+keybind = cmd+]=text:\x09
+
+# Tmux (prefix = Ctrl+A)
+# The text: action sends \x01 which is the raw byte for Ctrl+A (tmux prefix key), followed by the tmux command key.
+# This tells tmux to execute the command associated with that key in its key table.
+
+# CMD+1 -> Sends Ctrl+A + 1. Switches to tmux window 1.
+keybind = cmd+digit_1=text:\x011
+# CMD+2 -> Sends Ctrl+A + 2. Switches to tmux window 2.
+keybind = cmd+digit_2=text:\x012
+# CMD+3 -> Sends Ctrl+A + 3. Switches to tmux window 3.
+keybind = cmd+digit_3=text:\x013
+# CMD+4 -> Sends Ctrl+A + 4. Switches to tmux window 4.
+keybind = cmd+digit_4=text:\x014
+# CMD+5 -> Sends Ctrl+A + 5. Switches to tmux window 5.
+keybind = cmd+digit_5=text:\x015
+# CMD+6 -> Sends Ctrl+A + 6. Switches to tmux window 6.
+keybind = cmd+digit_6=text:\x016
+# CMD+7 -> Sends Ctrl+A + 7. Switches to tmux window 7.
+keybind = cmd+digit_7=text:\x017
+# CMD+8 -> Sends Ctrl+A + 8. Switches to tmux window 8.
+keybind = cmd+digit_8=text:\x018
+# CMD+9 -> Sends Ctrl+A + 9. Switches to tmux window 9.
+keybind = cmd+digit_9=text:\x019
+# CMD+d -> Sends Ctrl+A + d. Opens lazydocker
+keybind = cmd+d=text:\x01d
+# CMD+g -> Sends Ctrl+A + g. Opens lazygit
+keybind = cmd+g=text:\x01g
+# CMD+G -> Sends Ctrl+A + G. Opens gh dash
+keybind = cmd+shift+g=text:\x01G
+# CMD+k -> Sends Ctrl+A + K. Opens sesh picker
+keybind = cmd+k=text:\x01K
+# CMD+l -> Sends Ctrl+A + L. Switches to the last sesh session
+keybind = cmd+l=text:\x01L
+# CMD+n -> Sends Ctrl+A + " (double quote). Splits the current pane horizontally.
+keybind = cmd+n=text:\x01\x22
+# CMD+Shift+n -> Sends Ctrl+A + %. Splits the current pane vertically.
+keybind = cmd+shift+n=text:\x01%
+# CMD+o -> Sends Ctrl+A + u. Shows the URL view to select and open URLs from the pane history.
+keybind = cmd+o=text:\x01u
+# CMD+t -> Sends Ctrl+A + c. Creates a new window.
+keybind = cmd+t=text:\x01c
+# CMD+Shift+t -> Sends Ctrl+A + !. Breaks the current pane into a new window.
+keybind = cmd+shift+t=text:\x01!
+# CMD+w -> Sends Ctrl+A + x. Kills the current pane (with confirmation).
+keybind = cmd+w=text:\x01x
+
+# Neovim
+# The text: action sends \x1b which is the raw byte for the Escape key, followed by characters and a newline.
+# This exits insert mode (if active) and types the command in normal mode.
+
+# CMD+f -> Sends Escape + " sg" + Enter. In LazyVim/Neovim with Telescope, this opens the live grep search across the project.
+keybind = cmd+f=text:\x1b sg\n
+# CMD+p -> Sends Escape + " ff" + Enter. In LazyVim/Neovim with Telescope, this opens the find files picker.
+keybind = cmd+p=text:\x1b ff\n
+# CMD+s -> Sends Escape + ":w" + Enter. In Neovim, saves the current file.
+keybind = cmd+s=text:\x1b:w\n
+
+# Special keys
+# These send raw terminal escape sequences that are interpreted by the shell or application running in the terminal.
+
+# Opt+Left -> Sends \x1bb (ESC + b). In bash/zsh/readline, this jumps the cursor back one word.
+keybind = opt+left=text:\x1bb
+# Opt+Right -> Sends \x1bf (ESC + f). In bash/zsh/readline, this jumps the cursor forward one word.
+keybind = opt+right=text:\x1bf
+# Shift+Enter -> Sends \x1b[13;2u. This is a Kitty keyboard protocol sequence for Shift+Enter, allowing applications like Neovim to distinguish it from a regular Enter press.
+keybind = shift+enter=text:\x1b[13;2u

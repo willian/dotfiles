@@ -158,7 +158,7 @@ alt-e = 'exec-and-forget open /Applications/Spark.app'
 alt-m = 'exec-and-forget open /Applications/Spotify.app'
 alt-o = 'exec-and-forget open /Applications/OrbStack.app'
 alt-s = 'exec-and-forget open /Applications/Slack.app'
-alt-t = 'exec-and-forget open /Applications/WezTerm.app'
+alt-t = 'exec-and-forget open /Applications/Ghostty.app'
 alt-v = 'exec-and-forget open /Applications/Safari.app'           # I only use Safari to consume DRM-protected
 alt-x = 'exec-and-forget open ~/Applications/X.app'
 
@@ -236,6 +236,10 @@ run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'WezTerm'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Ghostty'
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
