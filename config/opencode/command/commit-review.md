@@ -22,6 +22,9 @@ Follow these steps in order:
 
 - [ ] Review the current commit title and description
 - [ ] Analyze all file changes thoroughly to understand what was done and why
+- [ ] If the motivation for the change is not clear from the diff and the
+      existing commit message, ask the user before drafting: "I can see what
+      changed, but I'm not sure why. Can you explain the motivation?"
 
 ### Step 3: Draft Improved Commit Message
 

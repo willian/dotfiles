@@ -175,11 +175,16 @@ Follow the guidelines in `AGENTS.md` or `CLAUDE.md` if they exists in the projec
 - Use the short commit hash (7 characters) for the filename
 - Be specific about line numbers and provide actionable feedback
 - For each issue, explain WHY it's a problem and suggest a fix
+- For each issue, write a message that I can copy and paste to my peer
+- Write all feedback messages in a way they look like written by me, a
+  non-native English speaker, using a casual natural voice, so I can copy and
+  paste them into GitHub comments.
 - Skip categories that have no issues for a file
 - If a file has no issues at all, include it with "No issues found"
 - Prioritize impactful issues over minor nitpicks
 - If no issues are found in any file, state "No issues found in this PR"
 - NEVER modify any code - only generate the review report
+- NEVER use emdashes
 - **Sort files alphabetically by path in the report**
 - **Sort issues by line number (ascending) within each category**
 

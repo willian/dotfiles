@@ -1,0 +1,92 @@
+#!/bin/bash
+# Apply commit message rewrites from /tmp/rewrite_plan.json
+#
+# The plan file must be a JSON array of objects with "position" (1-indexed
+# from oldest commit), "original_title", and "message" fields:
+#
+#   [
+#     { "position": 1, "original_title": "Old title", "message": "Title\n\nBody..." },
+#     { "position": 5, "original_title": "Old title", "message": "Title\n\nBody..." }
+#   ]
+#
+# Before rewording each commit, the script verifies that the commit at that
+# position still has the expected original_title, aborting if not.
+#
+# Usage: apply-commit-rewrites.sh
+
+set -e
+
+PLAN=/tmp/rewrite_plan.json
+
+if [[ ! -f "$PLAN" ]]; then
+  echo "Error: $PLAN not found" >&2
+  exit 1
+fi
+
+if ! command -v jq &>/dev/null; then
+  echo "Error: jq is required but not installed" >&2
+  exit 1
+fi
+
+total=$(git log main..HEAD --oneline | wc -l | tr -d ' ')
+count=$(jq 'length' "$PLAN")
+
+echo "Applying $count rewrite(s) across $total commits..."
+
+declare -a summary_positions
+declare -a summary_before
+declare -a summary_after
+
+# Process entries in order (assumed to be oldest-first in the plan)
+for i in $(seq 0 $((count - 1))); do
+  position=$(jq -r ".[$i].position" "$PLAN")
+  original_title=$(jq -r ".[$i].original_title" "$PLAN")
+  message=$(jq -r ".[$i].message" "$PLAN")
+
+  # Row from top = total - position + 1 (newest is row 1)
+  row=$((total - position + 1))
+  hash=$(git log main..HEAD --oneline | awk "NR==$row{print \$1}")
+
+  if [[ -z "$hash" ]]; then
+    echo "Error: could not find commit at position $position (row $row)" >&2
+    exit 1
+  fi
+
+  # Verify the commit title matches what we recorded at review time
+  actual_title=$(git log -1 --format="%s" "$hash")
+  if [[ "$actual_title" != "$original_title" ]]; then
+    echo "Error: title mismatch at position $position ($hash)" >&2
+    echo "  Expected: $original_title" >&2
+    echo "  Actual:   $actual_title" >&2
+    exit 1
+  fi
+
+  new_title=$(printf '%s' "$message" | head -1)
+  echo "Rewording position $position ($hash)..."
+
+  printf '%s\n' "$message" >/tmp/msg_reword.txt
+
+  printf '#!/bin/bash\nsed -i '"'"' '"'"' -e '"'"'s/^pick '"$hash"'/reword '"$hash"'/'"'"' "$1"\n' >/tmp/seq_editor.sh
+  printf '#!/bin/bash\ncp /tmp/msg_reword.txt "$1"\n' >/tmp/commit_editor.sh
+  chmod +x /tmp/seq_editor.sh /tmp/commit_editor.sh
+
+  GIT_SEQUENCE_EDITOR=/tmp/seq_editor.sh GIT_EDITOR=/tmp/commit_editor.sh git rebase -i main
+
+  summary_positions+=("$position")
+  summary_before+=("$original_title")
+  summary_after+=("$new_title")
+
+  echo "Done."
+done
+
+echo ""
+echo "All rewrites complete."
+echo ""
+echo "Summary:"
+for i in "${!summary_positions[@]}"; do
+  echo "  Position ${summary_positions[$i]}:"
+  echo "    Before: ${summary_before[$i]}"
+  echo "    After:  ${summary_after[$i]}"
+done
+echo ""
+git log main..HEAD --format="%h %s"

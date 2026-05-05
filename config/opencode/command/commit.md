@@ -4,7 +4,7 @@ description: Commit current changes
 
 ## Behavior
 
-This command creates a new commit from staged/modified files. For reviewing an
+This command creates a new commit from staged/modified files. For reviewing and
 existing commit, use the `commit-review` command instead.
 
 Follow these steps in order:
@@ -15,7 +15,15 @@ Follow these steps in order:
       `git log --oneline -5` in parallel
 - [ ] Review all changes thoroughly to understand what was done and why
 
-### Step 2: Draft Commit Message
+### Step 2: Understand the "Why"
+
+- [ ] Assess whether the motivation for the change is clear from the diff alone
+- [ ] If the "why" is not obvious (e.g., business context, user-reported issue,
+      technical constraint not visible in the code), ask the user before proceeding:
+      "I can see what changed, but I'm not sure why. Can you explain the motivation?"
+- [ ] Incorporate the user's explanation into the commit message
+
+### Step 3: Draft Commit Message
 
 Follow the three-pass writing process from the style guide:
 
@@ -26,7 +34,7 @@ Follow the three-pass writing process from the style guide:
 - [ ] **Pass 3 (Review and Refine)**: Check for quality issues per style guide
   - If issues found, display with "**Final (refined):**" label
 
-### Step 3: Get Confirmation and Commit
+### Step 4: Get Confirmation and Commit
 
 - [ ] Ask: "Proceed with this commit message?"
 - [ ] If confirmed: stage files with `git add` and commit using HEREDOC format

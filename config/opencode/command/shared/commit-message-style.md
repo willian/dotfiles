@@ -1,3 +1,7 @@
+---
+description: Instructions for generating good commit messages
+---
+
 # Commit Message Style Guide
 
 ## Structure
@@ -11,9 +15,57 @@ Every commit message must make sense to someone reading it in isolation, with
 enough context about where, what, and why. A reader should understand the change
 without needing to look at the diff or other commits.
 
+## Facts as Narrative
+
+The body of a commit message must read as a coherent narrative, not a list of
+disconnected observations. Connect sentences so the reader understands the
+causal chain: what situation existed, why it was a problem, and how the change
+addresses it. Each sentence should flow from the previous one.
+
+**Bad** (disconnected facts):
+
+```
+This switches from the `company_multi_source/enrich` endpoint to
+`company_clean/enrich`, requesting only the two fields the app needs.
+Response keys are now plain strings instead of symbols.
+```
+
+**Good** (narrative):
+
+```
+The app only needs two fields from Coresignal, but
+`company_multi_source/enrich` returns a large, unnormalized payload
+at 2 credits per request. This switches to `company_clean/enrich`,
+which provides standardized data at half the cost, and passes a
+`fields` parameter to request only what the app needs.
+```
+
+The bad version lists what changed as disconnected observations — each sentence
+could be removed without affecting the others. The good version builds a causal
+chain: the situation, why it was a problem, and how the change addresses it.
+Each sentence follows from the previous one.
+
+## The "Why" is Required
+
+The code diff shows _what_ changed. The commit message must explain _why_ it
+changed. If the motivation, context, or business reason behind a change is not
+obvious from the code alone, **you must ask the user** before writing the
+message. Do not guess or leave the "why" out.
+
+Questions to determine if you know the "why":
+
+- Can you explain the motivation for this change without speculating?
+- Would a reader understand not just what happened, but why it was worth doing?
+- Is there a business reason, user-reported problem, or technical constraint
+  driving this change that isn't visible in the diff?
+
+If any answer is no, ask the user before drafting.
+
 ## Title Guidelines
 
 - Use imperative mood ("Add feature" not "Added feature" or "Adds feature")
+- The title should read as a natural phrase or near-sentence that makes sense in
+  plain English, not just a string of technical terms
 - The title should give the reader the most useful information within 50
   characters
 - Choose between describing the change or the problem based on clarity:
@@ -174,7 +226,9 @@ Check for common quality issues:
 - **Over-explanation**: Don't over-explain benefits that are obvious from the
   change itself
 - **Forward references**: Don't reference other commits unless directly relevant
-- **Title clarity**: Title should focus on "what/why" rather than "how"
+- **Title clarity**: The title must be unambiguous on first read. If it can be
+  parsed in more than one way, restructure the sentence so the meaning is
+  obvious. Focus on "what/why" rather than "how".
 - **Isolation context**: Would someone understand this without viewing the diff?
 
 If issues are found, refine the message to address them.

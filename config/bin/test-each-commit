@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+# Usage: test-each-commit [--base <ref>] [--no-fail-fast] <command...>
+
+set -euo pipefail
+
+base="main"
+fail_fast="true"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --base)
+      base="$2"
+      shift 2
+      ;;
+    --no-fail-fast)
+      fail_fast="false"
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "Usage: test-each-commit [--base <ref>] [--no-fail-fast] <command...>" >&2
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+if [[ $# -eq 0 ]]; then
+  echo "Usage: test-each-commit [--base <ref>] [--no-fail-fast] <command...>" >&2
+  exit 1
+fi
+
+command="$*"
+base_sha="$(git rev-parse "$base")"
+head_sha="$(git rev-parse HEAD)"
+
+if [[ "$base_sha" == "$head_sha" ]]; then
+  echo "HEAD is already at $base — nothing to test" >&2
+  exit 0
+fi
+
+mapfile -t commits < <(git rev-list --reverse "$base_sha..$head_sha")
+if [[ ${#commits[@]} -eq 0 ]]; then
+  echo "No commits between $base and HEAD" >&2
+  exit 0
+fi
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+echo "Testing ${#commits[@]} commit(s) on top of $base with: $command"
+
+stashed="false"
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  git stash push -m "test-each-commit-$(date +%s)"
+  stashed="true"
+fi
+
+cleanup() {
+  git checkout "$branch" --quiet
+  if [[ "$stashed" == "true" ]]; then
+    git stash pop
+  fi
+}
+trap cleanup EXIT
+
+failures=()
+
+for i in "${!commits[@]}"; do
+  sha="${commits[$i]}"
+  msg="$(git log -1 --oneline "$sha")"
+  echo ""
+  echo "[$((i + 1))/${#commits[@]}] $msg"
+
+  git checkout "$sha" --quiet
+
+  if ! bash -c "$command"; then
+    failures+=("[$((i + 1))/${#commits[@]}] $msg")
+    if [[ "$fail_fast" == "true" ]]; then
+      echo "" >&2
+      echo "FAILED at commit $((i + 1))/${#commits[@]}: $msg" >&2
+      exit 1
+    else
+      echo "" >&2
+      echo "FAILED (continuing): $msg" >&2
+    fi
+  fi
+done
+
+if [[ ${#failures[@]} -eq 0 ]]; then
+  echo ""
+  echo "All ${#commits[@]} commits passed."
+else
+  echo "" >&2
+  echo "${#failures[@]} commit(s) failed:" >&2
+  for f in "${failures[@]}"; do
+    echo "  $f" >&2
+  done
+  exit 1
+fi
