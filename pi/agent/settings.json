@@ -1,0 +1,9 @@
+{
+  "lastChangelogVersion": "0.78.0",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "qwen3.7-max",
+  "defaultThinkingLevel": "high",
+  "packages": ["git:github.com/otahontas/pi-coding-agent-catppuccin"],
+  "theme": "catppuccin-mocha"
+}
+

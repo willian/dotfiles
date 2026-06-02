@@ -30,6 +30,7 @@ brew "libpq", link: true
 brew "llvm"
 brew "luarocks"
 brew "neovim"
+brew "pi-coding-agent"
 brew "pinentry-mac"
 brew "pkg-config"
 brew "poppler"
