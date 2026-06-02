@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+INSTALL_DIR="$HOME/.local/share/sketchybar_lua"
+MODULE_PATH="$INSTALL_DIR/sketchybar.so"
+
+if [ -f "$MODULE_PATH" ]; then
+  exit 0
+fi
+
+echo "Installing SbarLua..."
+
+TMPDIR=$(mktemp -d)
+trap 'rm -rf "$TMPDIR"' EXIT
+
+git clone --depth 1 https://github.com/FelixKratz/SbarLua.git "$TMPDIR/SbarLua"
+cd "$TMPDIR/SbarLua"
+make install
+
+echo "SbarLua installed to $INSTALL_DIR"

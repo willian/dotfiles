@@ -1,40 +1,14 @@
-#!/bin/sh
+#!/usr/bin/env lua
 
-source "$CONFIG_DIR/colors.sh"
+local config_dir = os.getenv("CONFIG_DIR") or (os.getenv("HOME") .. "/.config/sketchybar")
+package.path = config_dir .. "/?.lua;" .. config_dir .. "/?/init.lua;" .. package.path
+package.cpath = package.cpath .. ";/Users/" .. os.getenv("USER") .. "/.local/share/sketchybar_lua/?.so"
 
-PLUGIN_DIR="$CONFIG_DIR/plugins"
-ITEM_DIR="$CONFIG_DIR/items"
+local sbar = require("sketchybar")
 
-sketchybar --bar blur_radius=0 \
-  color=$BAR_COLOR \
-  height=38 \
-  padding_left=16 \
-  padding_right=16 \
-  position=top \
-  sticky=off
+sbar.begin_config()
+require("init")
+sbar.hotload(true)
+sbar.end_config()
 
-# Defaults
-sketchybar --default \
-  background.color=$ITEM_BG_COLOR_WITH_OPACITY \
-  background.corner_radius=12 \
-  background.height=24 \
-  icon.align=center \
-  icon.font="CaskaydiaCove Nerd Font:Regular:14.0" \
-  label.align=center \
-  label.color=$WHITE \
-  label.font="CaskaydiaCove Nerd Font:Regular:14.0" \
-  label.highlight_color=$ACCENT_COLOR
-
-# Left
-source $ITEM_DIR/spaces.sh
-source $ITEM_DIR/front_app.sh
-#
-# # Right
-source $ITEM_DIR/clock.sh
-source $ITEM_DIR/battery.sh
-source $ITEM_DIR/bluetooth.sh
-source $ITEM_DIR/wifi.sh
-source $ITEM_DIR/volume.sh
-source $ITEM_DIR/display.sh
-
-sketchybar --update
+sbar.event_loop()
