@@ -9,6 +9,20 @@ return {
       desc = "Sidekick Toggle Claude",
     },
     {
+      "<leader>ag",
+      function()
+        require("sidekick.cli").toggle({ name = "codex", focus = true })
+      end,
+      desc = "Sidekick Toggle Codex",
+    },
+    {
+      "<leader>ai",
+      function()
+        require("sidekick.cli").toggle({ name = "pi", focus = true })
+      end,
+      desc = "Sidekick Toggle Pi",
+    },
+    {
       "<leader>ao",
       function()
         require("sidekick.cli").toggle({ name = "opencode", focus = true })
@@ -18,13 +32,14 @@ return {
   },
   opts = {
     cli = {
-      mux = {
-        backend = "tmux",
-        enabled = true,
-        split = {
-          size = 0.35,
-        },
-      },
+      mux = { enabled = false },
+      -- mux = {
+      --   backend = "tmux",
+      --   enabled = true,
+      --   split = {
+      --     size = 0.35,
+      --   },
+      -- },
       prompts = {
         commit = "/commit",
         diagnostics = "Fix these diagnostics in {file}:\n{diagnostics}",

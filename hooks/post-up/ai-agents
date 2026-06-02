@@ -1,0 +1,22 @@
+#!/bin/sh
+
+command_dir="$HOME/.config/opencode/command"
+claude_skills_dir="$HOME/.claude/skills"
+codex_skills_dir="$HOME/.codex/skills"
+pi_skills_dir="$HOME/.pi/agent/skills"
+
+for file in "$command_dir"/*.md; do
+  [ -f "$file" ] || continue
+  name=$(basename "$file" .md)
+  claude_skill_dir="$claude_skills_dir/$name"
+  mkdir -p "$claude_skill_dir"
+  ln -sf "$file" "$claude_skill_dir/SKILL.md"
+
+  codex_skill_dir="$codex_skills_dir/$name"
+  mkdir -p "$codex_skill_dir"
+
+  pi_skill_dir="$pi_skills_dir/$name"
+  mkdir -p "$pi_skill_dir"
+  ln -sf "$file" "$pi_skill_dir/SKILL.md"
+  ln -sf "$file" "$pi_skill_dir/SKILL.md"
+done

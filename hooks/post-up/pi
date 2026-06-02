@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if ! command -v pi >/dev/null 2>&1; then
+  npm install -g @earendil-works/pi-coding-agent
+fi
