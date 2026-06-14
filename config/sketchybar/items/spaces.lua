@@ -49,9 +49,5 @@ for _, sid in ipairs(workspaces) do
 	end)
 end
 
-sbar.add("item", "space_separator", {
-	position = "left",
-	background = { drawing = false },
-	icon = { color = colors.white, align = "center", width = 24, string = "" },
-	label = { drawing = false },
-})
+local separator = require("helpers.separator")
+separator("space_separator")
