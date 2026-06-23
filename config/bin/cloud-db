@@ -1,0 +1,143 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+  echo "Usage: $(basename "$0") preview|staging|production [--skip-psql]" >&2
+}
+
+kill-port-listeners() {
+  local port="$1"
+  local pids
+
+  pids="$(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)"
+  if [[ -n "$pids" ]]; then
+    kill -9 $pids 2>/dev/null || true
+  fi
+}
+
+wait-for-port() {
+  local port="$1"
+
+  while ! lsof -tiTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; do
+    sleep 1
+  done
+}
+
+cloud-sql-proxy-connection() {
+  local port="$1"
+  local project_name="$2"
+  local instance_name="$3"
+  local region="$4"
+  local instance_connection_name="$project_name:$region:$instance_name"
+
+  kill-port-listeners "$port"
+
+  echo "Connecting to $instance_connection_name"
+
+  gcloud --quiet config set account "$project_name" 2>/dev/null || true
+  cloud-sql-proxy --address 127.0.0.1 --port "$port" --quiet "$instance_connection_name" &
+
+  echo "Waiting for connection to $instance_connection_name"
+  wait-for-port "$port"
+
+  echo "Connected to $instance_connection_name"
+}
+
+psql-connection() {
+  local port="$1"
+  local database_name="$2"
+  local database_user="$3"
+  local database_password="$4"
+
+  PGPASSWORD="$database_password" psql -h 0.0.0.0 -p "$port" -d "$database_name" -U "$database_user"
+}
+
+load-environment-config() {
+  local environment="$1"
+  local suffix
+  local database_name_var
+  local database_password_var
+  local database_user_var
+  local instance_name_var
+  local port_var
+  local project_name_var
+  local region_var
+
+  case "$environment" in
+  preview)
+    suffix="PREV"
+    ;;
+  production)
+    suffix="PROD"
+    ;;
+  staging)
+    suffix="STAGE"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+
+  database_name_var="DATABASE_NAME_$suffix"
+  database_password_var="DATABASE_PASSWORD_$suffix"
+  database_user_var="DATABASE_USER_$suffix"
+  instance_name_var="INSTANCE_NAME_$suffix"
+  port_var="PORT_$suffix"
+  project_name_var="PROJECT_NAME_$suffix"
+  region_var="REGION_$suffix"
+
+  database_name="${!database_name_var:-}"
+  database_password="${!database_password_var:-}"
+  database_user="${!database_user_var:-}"
+  instance_name="${!instance_name_var:-}"
+  port="${!port_var:-}"
+  project_name="${!project_name_var:-}"
+  region="${!region_var:-}"
+}
+
+validate-config() {
+  local missing=()
+  local name
+
+  for name in port project_name instance_name region database_name database_user database_password; do
+    if [[ -z "${!name}" ]]; then
+      missing+=("$name")
+    fi
+  done
+
+  if ((${#missing[@]})); then
+    echo "Missing required configuration: ${missing[*]}" >&2
+    exit 1
+  fi
+}
+
+database_name=""
+database_password=""
+database_user=""
+instance_name=""
+port=""
+project_name=""
+region=""
+environment="${1:-}"
+skip_psql="${2:-}"
+
+if [[ $# -lt 1 || $# -gt 2 || -z "$environment" ]]; then
+  usage
+  exit 1
+fi
+
+if [[ -n "$skip_psql" && "$skip_psql" != "--skip-psql" ]]; then
+  usage
+  exit 1
+fi
+
+load-environment-config "$environment"
+validate-config
+
+cloud-sql-proxy-connection "$port" "$project_name" "$instance_name" "$region"
+
+if [[ "$skip_psql" != "--skip-psql" ]]; then
+  psql-connection "$port" "$database_name" "$database_user" "$database_password"
+fi
