@@ -1,5 +1,15 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [],
+  "permission": {
+    "skill": {
+      "commit": "allow",
+      "commit-review": "allow",
+      "pr-feedback-triage": "allow",
+      "pr": "allow",
+      "pr-review": "allow",
+      "rewrite-branch-commits": "allow",
+    },
+  },
   "provider": {},
 }

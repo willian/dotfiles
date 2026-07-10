@@ -1,5 +1,8 @@
 ---
+name: commit
 description: Commit current changes
+model: opus
+effort: high
 ---
 
 ## Behavior
@@ -42,7 +45,7 @@ Follow the three-pass writing process from the style guide:
 
 ## Commit Message Style
 
-Follow the guidelines in @/Users/willian/.config/opencode/command/shared/commit-message-style.md
+Follow the guidelines in @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
 
 ## Key Requirements
 

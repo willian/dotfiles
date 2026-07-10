@@ -1,5 +1,8 @@
 ---
+name: rewrite-branch-commits
 description: Interactively rewrite commit messages for all commits on current branch
+model: opus
+effort: high
 ---
 
 ## Behavior
@@ -138,7 +141,7 @@ If any commits were accepted for rewriting:
 
 ## Commit Message Style
 
-Follow the guidelines in @/Users/willian/.config/opencode/command/shared/commit-message-style.md
+Follow the guidelines in @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
 
 ## Key Requirements
 

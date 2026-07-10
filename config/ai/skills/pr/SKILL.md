@@ -1,5 +1,8 @@
 ---
+name: pr
 description: Generate PR title and description
+model: opus
+effort: high
 ---
 
 ## Behavior
