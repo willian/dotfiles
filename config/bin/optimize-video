@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export TERM_PROGRAM=Apple_Terminal
+
 # Compress an MP4 using H.264 + AAC, outputting compact-<filename>
 #
 # optimize-video input.mp4
@@ -26,9 +28,9 @@ output="${dir}/compact-${base}"
 
 gum spin --spinner minidot --title "Optimizing $base..." -- \
   ffmpeg -i "$input" \
-    -vcodec libx264 \
-    -crf 28 \
-    -preset slow \
-    -acodec aac \
-    -b:a 128k \
-    "$output"
+  -vcodec libx264 \
+  -crf 28 \
+  -preset slow \
+  -acodec aac \
+  -b:a 128k \
+  "$output"

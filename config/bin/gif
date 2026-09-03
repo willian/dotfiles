@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export TERM_PROGRAM=Apple_Terminal
+
 # Convert an MP4 to a high-quality GIF using a palette
 #
 # gif input.mp4
@@ -27,12 +29,12 @@ output="${dir}/${base}.gif"
 
 gum spin --spinner minidot --title "Generating palette..." -- \
   ffmpeg -y -i "$input" \
-    -vf "fps=10,scale=1920:1080:flags=lanczos,palettegen" \
-    "$palette"
+  -vf "fps=10,scale=1920:1080:flags=lanczos,palettegen" \
+  "$palette"
 
 gum spin --spinner minidot --title "Converting to GIF..." -- \
   ffmpeg -y -i "$input" -i "$palette" \
-    -filter_complex "fps=10,scale=1920:1080:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=5" \
-    "$output"
+  -filter_complex "fps=10,scale=1920:1080:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=5" \
+  "$output"
 
 rm -f "$palette"
