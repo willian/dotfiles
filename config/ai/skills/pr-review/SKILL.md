@@ -1,7 +1,7 @@
 ---
 name: pr-review
 description: Review current branch code changes and generate a review report for each commit
-model: opus
+model: opus-4-7
 effort: high
 ---
 

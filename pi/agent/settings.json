@@ -1,9 +1,13 @@
 {
-  "lastChangelogVersion": "0.78.0",
-  "defaultProvider": "opencode-go",
-  "defaultModel": "qwen3.7-max",
+  "lastChangelogVersion": "0.84.4",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-terra",
   "defaultThinkingLevel": "high",
-  "packages": ["git:github.com/otahontas/pi-coding-agent-catppuccin"],
-  "theme": "catppuccin-mocha"
+  "packages": [
+    "git:github.com/otahontas/pi-coding-agent-catppuccin",
+    "npm:pi-effort",
+    "git:github.com/DietrichGebert/ponytail"
+  ],
+  "theme": "catppuccin-mocha",
+  "hideThinkingBlock": false
 }
-
