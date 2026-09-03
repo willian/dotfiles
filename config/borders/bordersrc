@@ -2,14 +2,17 @@
 
 top_right=0xfff89dceb
 bottom_left=0xfff94e2d5
-inactive_color=0xff1e1e2e
+# inactive_color=0xff1e1e2e
+active_color=0xfff89b4fa
+inactive_color=0x595959aa
 
 options=(
-  active_color="gradient(top_right=$top_right,bottom_left=$bottom_left)"
+  # active_color="gradient(top_right=$top_right,bottom_left=$bottom_left)"
+  active_color="$active_color"
   hidpi=on
   inactive_color="$inactive_color"
   style=round
-  width=6.0
+  width=4.0
 )
 
 borders "${options[@]}"
