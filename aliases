@@ -13,6 +13,10 @@ alias pubkey="cat ~/.ssh/id_rsa.pub | pbcopy | printf '=> Public key copied to p
 alias vi='nvim'
 alias vim='nvim'
 
+alias h='herdr'
+
+alias mup='mise up'
+
 # Bundler
 alias b="bundle"
 alias be='bundle exec'
@@ -24,6 +28,11 @@ alias irb='irb --readline -r irb/completion'
 # Rails
 alias r="bin/rails"
 alias migrate="bin/rails db:migrate db:rollback && bin/rails db:migrate db:test:prepare"
+
+# PNPM
+alias pbuild="pnpm run build"
+alias pdev="pnpm run dev"
+alias ptest="pnpm run test"
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
@@ -75,3 +84,20 @@ alias nvim-kick="NVIM_APPNAME=kickstart nvim"
 alias nvim-chad="NVIM_APPNAME=NvChad nvim"
 alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"
 alias nnvim="NVIM_APPNAME=new-neovim nvim"
+
+alias cd="zd"
+zd() {
+  if (( $# == 0 )); then
+    builtin cd ~ || return
+  elif [[ -d $1 ]]; then
+    builtin cd "$1" || return
+  else
+    if ! z "$@"; then
+      echo "Error: Directory not found"
+      return 1
+    fi
+
+    printf "\U000F17A9 "
+    pwd
+  fi
+}
