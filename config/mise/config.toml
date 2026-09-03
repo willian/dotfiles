@@ -1,10 +1,24 @@
 [tools]
 bun = ["latest"]
-node = ["lts"]
-ruby = "4.0.0"
-rust = ["1.92.0"]
-yarn = "1.22.22"
+claude-code = ["latest"]
+codex = ["latest"]
+"github:can1357/oh-my-pi" = "latest"
+herdr = ["latest"]
+lua = "5.5"
+node = "26.7.0"
+opencode = ["latest"]
+pi = ["latest"]
+ruby = "4.0.6"
+rust = "1.97.1"
 
 [settings]
 idiomatic_version_file_enable_tools = ["ruby"]
 legacy_version_file = true
+minimum_release_age_excludes = [
+  "claude-code",
+  "codex",
+  "github:can1357/oh-my-pi",
+  "herdr",
+  "opencode",
+  "pi",
+]
