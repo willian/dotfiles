@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+status="${1:-}"
+sounds_dir="${HOME}/.config/workmux/assets/sounds"
+
+case "$status" in
+  done)
+    sound="${sounds_dir}/done.mp3"
+    ;;
+  waiting)
+    sound="${sounds_dir}/request.mp3"
+    ;;
+  *)
+    echo "Usage: workmux-notify {done|waiting}" >&2
+    exit 1
+    ;;
+esac
+
+if [[ ! -f "$sound" ]]; then
+  echo "workmux-notify: sound file not found: $sound" >&2
+  exit 1
+fi
+
+if [[ -n "${TMUX_PANE:-}" ]]; then
+  focus_state="$(tmux display-message -p -t "$TMUX_PANE" '#{session_attached} #{window_active} #{pane_active}' 2>/dev/null || true)"
+  read -r attached active_window active_pane <<< "$focus_state"
+  if [[ "${attached:-0}" -gt 0 && "$active_window" == 1 && "$active_pane" == 1 ]]; then
+    exit 0
+  fi
+fi
+
+afplay "$sound" >/dev/null 2>&1 &

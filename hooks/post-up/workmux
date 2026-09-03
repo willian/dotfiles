@@ -1,0 +1,90 @@
+#!/bin/sh
+set -eu
+
+source_dir="$HOME/dotfiles/config/workmux/integrations"
+
+copy_integration() {
+  source=$1
+  destination=$2
+  mkdir -p "$(dirname "$destination")"
+  cmp -s "$source" "$destination" 2>/dev/null || cp "$source" "$destination"
+}
+
+add_hook() {
+  file=$1
+  event=$2
+  matcher=$3
+  command=$4
+
+  mkdir -p "$(dirname "$file")"
+  [ -f "$file" ] || printf '{}\n' >"$file"
+  temporary=$(mktemp "${file}.XXXXXX")
+
+  jq --arg event "$event" --arg matcher "$matcher" --arg command "$command" '
+    .hooks //= {} |
+    .hooks[$event] //= [] |
+    if any(
+      .hooks[$event][]?;
+      (($matcher == "" and (.matcher // "") == "") or .matcher == $matcher) and
+      any(.hooks[]?; .command == $command)
+    ) then .
+    else
+      .hooks[$event] += [
+        ({ hooks: [{ type: "command", command: $command }] } +
+         if $matcher == "" then {} else { matcher: $matcher } end)
+      ]
+    end
+  ' "$file" >"$temporary"
+
+  if cmp -s "$file" "$temporary"; then
+    rm "$temporary"
+  else
+    mv "$temporary" "$file"
+  fi
+}
+
+install_claude() {
+  file="$HOME/.claude/settings.json"
+  add_hook "$file" SessionStart 'startup|resume|clear|fork' 'workmux register-agent'
+  add_hook "$file" UserPromptSubmit '' 'workmux set-window-status working'
+  add_hook "$file" Notification 'permission_prompt|elicitation_dialog' 'workmux set-window-status waiting'
+  add_hook "$file" Notification 'permission_prompt|elicitation_dialog' 'workmux-notify waiting'
+  add_hook "$file" PostToolUse '' 'workmux set-window-status working'
+  add_hook "$file" Stop '' 'workmux set-window-status done'
+  add_hook "$file" Stop '' 'workmux-notify done'
+}
+
+install_codex() {
+  home=$1
+  file="$home/hooks.json"
+  add_hook "$file" SessionStart 'startup|resume|clear' 'workmux register-agent'
+  add_hook "$file" UserPromptSubmit '' 'workmux set-window-status working'
+  add_hook "$file" PermissionRequest '' 'workmux set-window-status waiting'
+  add_hook "$file" PermissionRequest '' 'workmux-notify waiting'
+  add_hook "$file" PostToolUse '' 'workmux set-window-status working'
+  add_hook "$file" SubagentStart '' 'workmux set-window-status working'
+  add_hook "$file" SubagentStop '' 'workmux set-window-status working'
+  add_hook "$file" Stop '' 'workmux set-window-status done'
+  add_hook "$file" Stop '' 'workmux-notify done'
+  CODEX_HOME="$home" codex features enable hooks >/dev/null
+}
+
+if command -v pi >/dev/null 2>&1; then
+  copy_integration "$source_dir/pi/workmux-status.ts" "$HOME/.pi/agent/extensions/workmux-status.ts"
+  copy_integration "$source_dir/pi/agent-sound.ts" "$HOME/.pi/agent/extensions/agent-sound.ts"
+  copy_integration "$source_dir/pi/workmux-status.ts" "$HOME/.pi/work/extensions/workmux-status.ts"
+  copy_integration "$source_dir/pi/agent-sound.ts" "$HOME/.pi/work/extensions/agent-sound.ts"
+fi
+
+if command -v opencode >/dev/null 2>&1; then
+  copy_integration "$source_dir/opencode/workmux-status.ts" "$HOME/.config/opencode/plugins/workmux-status.ts"
+fi
+
+if command -v claude >/dev/null 2>&1; then
+  install_claude
+fi
+
+if command -v codex >/dev/null 2>&1; then
+  install_codex "$HOME/.codex"
+  install_codex "$HOME/.codex-work"
+fi

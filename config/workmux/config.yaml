@@ -1,0 +1,28 @@
+merge_keep: false
+merge_strategy: rebase
+base_branch: auto
+nerdfont: true
+
+panes:
+  - {}
+
+status_format: false
+
+sidebar:
+  position: left
+  width: 32
+  layout: compact
+
+agent: pi
+
+agents:
+  codex-personal:
+    type: codex
+    command: codex
+    env:
+      CODEX_HOME: ~/.codex
+  codex-work:
+    type: codex
+    command: codex
+    env:
+      CODEX_HOME: ~/.codex-work

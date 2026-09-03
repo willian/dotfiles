@@ -7,7 +7,7 @@ theme = light:Catppuccin Latte,dark:Catppuccin Mocha
 
 # Font
 font-family = CaskaydiaCove Nerd Font
-font-size = 20
+font-size = 18
 
 # Disable ligatures (equivalent to harfbuzz_features = { "calt=0", "clig=0", "liga=0" } in Wezterm)
 font-feature = -calt
@@ -76,6 +76,10 @@ keybind = cmd+t=text:\x01c
 keybind = cmd+shift+t=text:\x01!
 # CMD+w -> Sends Ctrl+A + x. Kills the current pane (with confirmation).
 keybind = cmd+w=text:\x01x
+# CMD+` -> Sends Ctrl+A + A. Toggles workmux sidebar
+keybind = cmd+`=text:\x01A
+# CMD+Shift+s -> Sends Ctrl+A + W. Opens the workmux worktree manager.
+keybind = cmd+shift+s=text:\x01W
 
 # Neovim
 # The text: action sends \x1b which is the raw byte for the Escape key, followed by characters and a newline.

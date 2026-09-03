@@ -3,6 +3,7 @@
 .bundle
 .mise.local.toml
 .tool-versions
+.workmux.yaml
 lazy-lock.json
 mise.local.toml
 .envrc
