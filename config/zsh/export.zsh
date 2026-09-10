@@ -40,3 +40,5 @@ else
 fi
 
 export GPG_TTY=$(tty)
+
+export HERDR_NAV_PASSTHROUGH_RE='^(lazygit|fzf)$'

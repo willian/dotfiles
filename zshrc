@@ -114,3 +114,5 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

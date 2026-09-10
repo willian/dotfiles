@@ -2,12 +2,21 @@
 
 format = """
 $os \
-$directory \
+${custom.directory} \
 $git_branch \
 $git_status \
 $ruby\
 $nodejs\
 $line_break$character"""
+
+# format = """
+# $os \
+# $directory \
+# $git_branch \
+# $git_status \
+# $ruby\
+# $nodejs\
+# $line_break$character"""
 
 # format = """
 # [](peach)\
@@ -16,7 +25,7 @@ $line_break$character"""
 # $git_branch\
 # $git_status\
 # [](fg:green)\
-# $line_break$character"""
+# $line_break$character""
 
 palette = "catppuccin_mocha"
 
@@ -42,6 +51,36 @@ truncation_symbol = "…/"
 symbol = ""
 style = "fg:green"
 format = '[$symbol $branch]($style)'
+
+[custom.git_branch_main]
+symbol = ""
+style = "fg:green"
+command = "git branch --show-current"
+when = "git rev-parse --is-inside-work-tree >/dev/null 2>&1 && ! git rev-parse --git-dir | grep -q '/worktrees/'"
+format = '[$symbol $output]($style) '
+
+[custom.directory]
+style = "fg:sky"
+when = true
+command = '''
+if root=$(git rev-parse --show-toplevel 2>/dev/null); then
+  name=${root##*/}
+  prefix=$(git rev-parse --show-prefix)
+
+  if git rev-parse --git-dir | grep -q '/worktrees/'; then
+    branch=$(git branch --show-current)
+    [ -n "$branch" ] && name=${name%."$branch"}
+  fi
+
+  prefix=${prefix%/}
+  [ -n "$prefix" ] && name="$name/$prefix"
+  printf '%s' "$name"
+else
+  printf '%s' "${PWD##*/}"
+fi
+'''
+format = '[$output]($style)'
+
 
 [git_status]
 # style = "fg:green"

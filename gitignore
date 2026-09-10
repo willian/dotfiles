@@ -1,9 +1,9 @@
 **/.DS_Store
 *.http
 .bundle
+.config/wt.toml
+.envrc
 .mise.local.toml
 .tool-versions
-.workmux.yaml
 lazy-lock.json
 mise.local.toml
-.envrc

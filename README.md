@@ -148,8 +148,7 @@ This will symlink the configuration files to their appropriate locations.
 
 | Key | Action |
 |-----|--------|
-| `Prefix + K` | Session picker (fzf) |
-| `Prefix + N` | Session UI popup |
+| `Prefix + K` | Session picker (sesh) |
 | `Prefix + R` | Root session picker |
 | `Prefix + L` | Switch to last session |
 | `Prefix + 9` | Connect to root session |

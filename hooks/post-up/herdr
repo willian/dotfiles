@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if command -v herdr >/dev/null 2>&1; then
+  mkdir -p "$HOME/.config/herdr"
+  ln -sf "$HOME/dotfiles/config/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+
+  install_plugin() {
+    id="$1"
+    source="$2"
+
+    herdr plugin list --json | jq -e --arg id "$id" \
+      '.result.plugins[] | select(.plugin_id == $id)' >/dev/null ||
+      herdr plugin install "$source" --yes
+  }
+
+  install_plugin worktrunk devashish2203/herdr-worktrunk
+  install_plugin fullerzz.sesh fullerzz/herdr-plugin-sesh
+  install_plugin herdr-fzf-url willian/herdr-fzf-url
+  install_plugin local.vim-navigator bojackduy/nvim-herdr-navigation/herdr-vim-navigator
+
+  worktrunk_config_dir=$(herdr plugin config-dir worktrunk)
+  mkdir -p "$worktrunk_config_dir"
+  ln -sf "$HOME/dotfiles/config/herdr/worktrunk.toml" "$worktrunk_config_dir/config.toml"
+
+  sesh_config_dir=$(herdr plugin config-dir fullerzz.sesh)
+  mkdir -p "$sesh_config_dir"
+  ln -sf "$HOME/dotfiles/config/herdr/sesh.toml" "$sesh_config_dir/config.toml"
+
+  fzf_url_config_dir=$(herdr plugin config-dir herdr-fzf-url)
+  mkdir -p "$fzf_url_config_dir"
+  ln -sf "$HOME/dotfiles/config/herdr/fzf-url.toml" "$fzf_url_config_dir/config.toml"
+fi

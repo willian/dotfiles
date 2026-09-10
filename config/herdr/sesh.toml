@@ -1,0 +1,49 @@
+version = 1
+
+[picker]
+show_icons = false
+show_preview = false
+prompt = " "
+placeholder = "Filter sessions... "
+
+[workspace_defaults]
+startup = "nvim"
+preview = "eza --all --color=always --git --group-directories-first --icons --no-filesize --no-permissions --no-time --no-user -l -s Name {}"
+
+[[workspace]]
+name = "Andela Project"
+path = "~/Code/Andela/andela"
+
+[[workspace]]
+name = "Enveloti"
+path = "~/Code/Enveloti/enveloti"
+
+[[workspace]]
+name = "Code"
+path = "~/Code"
+startup = "ll"
+
+[[workspace]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup = "nvim -c ':lua Snacks.picker.files()'"
+
+[[workspace]]
+name = "Home"
+path = "~"
+startup = "fastfetch"
+
+[[workspace]]
+name = "neovim config"
+path = "~/dotfiles/config/nvim"
+startup = "nvim -c ':lua Snacks.picker.files()'"
+
+[[workspace]]
+name = "tmux config"
+path = "~/dotfiles/config/tmux"
+startup = "nvim tmux.conf"
+
+[[workspace]]
+name = "ghostty config"
+path = "~/dotfiles/config/ghostty"
+startup = "nvim config.ghostty"

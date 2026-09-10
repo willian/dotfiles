@@ -1,0 +1,104 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+auto_switch = true
+dark_name = "catppuccin"
+
+[keys]
+prefix = "ctrl+a"
+zoom = "prefix+m"
+close_workspace = "prefix+shift+q"
+
+[[keys.command]]
+key = "prefix+d"
+type = "popup"
+command = "lazydocker"
+width = "95%"
+height = "95%"
+description = "Open lazydocker"
+
+[[keys.command]]
+key = "prefix+g"
+type = "popup"
+command = "lazygit"
+width = "95%"
+height = "95%"
+description = "Open lazygit"
+
+[[keys.command]]
+key = "prefix+shift+g"
+type = "popup"
+command = "mise exec -- gh dash"
+width = "95%"
+height = "95%"
+description = "Open GitHub dashboard"
+
+[[keys.command]]
+key = "prefix+shift+k"
+type = "plugin_action"
+command = "fullerzz.sesh.open-picker"
+description = "Open Sesh workspace picker"
+
+[[keys.command]]
+key = "prefix+shift+l"
+type = "plugin_action"
+command = "fullerzz.sesh.last"
+description = "Switch to previous workspace"
+
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "herdr-fzf-url.pick"
+description = "Pick URL from focused pane"
+
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "local.vim-navigator.left"
+description = "Navigate left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "local.vim-navigator.down"
+description = "Navigate down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "local.vim-navigator.up"
+description = "Navigate up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "local.vim-navigator.right"
+description = "Navigate right"
+
+[[keys.command]]
+key = "prefix+shift+s"
+type = "plugin_action"
+command = "worktrunk.open"
+description = "Switch or create worktree"
+
+[[keys.command]]
+key = "prefix+shift+d"
+type = "plugin_action"
+command = "worktrunk.remove"
+description = "Remove worktree"
+
+[ui]
+confirm_close = false
+hide_tab_bar_when_single_tab = true
+mouse_capture = true
+pane_borders = true
+pane_gaps = false
+pane_outer_borders = true
+pane_scrollbars = false
+prompt_new_tab_name = false
+prompt_new_workspace_name = false
+sidebar_collapsed_mode = "hidden"
+tab_bar_position = "top"
+tab_bar_right = [{ type = "datetime", format = "%H:%M" }]
+window_title = "{hostname}: {workspace}"

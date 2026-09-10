@@ -2,6 +2,7 @@
 bun = ["latest"]
 claude-code = ["latest"]
 codex = ["latest"]
+go = ["1.26.4"]
 "github:can1357/oh-my-pi" = "latest"
 herdr = ["latest"]
 lua = "5.5"
