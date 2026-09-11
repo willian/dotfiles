@@ -1,6 +1,8 @@
 # Place a copy of this config to ~/.aerospace.toml
 # After that, you can edit ~/.aerospace.toml to your liking
 
+config-version = 2
+
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = ['exec-and-forget sketchybar']
@@ -14,6 +16,9 @@ exec-on-workspace-change = [
 
 # Start AeroSpace at login
 start-at-login = true
+
+# Version 1 inferred these from workspace key bindings.
+persistent-workspaces = ['1', '2', '3', '4', '5', '6']
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -124,6 +129,7 @@ alt-equal = 'resize smart +48'
 alt-f = 'fullscreen'
 alt-shift-f = 'layout floating tiling'
 alt-shift-0 = 'balance-sizes'
+alt-w = 'close --quit-if-last-window'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
@@ -154,7 +160,7 @@ alt-a = 'exec-and-forget open ~/Applications/ChatGPT.app'
 alt-b = 'exec-and-forget open /Applications/Arc.app'
 alt-c = 'exec-and-forget open /Applications/Notion\ Calendar.app'
 alt-d = 'exec-and-forget open /Applications/Figma.app'
-alt-e = 'exec-and-forget open /Applications/Spark.app'
+alt-e = 'exec-and-forget open /Applications/Spark\ Desktop.app'
 alt-m = 'exec-and-forget open /Applications/Spotify.app'
 alt-o = 'exec-and-forget open /Applications/OrbStack.app'
 alt-s = 'exec-and-forget open /Applications/Slack.app'
@@ -211,6 +217,10 @@ if.app-name-regex-substring = 'Insta360 Link Controller'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-name-regex-substring = 'zoom.us'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'Kap'
 run = 'layout floating'
 
@@ -228,10 +238,6 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Arc'
-run = 'move-node-to-workspace 1'
-
-[[on-window-detected]]
-if.app-name-regex-substring = 'Zen'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
@@ -264,4 +270,12 @@ run = 'move-node-to-workspace 6'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Spotify'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'OBS'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Wave Link'
 run = 'move-node-to-workspace 6'
