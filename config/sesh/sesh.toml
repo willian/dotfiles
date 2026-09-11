@@ -1,37 +1,64 @@
 #:schema https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json
 
+[tui]
+alias_auto_connect_delay = "150ms"
+alias_filter_prefix = "/"
+placeholder = "Filter sessions... "
+preview = false
+preview_border = "thick"
+preview_min_width = 100
+preview_width = 60
+prompt = " "
+show_icons = false
+show_windows = true
+window_name_format = "#{window_name}"
+
 [default_session]
-startup_command = "nvim -c ':lua Snacks.picker.files()'"
+startup_command = "nvim"
 preview_command = "eza --all --color=always --git --group-directories-first --icons --no-filesize --no-permissions --no-time --no-user -l -s Name {}"
 
 [[session]]
-name = "Andela Project 󰫢"
+name = "Andela Project"
 path = "~/Code/Andela/andela"
+icon = "🧑‍💻"
 
 [[session]]
-name = "Code "
+name = "Enveloti"
+path = "~/Code/Enveloti/enveloti"
+icon = "✉️"
+
+[[session]]
+name = "Code"
 path = "~/Code"
-startup_command = ""
+startup_command = "ll"
+icon = "🧑‍💻"
 
 [[session]]
-name = "dotfiles "
+name = "dotfiles"
 path = "~/dotfiles"
+startup_command = "nvim -c ':lua Snacks.picker.files()'"
+icon = "⚙️"
 
 [[session]]
-name = "Home "
+name = "Home"
 path = "~"
 startup_command = "fastfetch"
+icon = "🏡"
 
 [[session]]
-name = "neovim config "
+name = "neovim config"
 path = "~/dotfiles/config/nvim"
+startup_command = "nvim -c ':lua Snacks.picker.files()'"
+icon = ""
 
 [[session]]
-name = "tmux config "
+name = "tmux config"
 path = "~/dotfiles/config/tmux"
 startup_command = "nvim tmux.conf"
+icon = ""
 
 [[session]]
-name = "wezterm config "
-path = "~/dotfiles/config/wezterm"
-startup_command = "nvim wezterm.lua"
+name = "ghostty config"
+path = "~/dotfiles/config/ghostty"
+startup_command = "nvim config.ghostty"
+icon = ""
