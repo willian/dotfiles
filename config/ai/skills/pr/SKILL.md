@@ -1,7 +1,7 @@
 ---
 name: pr
 description: Generate PR title and description
-model: opus-4-7
+model: claude-opus-4-8
 effort: high
 ---
 

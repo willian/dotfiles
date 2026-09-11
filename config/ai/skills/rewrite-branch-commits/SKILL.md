@@ -1,7 +1,7 @@
 ---
 name: rewrite-branch-commits
 description: Interactively rewrite commit messages for all commits on current branch
-model: opus-4-7
+model: claude-opus-4-8
 effort: high
 ---
 

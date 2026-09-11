@@ -1,7 +1,7 @@
 ---
 description: Review unstaged and staged comments added on the current branch and cut them down to only the strictly necessary, rewriting survivors in plain English.
 allowed-tools: Bash, Read, Edit, Grep, Skill
-model: opus
+model: claude-opus-4-8
 effort: high
 ---
 

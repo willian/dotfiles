@@ -1,7 +1,7 @@
 ---
 name: pr-feedback-triage
 description: Triage and address GitHub PR feedback using gh. Use when an AI agent needs to read PR comments from reviewers, group feedback by origin commit, decide what to address, push back on, clarify, or answer, write markdown analysis files, draft replies, or work through requested PR feedback changes.
-model: opus
+model: claude-opus-4-8
 effort: high
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: commit
 description: Commit current changes
-model: opus-4-7
+model: claude-opus-4-8
 effort: high
 ---
 

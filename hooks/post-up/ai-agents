@@ -4,10 +4,8 @@ set -eu
 skills_dir="$HOME/dotfiles/config/ai/skills"
 opencode_commands_src="$HOME/dotfiles/config/opencode/commands"
 opencode_config_dir="$HOME/.config/opencode"
-opencode_skills_dir="$HOME/.config/opencode/skills"
 claude_skills_dir="$HOME/.claude/skills"
 agents_skills_dir="$HOME/.agents/skills"
-pi_skills_dir="$HOME/.pi/agent/skills"
 
 link_skill() {
   root_dir="$1"
@@ -20,7 +18,7 @@ link_skill() {
   fi
 }
 
-mkdir -p "$opencode_config_dir" "$opencode_skills_dir" "$claude_skills_dir" "$agents_skills_dir" "$pi_skills_dir"
+mkdir -p "$opencode_config_dir" "$claude_skills_dir" "$agents_skills_dir"
 ln -sfn "$opencode_commands_src" "$opencode_config_dir/commands"
 
 for skill_file in "$skills_dir"/*/SKILL.md; do
@@ -29,8 +27,6 @@ for skill_file in "$skills_dir"/*/SKILL.md; do
   skill_dir=$(dirname "$skill_file")
   name=$(basename "$skill_dir")
 
-  link_skill "$opencode_skills_dir"
   link_skill "$claude_skills_dir"
   link_skill "$agents_skills_dir"
-  link_skill "$pi_skills_dir"
 done
