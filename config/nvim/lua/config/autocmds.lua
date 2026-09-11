@@ -68,10 +68,20 @@ local cache = {}
 
 local formatters = {
   prettier = {
-    configs = { ".prettierrc", ".prettierrc.json", ".prettierrc.yml", ".prettierrc.yaml",
-                ".prettierrc.json5", ".prettierrc.js", ".prettierrc.cjs", ".prettierrc.mjs",
-                "prettier.config.js", "prettier.config.cjs", "prettier.config.mjs" },
-    pattern = 'printWidth%s*[:=]%s*(%d+)',
+    configs = {
+      ".prettierrc",
+      ".prettierrc.json",
+      ".prettierrc.yml",
+      ".prettierrc.yaml",
+      ".prettierrc.json5",
+      ".prettierrc.js",
+      ".prettierrc.cjs",
+      ".prettierrc.mjs",
+      "prettier.config.js",
+      "prettier.config.cjs",
+      "prettier.config.mjs",
+    },
+    pattern = "printWidth%s*[:=]%s*(%d+)",
     json_key = "printWidth",
     default = 80,
   },
@@ -89,7 +99,9 @@ local formatters = {
 
 local function get_line_length(dir, formatter_name, formatter)
   local cache_key = dir .. "/" .. formatter_name
-  if cache[cache_key] then return cache[cache_key] end
+  if cache[cache_key] then
+    return cache[cache_key]
+  end
 
   -- Find config file
   local config_path
@@ -101,7 +113,9 @@ local function get_line_length(dir, formatter_name, formatter)
     end
   end
 
-  if not config_path then return nil end
+  if not config_path then
+    return nil
+  end
 
   -- Parse config file
   local content = table.concat(vim.fn.readfile(config_path), "\n")
@@ -123,13 +137,20 @@ local function get_line_length(dir, formatter_name, formatter)
 end
 
 local filetype_map = {
-  ["javascript"] = "prettier", ["javascriptreact"] = "prettier",
-  ["typescript"] = "prettier", ["typescriptreact"] = "prettier",
-  ["json"] = "prettier", ["jsonc"] = "prettier",
-  ["yaml"] = "prettier", ["markdown"] = "prettier",
-  ["css"] = "prettier", ["scss"] = "prettier",
-  ["html"] = "prettier", ["vue"] = "prettier",
-  ["svelte"] = "prettier", ["astro"] = "prettier",
+  ["javascript"] = "prettier",
+  ["javascriptreact"] = "prettier",
+  ["typescript"] = "prettier",
+  ["typescriptreact"] = "prettier",
+  ["json"] = "prettier",
+  ["jsonc"] = "prettier",
+  ["yaml"] = "prettier",
+  ["markdown"] = "prettier",
+  ["css"] = "prettier",
+  ["scss"] = "prettier",
+  ["html"] = "prettier",
+  ["vue"] = "prettier",
+  ["svelte"] = "prettier",
+  ["astro"] = "prettier",
   ["lua"] = "stylua",
   ["ruby"] = "rubocop",
 }
@@ -137,7 +158,9 @@ local filetype_map = {
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   callback = function(args)
     local formatter_name = filetype_map[vim.bo[args.buf].filetype]
-    if not formatter_name then return end
+    if not formatter_name then
+      return
+    end
 
     local formatter = formatters[formatter_name]
     local dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(args.buf), ":p:h")
