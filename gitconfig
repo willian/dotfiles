@@ -40,10 +40,13 @@
 
 [branch]
   autosetuprebase = always
+  sort = -committerdate    # Sort branches by most recent commit first
 
 [diff]
+	algorithm = histogram    # Clearer diffs on moved/edited lines
   colorMoved = zebra
   context = 3
+  mnemonicPrefix = true    # More intuitive refs in diff output
   renames = copies
   interHunkContext = 10
 
@@ -67,7 +70,7 @@
   rebase = true
 
 [push]
-  autoSetupeRemove = true
+  autoSetupRemote = true   # Automatically set upstream branch on push
   default = current
   followTags = true
 
@@ -86,7 +89,7 @@
   fetchJobs = 16
 
 [tag]
-  sort = -taggerdate
+  sort = -version:refname  # Sort version numbers as you would expect
 	gpgSign = true
 
 # Colors
@@ -143,3 +146,10 @@
 
 [url "git@andela-github:woven-teams"]
   insteadOf = "woven:"
+
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials
+
+[rerere]
+	enabled = true    # Record and reuse conflict resolutions
+	autoupdate = true # Apply stored conflict resolutions automatically

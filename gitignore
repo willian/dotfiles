@@ -5,5 +5,7 @@
 .envrc
 .mise.local.toml
 .tool-versions
+http-client.env.json
 lazy-lock.json
 mise.local.toml
+settings.local.json

@@ -1,6 +1,6 @@
 export TMUX_TMPDIR=/tmp
 
-export CDPATH=.:~:~/Projects:~/Code:~/GitHub
+# export CDPATH=.:~:~/Projects:~/Code:~/GitHub
 export LC_ALL="en_US.UTF-8"
 export GOPATH=$HOME/.go
 export SHELL=/opt/homebrew/bin/zsh
@@ -42,3 +42,5 @@ fi
 export GPG_TTY=$(tty)
 
 export HERDR_NAV_PASSTHROUGH_RE='^(lazygit|fzf)$'
+
+export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1

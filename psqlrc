@@ -4,6 +4,7 @@
 -- Don't display the "helpful" message on startup.
 \set QUIET 1
 \pset null '[NULL]'
+\pset pager always
 
 -- http://www.postgresql.org/docs/9.3/static/app-psql.html#APP-PSQL-PROMPTING
 \set PROMPT1 '%[%033[1m%]%M %n@%/%R%[%033[0m%]%# '
@@ -12,7 +13,7 @@
 \set PROMPT2 '[more] %R > '
 
 -- Show how long each query takes to execute
-\timing
+\timing on
 
 -- Use best available output format
 \x auto
