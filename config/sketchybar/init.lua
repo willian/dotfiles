@@ -32,7 +32,7 @@ sbar.default({
 require("items.spaces")
 require("items.front_app")
 require("items.media")
-require("items.clock")
+require("items.datetime")
 require("items.battery")
 require("items.bluetooth")
 require("items.wifi")
