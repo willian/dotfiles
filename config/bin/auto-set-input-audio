@@ -1,17 +1,42 @@
 #!/bin/bash
 
-while true; do
-  # Priority list
-  PRIORITY=("fifine Ampli1" "Willian’s AirPods Pro" "MacBook Pro Microphone")
+select_input() {
+  local wave_link_running=$1
 
-  # Get available input sources
+  if [[ $wave_link_running == true ]] &&
+    grep -Fxq 'fifine Ampli1' <<<"$AVAILABLE" &&
+    grep -Fxq 'Elgato Wave Link MicrophoneFX' <<<"$AVAILABLE"; then
+    echo 'Elgato Wave Link MicrophoneFX'
+  elif [[ $wave_link_running == false ]] && grep -Fxq 'fifine Ampli1' <<<"$AVAILABLE"; then
+    echo 'fifine Ampli1'
+  elif grep -Fxq 'Willian’s AirPods Pro' <<<"$AVAILABLE"; then
+    echo 'Willian’s AirPods Pro'
+  else
+    echo 'MacBook Pro Microphone'
+  fi
+}
+
+if [[ ${1:-} == --test ]]; then
+  AVAILABLE=$'Elgato Wave Link MicrophoneFX\nfifine Ampli1'
+  [[ $(select_input true) == 'Elgato Wave Link MicrophoneFX' ]]
+  [[ $(select_input false) == 'fifine Ampli1' ]]
+  AVAILABLE='Willian’s AirPods Pro'
+  [[ $(select_input true) == 'Willian’s AirPods Pro' ]]
+  AVAILABLE=''
+  [[ $(select_input false) == 'MacBook Pro Microphone' ]]
+  echo 'ok'
+  exit
+fi
+
+while true; do
   AVAILABLE=$(/opt/homebrew/bin/SwitchAudioSource -a -t input)
 
-  for DEVICE in "${PRIORITY[@]}"; do
-    if echo "$AVAILABLE" | grep -Fq "$DEVICE"; then
-      /opt/homebrew/bin/SwitchAudioSource -s "$DEVICE" -t input
-      break
-    fi
-  done
+  if /usr/bin/osascript -e 'application id "com.elgato.WaveLink3" is running' | grep -qx true; then
+    WAVE_LINK_RUNNING=true
+  else
+    WAVE_LINK_RUNNING=false
+  fi
+
+  /opt/homebrew/bin/SwitchAudioSource -s "$(select_input "$WAVE_LINK_RUNNING")" -t input
   sleep 1
 done
