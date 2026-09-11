@@ -36,6 +36,17 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
+-- Reload herdr after change its configurations
+vim.api.nvim_create_autocmd("BufWritePost", {
+  callback = function()
+    local file_path = vim.fn.expand("%:p:h")
+    local is_herdr = file_path:match("herdr")
+    if is_herdr then
+      vim.api.nvim_command("silent !herdr server reload-config")
+    end
+  end,
+})
+
 -- Auto-recover from swap files and delete swap after saving
 vim.api.nvim_create_autocmd("SwapExists", {
   callback = function()
