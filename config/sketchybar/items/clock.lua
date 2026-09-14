@@ -16,6 +16,10 @@ local function update_time()
 end
 
 clock:subscribe({ "forced", "routine" }, update_time)
+clock:subscribe("mouse.clicked", function()
+	local config_dir = os.getenv("CONFIG_DIR") or (os.getenv("HOME") .. "/.config/sketchybar")
+	sbar.exec(config_dir .. "/world-clock/toggle")
+end)
 update_time()
 
 return clock

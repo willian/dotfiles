@@ -1,4 +1,5 @@
 *.log
+.pnpm-store
 config/karabiner/assets
 config/karabiner/automatic_backups
 lazy-lock.json

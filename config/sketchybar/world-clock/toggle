@@ -1,0 +1,13 @@
+#!/bin/zsh
+set -euo pipefail
+
+root=${0:A:h}
+app="$root/src-tauri/target/debug/bundle/macos/World Clock.app/Contents/MacOS/world-clock"
+[[ -x $app ]] || app="$root/src-tauri/target/release/bundle/macos/World Clock.app/Contents/MacOS/world-clock"
+
+if [[ ! -x $app ]]; then
+	print -u2 "Build the World Clock spike first: pnpm --dir $root tauri build --debug"
+	exit 1
+fi
+
+"$app" --toggle "$(sketchybar --query clock)" >/dev/null 2>&1 &

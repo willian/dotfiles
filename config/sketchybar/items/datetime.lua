@@ -31,6 +31,9 @@ local function update_position()
 		for _, item in ipairs(items) do
 			item:set({ position = position })
 		end
+		local order = position == "right" and "clock datetime_separator calendar"
+			or "calendar datetime_separator clock"
+		sbar.exec("sketchybar --reorder " .. order)
 	end)
 end
 
