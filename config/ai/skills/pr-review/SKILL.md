@@ -1,7 +1,7 @@
 ---
 name: pr-review
 description: Review current branch code changes and generate a review report for each commit
-model: claude-opus-4-8
+model: claude-opus-5-5
 effort: high
 ---
 
@@ -74,18 +74,23 @@ For each commit (oldest to newest):
           tests that don't match implementation, broken test assertions
     - [ ] **Guideline violations:** any rules from AGENTS.md or CLAUDE.md
           that are not followed
+    - [ ] If available, run the `ponytail:ponytail-review` skill
   - [ ] Record findings with specific line numbers, add findings to the next
         line instead of in front of the line number
   - [ ] Before recording any finding, verify the target line against the
         line-reference map. If the exact line cannot be verified, do not keep
         the line reference.
+  - [ ] Rewrite all comments to ensure it sounds human and natural, as written
+        by a real human developer
+  - [ ] Exclude files from each report that does not have any comment to report
 
 ### Step 4: Generate Review Report
 
 #### Output Voice Contract
 
-All final report text must read like a human PR comment written by me to the PR
-author.
+All final report text must sounds human and natural, as written by a real human
+developer in a format that can copied and pasted as a PR comment for the author
+of the PR to read.
 
 - [ ] Use first person where natural: "I think...", "I'd prefer...",
       "I'm not sure..."
@@ -122,8 +127,8 @@ For each reviewed commit, follow this five-pass process:
 For any comment that proposes an alternative approach, code change, or specific
 library/feature usage:
 
-- [ ] **Check existence**: Do referenced classes, modules, methods, or constants
-      actually exist in this codebase?
+- [ ] **Check existence**: Do the referenced classes, modules, methods, or
+      constants actually exist in this codebase?
 - [ ] **Check validity**: Is the suggestion technically valid given the current
       code context? (e.g., `class_double` requires a real class; mock patterns
       may be intentional)
@@ -135,6 +140,8 @@ library/feature usage:
   - Right: "Would `class_double` work here? Not sure if that fits with how the
     test doubles are set up"
 - [ ] Display with "**Third pass (verified):**" label
+- [ ] When available, use `ponytail` skill to ensure the suggestions are as
+      minimal as possible and follow good architecture practices.
 
 #### Pass 4: Verify line references
 
@@ -170,7 +177,7 @@ For every final comment that includes `(Line {n})` or `(Lines {n}-{m})`:
   - [ ] **Grammar**: Every sentence is grammatically complete
   - [ ] **Tone**: Casual and conversational, not robotic or accusatory
   - [ ] **Conciseness**: One or two sentences max per comment
-  - [ ] **Voice**: Sounds like a Brazilian developer wrote it
+  - [ ] **Voice**: Sounds like a real human developer
   - [ ] **No em/en dashes**: Verify no `—` or `–` anywhere in output
   - [ ] **Prefixes correctly applied**: Minor suggestions have `Non-blocking`,
         trivial have `Nit`, blocking have none

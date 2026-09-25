@@ -1,7 +1,7 @@
 ---
 name: commit-review
 description: Review and propose rewrite for current commit message
-model: claude-opus-4-8
+model: claude-opus-5-5
 effort: high
 ---
 
