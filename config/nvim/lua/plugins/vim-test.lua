@@ -2,7 +2,6 @@ return {
   "vim-test/vim-test",
   dependencies = {
     "preservim/vimux",
-    "willian/vim-test-herdr",
   },
   keys = {
     { "<leader>tT", "<CMD>TestSuite<CR>", desc = "Run test suite of the current file" },
@@ -13,7 +12,7 @@ return {
     {
       "<leader>tc",
       function()
-        vim.cmd(vim.env.HERDR_ENV == "1" and "HerdrCloseRunner" or "VimuxCloseRunner")
+        vim.cmd("VimuxCloseRunner")
       end,
       desc = "Close test runner pane",
     },
@@ -24,7 +23,7 @@ return {
     vim.g.VimuxRunnerName = "VimuxRunner"
     vim.g.VimuxCloseOnExit = 1
 
-    vim.g["test#strategy"] = vim.env.HERDR_ENV == "1" and "herdr" or "vimux"
+    vim.g["test#strategy"] = "vimux"
 
     local subdirs = { "backend", "frontend" }
 

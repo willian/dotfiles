@@ -41,6 +41,4 @@ fi
 
 export GPG_TTY=$(tty)
 
-export HERDR_NAV_PASSTHROUGH_RE='^(lazygit|fzf)$'
-
 export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1

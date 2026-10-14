@@ -4,7 +4,6 @@ claude-code = ["latest"]
 codex = ["latest"]
 go = ["1.26.4"]
 "github:can1357/oh-my-pi" = "latest"
-herdr = ["latest"]
 lua = "5.5"
 node = "26.7.0"
 opencode = ["latest"]
@@ -20,7 +19,6 @@ minimum_release_age_excludes = [
   "claude-code",
   "codex",
   "github:can1357/oh-my-pi",
-  "herdr",
   "opencode",
   "pi",
   "workmux",
