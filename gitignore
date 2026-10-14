@@ -1,7 +1,6 @@
 **/.DS_Store
 *.http
 .bundle
-.config/wt.toml
 .workmux.yaml
 .envrc
 .mise.local.toml
