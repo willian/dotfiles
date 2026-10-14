@@ -1,0 +1,15 @@
+# workmux global configuration
+# Settings here apply to all projects. Project-specific .workmux.yaml overrides these.
+# See: https://workmux.raine.dev/guide/configuration
+
+agent: claude
+base_branch: auto
+confirm_unmerged_removal: false
+merge_keep: false
+merge_strategy: rebase
+mode: session
+nerdfont: true
+
+panes:
+  - command: nvim
+    focus: true

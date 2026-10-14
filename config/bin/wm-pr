@@ -1,0 +1,24 @@
+#!/bin/bash
+# Open (or create) the workmux worktree for a GitHub PR's branch.
+# `workmux add --pr` can't parse SSH host-alias remotes, and the work GH_TOKEN
+# only comes through mise, so resolve the branch with gh and add it by name.
+# Usage: wm-pr <pr-number>
+set -u
+
+pause() { printf '\n%s\nPress Enter.' "$1"; read -r _; exit 1; }
+
+[[ "${1:-}" =~ ^[0-9]+$ ]] || pause "Not a PR number: '${1:-}'"
+
+info=$(mise exec -- gh pr view "$1" --json headRefName,isCrossRepository \
+  -q '[.headRefName, .isCrossRepository] | @tsv') || pause "Could not fetch PR #$1"
+IFS=$'\t' read -r branch cross <<<"$info"
+[ "$cross" = false ] || pause "PR #$1 comes from a fork; not supported."
+
+if git show-ref --verify --quiet "refs/heads/$branch"; then
+  ref=$branch
+else
+  git fetch -q origin "$branch" || pause "Could not fetch $branch"
+  ref=origin/$branch
+fi
+
+workmux add -o "$ref" || pause "workmux add failed for $ref"

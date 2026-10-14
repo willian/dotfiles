@@ -1,0 +1,28 @@
+#!/bin/bash
+# Pick worktrees (Tab for several) to remove with workmux; confirms before removing.
+set -u
+
+current=$(git rev-parse --show-toplevel 2>/dev/null)
+list=$(workmux list --json | jq -r --arg cur "$current" '
+  [.[] | select(.is_main | not)]
+  | sort_by(.path != $cur)
+  | .[] | [.handle, (if .path == $cur then "▶" elif .has_uncommitted_changes then "●" else " " end), .branch, .path] | @tsv')
+[ -n "$list" ] || { echo "No worktrees to remove."; sleep 1; exit 0; }
+
+picked=$(fzf --multi --delimiter '\t' --with-nth 2,3 --prompt '  ' \
+  --header '▶ current  ● uncommitted changes  (Tab: select several)' \
+  --preview 'git -C {4} status -sb; echo; git -C {4} log --oneline --color=always -15' \
+  --preview-window right:50% <<<"$list") || exit 0
+[ -n "$picked" ] || exit 0
+
+echo "Remove these worktrees (and their branches)?"
+echo
+cut -f2,3 <<<"$picked" | sed 's/^/  /'
+grep -q '^[^	]*	●' <<<"$picked" && printf '\n⚠ Some have uncommitted changes that will be lost.\n'
+printf '\n[y/N] '
+read -r -n1 answer
+echo
+[ "$answer" = y ] || exit 0
+
+# shellcheck disable=SC2046
+workmux remove -f $(cut -f1 <<<"$picked")

@@ -47,6 +47,14 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
+-- Reload tmux after change its configuration
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*/tmux/tmux.conf",
+  callback = function()
+    vim.fn.system({ "tmux", "source-file", vim.fn.expand("%:p") })
+  end,
+})
+
 -- Auto-recover from swap files and delete swap after saving
 vim.api.nvim_create_autocmd("SwapExists", {
   callback = function()

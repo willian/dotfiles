@@ -32,14 +32,19 @@ return {
   },
   opts = {
     cli = {
-      mux = { enabled = false },
-      -- mux = {
-      --   backend = "tmux",
-      --   enabled = true,
-      --   split = {
-      --     size = 0.35,
-      --   },
-      -- },
+      mux = {
+        backend = "tmux",
+        create = "split",
+        enabled = true,
+        split = { size = 0.40 },
+      },
+      -- tmux spawns tools outside nvim's env; mise exec re-applies per-directory env (e.g. CLAUDE_CONFIG_DIR)
+      tools = {
+        claude = { cmd = { "mise", "exec", "--", "claude" } },
+        codex = { cmd = { "mise", "exec", "--", "codex" } },
+        pi = { cmd = { "mise", "exec", "--", "pi" } },
+        opencode = { cmd = { "mise", "exec", "--", "opencode" } },
+      },
       prompts = {
         commit = "/commit\nEnsure it does not give so much in-the-weeds code details.",
         diagnostics = "Fix these diagnostics in {file}:\n{diagnostics}",

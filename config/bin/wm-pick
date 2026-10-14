@@ -1,0 +1,28 @@
+#!/bin/bash
+# Pick a branch to open (or create) its workmux worktree.
+# Lists branches with a worktree, then local branches, then remote-only ones.
+# Typing a name that matches nothing creates that branch from the base branch.
+set -u
+
+worktrees=$(workmux list --json | jq -r '.[] | .branch')
+local_branches=$(git for-each-ref --format='%(refname:short)' refs/heads)
+remote_branches=$(git for-each-ref --format='%(refname)' refs/remotes | grep -v '/HEAD$' | sed 's|^refs/remotes/||' |
+  while read -r r; do
+    grep -qxF "${r#*/}" <<<"$local_branches" || echo "$r"
+  done)
+
+out=$({
+  sed 's/^/●\t/' <<<"$worktrees"
+  grep -vxF -f <(echo "$worktrees") <<<"$local_branches" | sed 's/^/ \t/'
+  sed 's/^/↓\t/' <<<"$remote_branches"
+} | grep -v -E '^.\t$' | fzf --print-query --delimiter '\t' --nth 2 \
+  --prompt '  ' --header '● worktree  ↓ remote  (type a new name to create)' \
+  --preview 'git log --oneline --color=always -20 {2}' --preview-window right:50%) || [ -n "$out" ] || exit 0
+
+query=$(sed -n 1p <<<"$out")
+selected=$(sed -n 2p <<<"$out" | cut -f2)
+branch=${selected:-$query}
+branch=$(echo "$branch" | xargs)
+[ -n "$branch" ] || exit 0
+
+workmux add -o "$branch"

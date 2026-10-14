@@ -1,0 +1,30 @@
+#!/bin/sh
+# Wire config/bin/agent-sound into each agent (their config dirs are not tracked).
+set -eu
+
+add_hook() { # file event matcher command
+  file="$1" event="$2" matcher="$3" cmd="$4"
+  [ -f "$file" ] || return 0
+  tmp=$(mktemp)
+  jq --arg e "$event" --arg m "$matcher" --arg c "$cmd" '
+    if any(.hooks[$e][]?.hooks[]?; .command == $c) then .
+    else .hooks[$e] += [{hooks: [{type: "command", command: $c}]} + (if $m == "" then {} else {matcher: $m} end)]
+    end' "$file" >"$tmp" && cat "$tmp" >"$file"
+  rm -f "$tmp"
+}
+
+for f in "$HOME/.claude/settings.json" "$HOME/.claude-work/settings.json"; do
+  add_hook "$f" Stop "" "agent-sound done"
+  add_hook "$f" Notification "permission_prompt|elicitation_dialog" "agent-sound request"
+done
+
+for f in "$HOME/.codex/hooks.json" "$HOME/.codex-work/hooks.json"; do
+  add_hook "$f" Stop "" "agent-sound done"
+  add_hook "$f" PermissionRequest "" "agent-sound request"
+done
+
+[ -d "$HOME/.pi/agent/extensions" ] &&
+  ln -sf "$HOME/dotfiles/config/agent-sound/pi.ts" "$HOME/.pi/agent/extensions/agent-sound.ts"
+[ -d "$HOME/.config/opencode/plugins" ] &&
+  ln -sf "$HOME/dotfiles/config/agent-sound/opencode.ts" "$HOME/.config/opencode/plugins/agent-sound.ts"
+exit 0

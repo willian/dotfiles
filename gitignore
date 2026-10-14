@@ -2,6 +2,7 @@
 *.http
 .bundle
 .config/wt.toml
+.workmux.yaml
 .envrc
 .mise.local.toml
 .tool-versions

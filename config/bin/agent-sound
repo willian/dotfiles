@@ -1,0 +1,27 @@
+#!/bin/sh
+# Play an agent sound ("done" or "request") unless you are looking at its tmux pane.
+# Usage: agent-sound done|request
+file="$HOME/.config/workmux/sounds/$1.mp3"
+[ -f "$file" ] || exit 0
+
+# Looking at it = active pane + active window + a client of that session with
+# terminal focus (the "focused" client flag, so other apps in front still ring).
+looking() { # lines of "<pane_active><window_active><session>"
+  while read -r line; do
+    case "$line" in
+      11*) tmux list-clients -t "${line#11}" -F '#{client_flags}' 2>/dev/null | grep -q focused && return 0 ;;
+    esac
+  done
+  return 1
+}
+
+if [ -n "$TMUX_PANE" ]; then
+  tmux display -p -t "$TMUX_PANE" '#{pane_active}#{window_active}#{session_name}' 2>/dev/null | looking && exit 0
+else
+  # No pane id (e.g. Codex hooks run from its daemon): match panes by working directory.
+  cwd=$(pwd -P)
+  tmux list-panes -a -F '#{pane_active}#{window_active}#{session_name}	#{pane_current_path}' 2>/dev/null |
+    while IFS='	' read -r state path; do [ "$path" = "$cwd" ] && echo "$state"; done | looking && exit 0
+fi
+
+afplay "$file" >/dev/null 2>&1 &

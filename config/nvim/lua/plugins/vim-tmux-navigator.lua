@@ -2,14 +2,17 @@ return {
   {
     "christoomey/vim-tmux-navigator",
     cond = function()
-      return vim.env.HERDR_PANE_ID == nil
+      return vim.env.TMUX ~= nil or vim.env.HERDR_PANE_ID == nil
+    end,
+    init = function()
+      vim.g.tmux_navigator_no_mappings = 1 -- mappings live in config/keymaps.lua
     end,
   },
   {
     "bojackduy/nvim-herdr-navigation",
     submodules = false,
     cond = function()
-      return vim.env.HERDR_PANE_ID ~= nil
+      return vim.env.TMUX == nil and vim.env.HERDR_PANE_ID ~= nil
     end,
     event = "VeryLazy",
     init = function(plugin)

@@ -1,5 +1,5 @@
 # Default command
-command = zsh -lc herdr
+command = zsh -lc 'sesh connect "Home"'
 
 # Theme
 # Supports light/dark mode switching based on system appearance
@@ -65,8 +65,8 @@ keybind = cmd+k=text:\x01K
 keybind = cmd+l=text:\x01L
 # CMD+n -> Sends Ctrl+A + -. Splits the current pane horizontally.
 keybind = cmd+n=text:\x01-
-# CMD+Shift+n -> Sends Ctrl+A + v. Splits the current pane vertically.
-keybind = cmd+shift+n=text:\x01v
+# CMD+Shift+n -> Sends Ctrl+A + |. Splits the current pane to the right.
+keybind = cmd+shift+n=text:\x01|
 # CMD+o -> Sends Ctrl+A + u. Opens the URL picker.
 keybind = cmd+o=text:\x01u
 # CMD+t -> Sends Ctrl+A + c. Creates a new tab.
@@ -75,10 +75,16 @@ keybind = cmd+t=text:\x01c
 keybind = cmd+w=text:\x01x
 # CMD+` -> Sends Ctrl+A + b. Toggles the Herdr sidebar.
 keybind = cmd+`=text:\x01b
-# CMD+Shift+s -> Sends Ctrl+A + S. Opens the Worktrunk picker.
+# CMD+Shift+s -> Sends Ctrl+A + S. Opens the worktree picker (workmux).
 keybind = cmd+shift+s=text:\x01S
-# CMD+Shift+d -> Sends Ctrl+A + D. Opens the Worktrunk removal picker.
+# CMD+Shift+d -> Sends Ctrl+A + D. Picks worktrees to remove (workmux).
 keybind = cmd+shift+d=text:\x01D
+# CMD+Shift+a -> Sends Ctrl+A + A. Opens the workmux agent dashboard.
+keybind = cmd+shift+a=text:\x01A
+# CMD+Shift+c -> Sends Ctrl+A + C. Removes worktrees whose remote branch is gone.
+keybind = cmd+shift+c=text:\x01C
+# CMD+Shift+p -> Sends Ctrl+A + P. Prompts for a PR number and opens its worktree.
+keybind = cmd+shift+p=text:\x01P
 
 # Neovim
 # The text: action sends \x1b which is the raw byte for the Escape key, followed by characters and a newline.
