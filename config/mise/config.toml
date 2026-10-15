@@ -3,13 +3,13 @@ bun = ["latest"]
 claude-code = ["latest"]
 codex = ["latest"]
 go = ["1.26.4"]
-"github:can1357/oh-my-pi" = "latest"
-lua = "5.5"
-node = "26.7.0"
+lua = ["5.5"]
+node = ["26.7.0"]
 opencode = ["latest"]
 pi = ["latest"]
-ruby = "4.0.6"
-rust = "1.97.1"
+ruby = ["latest"]
+rust = ["1.97.1"]
+viteplus = ["latest"]
 workmux = ["latest"]
 
 [settings]
@@ -18,8 +18,8 @@ legacy_version_file = true
 minimum_release_age_excludes = [
   "claude-code",
   "codex",
-  "github:can1357/oh-my-pi",
   "opencode",
   "pi",
+  "ruby",
   "workmux",
 ]
