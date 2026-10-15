@@ -42,3 +42,6 @@ fi
 export GPG_TTY=$(tty)
 
 export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1
+
+export OMP_PROFILE=personal
+export CLAUDE_CONFIG_DIR="$HOME/.claude"
