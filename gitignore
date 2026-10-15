@@ -9,3 +9,4 @@ http-client.env.json
 lazy-lock.json
 mise.local.toml
 settings.local.json
+.pnpm-store/

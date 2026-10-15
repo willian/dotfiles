@@ -9,7 +9,7 @@ preview_border = "thick"
 preview_min_width = 100
 preview_width = 60
 prompt = " "
-show_icons = false
+show_icons = true
 show_windows = true
 window_name_format = "#{window_name}"
 
