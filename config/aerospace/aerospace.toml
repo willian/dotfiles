@@ -157,8 +157,8 @@ alt-shift-semicolon = 'mode service'
 
 # App launcher
 alt-a = 'exec-and-forget open ~/Applications/ChatGPT.app'
-# alt-b = 'exec-and-forget open /Applications/Arc.app'
-alt-b = 'exec-and-forget open /Applications/Search.app'
+alt-b = 'exec-and-forget open /Applications/Arc.app'
+# alt-b = 'exec-and-forget open /Applications/Search.app'
 alt-c = 'exec-and-forget open /Applications/Notion\ Calendar.app'
 alt-d = 'exec-and-forget open /Applications/Figma.app'
 alt-e = 'exec-and-forget open /Applications/Spark\ Desktop.app'
@@ -263,6 +263,10 @@ run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Spark'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Mail'
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
