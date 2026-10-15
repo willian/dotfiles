@@ -17,6 +17,7 @@ thumbwheel_sensitivity = 14
 appearance = "system"
 ui_scale = "normal"
 device_view_mode = "grid"
+mouse_profile_target = "pointer"
 
 [devices]
 
@@ -30,17 +31,8 @@ kind = "mouse"
 
 [devices."unit:ee36f4e8".identity.model_info]
 entity_count = 3
-unit_id = [
-    0,
-    0,
-    0,
-    0,
-]
-model_ids = [
-    45091,
-    16514,
-    0,
-]
+unit_id = [0, 0, 0, 0]
+model_ids = [45091, 16514, 0]
 extended_model_id = 1
 
 [keyboard]
@@ -60,6 +52,7 @@ hires_wheel = true
 thumbwheel = true
 haptic_feedback = false
 haptic_panel = false
+dpi_gestures = true
 
 [devices."unit:ee36f4e8".bindings]
 DpiToggle = "ToggleSmartShift"
@@ -67,7 +60,7 @@ MiddleClick = "LockScreen"
 ThumbwheelScrollUp = "HorizontalScrollRight"
 ThumbwheelScrollDown = "HorizontalScrollLeft"
 
-[devices."unit:ee36f4e8".bindings.GestureButton ]
+[devices."unit:ee36f4e8".bindings.GestureButton]
 Up = "AppExpose"
 Down = "ShowDesktop"
 Left = "PrevTab"
@@ -83,3 +76,4 @@ hires_wheel = true
 thumbwheel = true
 haptic_feedback = false
 haptic_panel = false
+dpi_gestures = true

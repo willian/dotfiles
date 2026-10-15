@@ -3,7 +3,6 @@ git:
   overrideGpg: true
 gui:
   nerdFontsVersion: "3"
-
   theme:
     activeBorderColor:
       - "#94e2d5"
@@ -30,6 +29,5 @@ gui:
       - "#f38ba8"
     defaultFgColor:
       - "#cdd6f4"
-
-  authorColors:
-    "*": "#b4befe"
+    authorColors:
+      "*": "#b4befe"
