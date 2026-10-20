@@ -1,5 +1,5 @@
 # Default command
-command = zsh -lc 'sesh connect "Home"'
+command = zsh -lc 'sesh connect " Home"'
 
 # Theme
 # Supports light/dark mode switching based on system appearance

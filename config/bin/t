@@ -1,21 +1,110 @@
 #!/usr/bin/env bash
+# Session picker: sesh sessions/configs/zoxide plus workmux worktrees across repos.
+# Lines are "display<TAB>sesh name<TAB>worktree handle<TAB>path<TAB>project path" (handle and
+# project path only on worktrees).
+set -u
 
-sesh connect "$(
-  sesh list --icons --hide-duplicates | fzf-tmux -p 100%,100% --no-border \
-    --ansi \
+wt_icon=$'\uf418' # workmux prefixes its tmux session names with this
+
+# sesh entries (path in the 4th field), minus workmux's sessions (listed as worktrees instead)
+sessions() {
+  sesh list --icons --hide-duplicates --format $'{name}\t{path}' "$@" | grep -v " $wt_icon " |
+    awk -F '\t' '{ name = $1; sub(/^[^ ]+ /, "", name); print $1 "\t" name "\t\t" $2 }'
+}
+
+cache=${XDG_CACHE_HOME:-$HOME/.cache}/t-worktrees.tsv
+repos=${XDG_CACHE_HOME:-$HOME/.cache}/t-repos
+
+# Non-main worktrees of every repo workmux knows, from the cache; green when open
+worktrees() {
+  cat "$cache" 2>/dev/null
+}
+
+# Re-query workmux (slow) into the cache; tells fzf to reload only if it changed
+refresh() {
+  local tmp
+  mkdir -p "${cache%/*}" && tmp=$(mktemp) || return
+  # `list --all` only covers repos with a running agent, so remember every repo it shows
+  { cat "$repos" 2>/dev/null; workmux list --all --json </dev/null 2>/dev/null | jq -r '.[].project_path'; } |
+    sort -u | while read -r r; do [ ! -d "$r" ] || echo "$r"; done >"$tmp"
+  mv "$tmp" "$repos"
+
+  while read -r r; do (cd "$r" && workmux list --json </dev/null 2>/dev/null); done <"$repos" |
+    jq -rs --arg i "$wt_icon" 'add // [] | .[] | select(.is_main | not)
+    | [(if .is_open then "\u001b[32m" else "\u001b[90m" end) + $i + "\u001b[39m " + .project + "/" + .branch,
+       (if .is_open and .mode == "session" then $i + " " + .handle else "" end),
+       .handle, .path, .project_path] | @tsv' >"$tmp"
+  if ! cmp -s "$tmp" "$cache"; then
+    mv "$tmp" "$cache" && echo "reload-sync($0 list)"
+  else
+    rm -f "$tmp"
+  fi
+}
+
+# sesh entries with each repo's worktrees right under its main checkout
+list() {
+  awk -F '\t' '
+    FILENAME == ARGV[1] { wt[$5] = wt[$5] "  " $0 "\n"; next }
+    # Before the parent, as fzf lists bottom-up and so shows them under it
+    $4 in wt { printf "%s", wt[$4]; delete wt[$4] }
+    { print }
+    END { for (p in wt) printf "%s", wt[p] }
+  ' <(worktrees) <(sessions)
+}
+
+case "${1:-}" in
+list)
+  list
+  exit
+  ;;
+sessions)
+  shift
+  sessions "$@"
+  exit
+  ;;
+worktrees)
+  worktrees
+  exit
+  ;;
+refresh)
+  refresh
+  exit
+  ;;
+dirs)
+  fd -H -d 2 -t d -E .Trash . ~ | awk '{ print $0 "\t" $0 }'
+  exit
+  ;;
+esac
+
+self=$0
+# Shows cached worktrees at once, then refreshes them in the background
+picked=$(
+  "$self" list | fzf-tmux -p 100%,100% --no-border \
+    --ansi --delimiter '\t' --with-nth 1 \
     --list-border \
-    --no-sort --prompt '  ' \
+    --no-sort --prompt '  ' \
     --color 'list-border:6,input-border:3,preview-border:4,header-bg:-1,header-border:6' \
     --input-border \
     --header-border \
+    --header "^a all  ^t tmux  ^g configs  ^x zoxide  ^w worktrees" \
     --bind 'tab:down,btab:up' \
     --bind 'ctrl-b:abort' \
-    --bind 'ctrl-a:change-prompt(  )+reload(sesh list --icons)' \
-    --bind 'ctrl-t:change-prompt(  )+reload(sesh list -t --icons)' \
-    --bind 'ctrl-g:change-prompt(  )+reload(sesh list -c --icons)' \
-    --bind 'ctrl-x:change-prompt(  )+reload(sesh list -z --icons)' \
-    --bind 'ctrl-f:change-prompt(  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
-    --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(  )+reload(sesh list --icons)' \
+    --bind "start:bg-transform($self refresh)" \
+    --bind "ctrl-a:change-prompt(  )+reload($self list)" \
+    --bind "ctrl-t:change-prompt(  )+reload($self sessions -t)" \
+    --bind "ctrl-g:change-prompt(  )+reload($self sessions -c)" \
+    --bind "ctrl-x:change-prompt(  )+reload($self sessions -z)" \
+    --bind "ctrl-w:change-prompt($wt_icon  )+reload($self worktrees)" \
     --preview-window 'right:70%' \
-    --preview 'sesh preview {}'
-)"
+    --preview '[ -n {3} ] && { git -C {4} status -sb; echo; git -C {4} log --oneline --color=always -15; } || sesh preview {2}'
+) || exit 0
+
+handle=$(cut -f3 <<<"$picked")
+if [ -n "$handle" ]; then
+  # Opens the worktree's session, or switches to it if already open
+  # Quiet: tmux's run-shell would show any output in a view-mode pane
+  cd "$(cut -f5 <<<"$picked")" && out=$(workmux open -s "$handle" 2>&1) ||
+    tmux display-message -d 5000 "workmux open failed: $out"
+else
+  sesh connect "$(cut -f2 <<<"$picked")"
+fi
