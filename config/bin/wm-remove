@@ -3,7 +3,7 @@
 set -u
 
 current=$(git rev-parse --show-toplevel 2>/dev/null)
-list=$(workmux list --json | jq -r --arg cur "$current" '
+list=$(workmux list --json </dev/null | jq -r --arg cur "$current" '
   [.[] | select(.is_main | not)]
   | sort_by(.path != $cur)
   | .[] | [.handle, (if .path == $cur then "▶" elif .has_uncommitted_changes then "●" else " " end), .branch, .path] | @tsv')
