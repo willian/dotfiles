@@ -52,10 +52,15 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
--- Auto-set colorcolumn based on formatter configs (Prettier, StyLua, RuboCop)
+-- Auto-set colorcolumn based on formatter configs
 local cache = {}
 
 local formatters = {
+  oxfmt = {
+    configs = { "vite.config.ts" },
+    pattern = "printWidth%s*[:=]%s*(%d+)",
+    default = 100,
+  },
   prettier = {
     configs = {
       ".prettierrc",
@@ -92,15 +97,7 @@ local function get_line_length(dir, formatter_name, formatter)
     return cache[cache_key]
   end
 
-  -- Find config file
-  local config_path
-  for _, name in ipairs(formatter.configs) do
-    local path = dir .. "/" .. name
-    if vim.fn.filereadable(path) == 1 then
-      config_path = path
-      break
-    end
-  end
+  local config_path = vim.fs.find(formatter.configs, { path = dir, upward = true, type = "file" })[1]
 
   if not config_path then
     return nil
@@ -151,6 +148,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
       return
     end
 
+    if formatter_name == "prettier" and require("config.vite_plus").root(args.buf) then
+      formatter_name = "oxfmt"
+    end
     local formatter = formatters[formatter_name]
     local dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(args.buf), ":p:h")
     local value = get_line_length(dir, formatter_name, formatter) or formatter.default
@@ -161,7 +161,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 
 -- Clear cache on buffer write to config files
 vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = { "*prettier*", "*stylua*", "*rubocop*" },
+  pattern = { "*prettier*", "*stylua*", "*rubocop*", "vite.config.ts" },
   callback = function()
     cache = {}
   end,
