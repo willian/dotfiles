@@ -26,7 +26,8 @@ for _, sid in ipairs(workspaces) do
 		click_script = "aerospace workspace " .. sid,
 		icon = { drawing = false },
 		label = { drawing = true, highlight = active, width = 24, string = sid },
-		padding_right = 8,
+		padding_left = 4,
+		padding_right = 4,
 	})
 
 	space:subscribe("aerospace_workspace_change", function(env)
@@ -49,5 +50,7 @@ for _, sid in ipairs(workspaces) do
 	end)
 end
 
-local separator = require("helpers.separator")
-separator("space_separator")
+-- Dark pill behind the spaces so they stay legible on light wallpapers
+sbar.add("bracket", "spaces_bracket", { "/space\\..*/" }, {
+	background = { color = colors.item_bg_alpha, corner_radius = 12, height = 24 },
+})

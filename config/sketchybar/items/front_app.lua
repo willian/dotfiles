@@ -4,6 +4,7 @@ local icon_map = require("helpers.icon_map")
 
 local front_app = sbar.add("item", "front_app", {
 	position = "left",
+	padding_left = 8,
 	icon = {
 		color = colors.accent,
 		font = "sketchybar-app-font:Regular:14.0",
