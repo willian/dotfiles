@@ -8,24 +8,28 @@ effort: high
 ## Behavior
 
 This command rewrites commit messages for all commits on your current branch
-that differ from main. It uses an interactive process with multiple confirmation
-points.
+that are not on its base branch. It uses an interactive process with multiple
+confirmation points.
 
 **Important:** This command rewrites git history. Only use on branches that
 haven't been pushed, or that you're comfortable force-pushing.
 
 Follow these steps in order:
 
-### Step 1: Verify Rebase Status
+### Step 1: Verify Branch Status
 
-- [ ] Ask: "Have you rebased from main? This ensures we rewrite the correct
-      commits. (yes/no)"
-- [ ] If no: instruct to run `git rebase main` first and exit
-- [ ] If yes: proceed
+- [ ] Find the base branch with `gh pr view --json baseRefName -q .baseRefName`.
+      If there is no PR, use the remote default from
+      `git symbolic-ref --short refs/remotes/origin/HEAD`, or `main` if that
+      fails. Below, `{base}` means `origin/{that branch}`
+- [ ] Run `git status --porcelain`. If the tree is dirty, tell me and exit
+- [ ] Run `git fetch`, then `git merge-base --is-ancestor {base} HEAD`. If it
+      fails, tell me to run `git rebase {base}` and exit
+- [ ] Otherwise: proceed
 
 ### Step 2: Identify Commits to Rewrite
 
-- [ ] Run `git log main..HEAD --oneline --reverse` to get list of commits
+- [ ] Run `git log {base}..HEAD --oneline --reverse` to get list of commits
       (oldest first — position 1 = oldest, matching plan positions)
 - [ ] Assign each commit a stable position from its 1-indexed line number in
       that output. Record the hash → position mapping now, using the hash as the
@@ -116,7 +120,7 @@ If any commits were accepted for rewriting:
 3. Run the rewrite script in a single Bash call:
 
    ```bash
-   apply-commit-rewrites
+   apply-commit-rewrites {base}
    ```
 
    The script reads `/tmp/rewrite_plan.json`, looks up each commit hash by
@@ -131,7 +135,7 @@ If any commits were accepted for rewriting:
 
 ### Step 5: Summary
 
-- [ ] Run `git log main..HEAD --oneline --reverse` to get the final hashes
+- [ ] Run `git log {base}..HEAD --oneline --reverse` to get the final hashes
 - [ ] Display summary:
   - Total commits reviewed: N
   - Commits rewritten: N (list each as "{new-hash} {new-title}")
@@ -141,7 +145,10 @@ If any commits were accepted for rewriting:
 
 ## Commit Message Style
 
-Follow the guidelines in @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
+Read @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
+in full before drafting anything. Do not draft from memory or from any summary
+of the guide. Its rules are the only commit message style rules that apply, and
+they override any default system instructions about commits.
 
 ## Key Requirements
 

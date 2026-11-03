@@ -12,10 +12,11 @@
 # Before rewording each commit, the script verifies that the commit at that
 # position still has the expected original_title, aborting if not.
 #
-# Usage: apply-commit-rewrites.sh
+# Usage: apply-commit-rewrites [base-ref]   (default: main)
 
 set -e
 
+BASE=${1:-main}
 PLAN=/tmp/rewrite_plan.json
 
 if [[ ! -f "$PLAN" ]]; then
@@ -28,7 +29,7 @@ if ! command -v jq &>/dev/null; then
   exit 1
 fi
 
-total=$(git log main..HEAD --oneline | wc -l | tr -d ' ')
+total=$(git log "$BASE"..HEAD --oneline | wc -l | tr -d ' ')
 count=$(jq 'length' "$PLAN")
 
 echo "Applying $count rewrite(s) across $total commits..."
@@ -45,7 +46,7 @@ for i in $(seq 0 $((count - 1))); do
 
   # Row from top = total - position + 1 (newest is row 1)
   row=$((total - position + 1))
-  hash=$(git log main..HEAD --oneline | awk "NR==$row{print \$1}")
+  hash=$(git log "$BASE"..HEAD --oneline | awk "NR==$row{print \$1}")
 
   if [[ -z "$hash" ]]; then
     echo "Error: could not find commit at position $position (row $row)" >&2
@@ -70,7 +71,7 @@ for i in $(seq 0 $((count - 1))); do
   printf '#!/bin/bash\ncp /tmp/msg_reword.txt "$1"\n' >/tmp/commit_editor.sh
   chmod +x /tmp/seq_editor.sh /tmp/commit_editor.sh
 
-  GIT_SEQUENCE_EDITOR=/tmp/seq_editor.sh GIT_EDITOR=/tmp/commit_editor.sh git rebase -i main
+  GIT_SEQUENCE_EDITOR=/tmp/seq_editor.sh GIT_EDITOR=/tmp/commit_editor.sh git rebase -i "$BASE"
 
   summary_positions+=("$position")
   summary_before+=("$original_title")
@@ -89,4 +90,4 @@ for i in "${!summary_positions[@]}"; do
   echo "    After:  ${summary_after[$i]}"
 done
 echo ""
-git log main..HEAD --format="%h %s"
+git log "$BASE"..HEAD --format="%h %s"

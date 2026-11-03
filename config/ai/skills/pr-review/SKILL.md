@@ -9,118 +9,117 @@ effort: high
 
 ## Behavior
 
-This command review each commit from the current branch.
+This command reviews each commit on the current branch, then the PR as a whole.
+It never checks out other commits: read commit content with `git show`, so the
+working tree and branch never change.
 
 Follow these steps in order:
 
 ### Step 1: Verify Branch Status
 
-- [ ] Ask: "Have you pulled latest changes from this branch? (yes/no)"
-- [ ] If no: instruct to run `git pull` first and exit
-- [ ] If yes: proceed
+- [ ] Run `git status --porcelain`. If the tree is dirty, tell me and exit
+- [ ] Run `git fetch` and compare `git rev-parse HEAD` with
+      `git rev-parse @{u}`
+- [ ] If the branch is behind its upstream: tell me to run `git pull` and exit
+- [ ] Otherwise: proceed
 
 ### Step 2: Gather Branch Context
 
-- [ ] Run `git log main..HEAD --oneline --reverse` to get list of commits
-      (oldest first - position 1 = oldest, matching plan positions)
+- [ ] Find the base branch with `gh pr view --json baseRefName,number`. If
+      there is no PR, use the remote default from
+      `git symbolic-ref --short refs/remotes/origin/HEAD`, or `main` if that
+      fails
+- [ ] Run `git log origin/{base}..HEAD --oneline --reverse` to get the list of
+      commits (oldest first - position 1 = oldest, matching plan positions)
 - [ ] Display the list with: "These N commits will be reviewed:"
 - [ ] Show each commit hash and title
 - [ ] Ask: "Proceed with reviewing these commits? (yes/no)"
 - [ ] If no: exit
 - [ ] If yes: proceed
+- [ ] Load the spec: run `gh pr view --json body,comments` and, if a Linear
+      ticket is linked, read it with Linear `get_issue`
+- [ ] Extract the acceptance criteria, exact user-facing copy, and open
+      questions. Keep them for Step 4 and Pass 3
+- [ ] Load existing review threads with
+      `gh api repos/{owner}/{repo}/pulls/{number}/comments --paginate`. Do not
+      repeat a point another reviewer already made, and do not suggest
+      something that contradicts an earlier comment without saying so
 
-### Step 3: Gather Each Commit Context And Review
+### Step 3: Review Each Commit
 
 For each commit (oldest to newest):
 
-- [ ] Check out the commit temporarily: `git checkout {hash}`
 - [ ] Display: "**Reviewing commit {n}/{total}: {short-hash}**"
-- [ ] Run `git diff-tree --no-commit-id --name-only -r HEAD` to get changed files
-- [ ] Run `git show HEAD` to get the full diff of the commit
+- [ ] Run `git diff-tree --no-commit-id --name-only -r {hash}` to get changed
+      files
+- [ ] Run `git show {hash}` to get the full diff of the commit
 - [ ] For each changed file, build a line-reference map from the diff:
-  - [ ] Run `git show --format= --find-renames --unified=0 HEAD -- {file}` to
-        identify the exact new-file lines changed by the commit
-  - [ ] Run `git show --format= --find-renames --unified=80 HEAD -- {file}` to
-        inspect nearby context when needed
-  - [ ] Run `nl -ba {file}` for files that exist at `HEAD` to verify the final
-        new-file line number and surrounding code
-  - [ ] Treat line numbers in final comments as new-file line numbers at `HEAD`,
-        not old-file line numbers from before the commit
-- [ ] Run `git log -1 --format="%H%n%s%n%b"` to get the full commit message
+  - [ ] Run `git show --format= --find-renames --unified=0 {hash} -- {file}`
+        to identify the exact new-file lines changed by the commit
+  - [ ] Run `git show --format= --find-renames --unified=80 {hash} -- {file}`
+        to inspect nearby context when needed
+  - [ ] Run `git show {hash}:{file} | nl -ba` for files that exist at the
+        commit to verify the final new-file line number and surrounding code
+  - [ ] Treat line numbers in final comments as new-file line numbers at the
+        commit, not old-file line numbers from before the commit
+- [ ] Run `git log -1 --format="%H%n%s%n%b" {hash}` to get the full commit
+      message
 - [ ] Review whether the commit message accurately describes the diff
 - [ ] Check the commit message against
-      `config/ai/skills/shared/commit-message-style.md`
+      @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
 - [ ] Flag commit-message issues when:
   - [ ] The title or body says something not supported by the diff
   - [ ] The message only says what changed but misses why it changed
   - [ ] The title is vague, misleading, too long, or not imperative
   - [ ] The body reads as disconnected facts instead of a narrative
-  - [ ] The message includes implementation details already obvious from the diff
-- [ ] For each file in the commit:
-  - [ ] Analyze the changes looking for:
-    - [ ] **Readability & Maintainability:** unclear variable/function
-          names, overly complex logic, missing or misleading comments, poor
-          code structure, violation of DRY principle, magic numbers/strings,
-          inconsistent naming conventions
-    - [ ] **Performance issues:** inefficient algorithms, unnecessary
-          iterations, memory leaks, redundant computations, N+1 queries,
-          blocking operations, missing memoization opportunities
-    - [ ] **Typos:** spelling errors in variable names, function names,
-          comments, string literals, error messages, documentation
-    - [ ] **Trivial issues:** unused imports, dead code, debugging
-          artifacts, console logs, commented-out code
-    - [ ] **Code issues:** potential bugs, edge cases, error handling gaps
-    - [ ] **Test inconsistencies:** missing tests for new functionality,
-          tests that don't match implementation, broken test assertions
-    - [ ] **Guideline violations:** any rules from AGENTS.md or CLAUDE.md
-          that are not followed
-    - [ ] If available, run the `ponytail:ponytail-review` skill
-  - [ ] Record findings with specific line numbers, add findings to the next
-        line instead of in front of the line number
-  - [ ] Before recording any finding, verify the target line against the
-        line-reference map. If the exact line cannot be verified, do not keep
-        the line reference.
-  - [ ] Rewrite all comments to ensure it sounds human and natural, as written
-        by a real human developer
-  - [ ] Exclude files from each report that does not have any comment to report
+  - [ ] The message includes implementation details already obvious from the
+        diff
+- [ ] For each file in the commit, analyze the changes for every category in
+      the Issue Categories section
+- [ ] **Required, never skip:** run the `ponytail:ponytail-review` skill on the
+      commit. If the skill is not installed, say so in the final output instead
+      of skipping it silently
+- [ ] Record findings with specific line numbers
+- [ ] Before recording any finding, verify the target line against the
+      line-reference map. If the exact line cannot be verified, do not keep the
+      line reference
+- [ ] Exclude files that have no findings from the report
 
-### Step 4: Generate Review Report
+### Step 4: Review The Whole PR
 
-#### Output Voice Contract
+Per-commit, per-file review misses bugs that span files or commits. After all
+commits, review `git diff origin/{base}...HEAD` as one change, reading files
+from the working tree at `HEAD`:
 
-All final report text must sounds human and natural, as written by a real human
-developer in a format that can copied and pasted as a PR comment for the author
-of the PR to read.
+- [ ] **Acceptance criteria**: for each criterion, find the code that
+      implements it and the test that covers it. A missing or contradicted
+      criterion is a blocking finding
+- [ ] **Copy**: compare every user-facing string in the diff with the copy in
+      the ticket. Flag each difference
+- [ ] **Open questions**: for each open question in the ticket, check how the
+      code answers it. Flag any that the code leaves unanswered
+- [ ] **State timing**: for each user action that reads shared or async state
+      (forms, mutations, revalidation), check whether the code reads the state
+      when the action starts or when the user submits. Then ask: what happens
+      if another user changes it in between, or if the request fails after it
+      partly succeeds? Follow the data into files the PR did not change
+- [ ] Add each finding to the report of the commit that introduced the code,
+      with a line reference verified at that commit
 
-- [ ] Use first person where natural: "I think...", "I'd prefer...",
-      "I'm not sure..."
-- [ ] Use direct but friendly phrasing addressed to the author
-- [ ] Every summary, rationale, verdict, commit-message note, and finding must
-      be copy-pasteable into a PR comment without editing
-- [ ] Avoid robotic review labels inside the prose
-- [ ] Do not describe the code line when the line already provides that context:
-  - Bad: "`def some_method_name` is doing too much..."
-  - Good: "This method is doing a bit too much..."
-- [ ] Use the line reference as context, then talk about the concern naturally
+### Step 5: Generate Review Report
 
-For each reviewed commit, follow this five-pass process:
+For each reviewed commit, refine the findings in the five passes below. Run the
+passes internally. Display only the final version of each comment.
 
 #### Pass 1: Draft all comments
 
 - [ ] Write initial feedback for each issue found
-- [ ] Include line numbers as context for yourself, not as part of the final
-      comment
-- [ ] Display with "**First pass:**" label
+- [ ] Keep line numbers as context for yourself, not as part of the comment
 
 #### Pass 2: Apply formatting and prefixes
 
 - [ ] Format each comment with the line reference in parentheses before the
-      prefix:
-  - `(Line {n}) Non-blocking: {concise comment}`
-  - `(Lines {n}-{m}) Nit: {concise comment}`
-  - `(Line {n}) {blocking comment with no prefix}`
-- [ ] Ensure every comment uses regular hyphens only (no em/en dashes)
-- [ ] Display with "**Second pass (formatted):**" label
+      prefix, as described in the Writing Style section
 
 #### Pass 3: Verify suggestions
 
@@ -134,72 +133,53 @@ library/feature usage:
       may be intentional)
 - [ ] **Check intent**: Does the code use an intentionally unconventional
       pattern? (e.g., anonymous classes, metaprogramming, test doubles)
+- [ ] **Check spec**: The suggestion must not contradict the ticket's
+      acceptance criteria or copy. Drop or rephrase any that do
 - [ ] **Rephrase if uncertain**: If you cannot verify the suggestion is correct,
       rephrase as a genuine question instead of a confident statement:
   - Wrong: "Use `class_double('FakeModel', exists?: true)` instead"
   - Right: "Would `class_double` work here? Not sure if that fits with how the
     test doubles are set up"
-- [ ] Display with "**Third pass (verified):**" label
-- [ ] When available, use `ponytail` skill to ensure the suggestions are as
-      minimal as possible and follow good architecture practices.
+- [ ] **Required, never skip:** use the `ponytail` skill to ensure the
+      suggestions are as minimal as possible and follow good architecture
+      practices
 
 #### Pass 4: Verify line references
 
-For every final comment that includes `(Line {n})` or `(Lines {n}-{m})`:
+For every comment that includes `(Line {n})` or `(Lines {n}-{m})`:
 
-- [ ] **Check file path**: The file path in the report must exactly match a file
-      changed by the commit.
-- [ ] **Check line source**: The referenced line must be a new-file line number
-      from `HEAD`, verified with `nl -ba {file}` after checking out the commit.
-- [ ] **Check diff presence**: The referenced line must appear in the commit
-      diff as an added or modified line, or as nearby diff context that GitHub
-      would show for that hunk.
+- [ ] **Check file path**: The file path must exactly match a file changed by
+      the commit
+- [ ] **Check line source**: The line must be a new-file line number at the
+      commit, verified with `git show {hash}:{file} | nl -ba`
+- [ ] **Check diff presence**: The line must appear in the commit diff as an
+      added or modified line, or as nearby diff context that GitHub would show
+      for that hunk
 - [ ] **Check content match**: The concern must match what is actually on that
-      line or line range. Do not use a method name, variable, string, or behavior
-      in the comment unless it appears on the referenced line range or its
-      immediate surrounding context.
+      line or line range. Do not use a method name, variable, string, or
+      behavior in the comment unless it appears on the referenced line range or
+      its immediate surrounding context
 - [ ] **Check ranges**: For `(Lines {n}-{m})`, both endpoints must exist in the
-      same file at `HEAD`, `n` must be less than `m`, and every line in the range
-      must be relevant to the comment.
+      same file at the commit, `n` must be less than `m`, and every line in the
+      range must be relevant to the comment
 - [ ] **Fix or remove**: If a line reference is wrong, stale, guessed, points to
       the old file, or only loosely related, either move it to the verified
       correct line or remove that finding. Never leave an approximate line
-      number in the final report.
-- [ ] **No unverified detailed findings**: Detailed Findings must only contain
-      comments with verified line references. If a concern is real but no exact
+      number in the final report
+- [ ] **No unverified detailed findings**: If a concern is real but no exact
       line can be verified, mention it only in the summary without a line
-      reference, or omit it.
-- [ ] Display with "**Fourth pass (line-verified):**" label
+      reference, or omit it
 
 #### Pass 5: Review and refine
 
-- [ ] Check for quality issues:
-  - [ ] **Grammar**: Every sentence is grammatically complete
-  - [ ] **Tone**: Casual and conversational, not robotic or accusatory
-  - [ ] **Conciseness**: One or two sentences max per comment
-  - [ ] **Voice**: Sounds like a real human developer
-  - [ ] **No em/en dashes**: Verify no `—` or `–` anywhere in output
-  - [ ] **Prefixes correctly applied**: Minor suggestions have `Non-blocking`,
-        trivial have `Nit`, blocking have none
-  - [ ] **Line references**: Parentheses with line numbers appear before the
-        prefix, not inside the comment text
-  - [ ] **Line accuracy**: Every line reference was verified against the
-        checked-out file at `HEAD` and the commit diff. No approximate or guessed
-        line numbers remain.
-  - [ ] **No unverified findings**: The Detailed Findings section contains no
-        comments whose file path and line reference were not verified.
-  - [ ] **First-person voice**: Feedback sounds like I wrote it to the PR author
-  - [ ] **PR-ready**: The text can be pasted directly as a PR comment
-  - [ ] **Line context**: Comments use `(Line n)` / `(Lines n-m)` as context and
-        do not repeat code already visible on that line
-  - [ ] **Suggestion accuracy**: No confident suggestions that depend on
-        unverified assumptions about the codebase
-  - [ ] **Commit message accuracy**: The commit message matches the actual diff
-        and follows `config/ai/skills/shared/commit-message-style.md`
-- [ ] If issues found, refine and display with "**Final (refined):**" label
+- [ ] Check every comment against the Writing Style section
+- [ ] Check that each blocking comment has no prefix and each other comment has
+      `Non-blocking:` or `Nit:`
+- [ ] Check that the commit message note matches the actual diff and follows
+      @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
 
 Create a markdown file named `pr-review-{index}-{short-hash}.md` in the current
-directory with this structure:
+directory with this structure. Skip categories with no findings:
 
 ```markdown
 # PR Review: {commit-hash}
@@ -215,7 +195,7 @@ directory with this structure:
 
 ## Summary
 
-{2-3 sentences max. Briefly mention the main concern or say "I did not see anything major, just a few nits." Do NOT repeat what was already commented above - just the big picture.}
+{2-3 sentences max. Briefly mention the main concern or say "I did not see anything major, just a few nits." Do NOT repeat the findings below - just the big picture.}
 
 ## Commit Message
 
@@ -225,6 +205,22 @@ directory with this structure:
 
 ### `{file-path}`
 
+#### Code Issues
+
+- (Line {n}) {blocking comment with failure scenario}
+
+#### Spec
+
+- (Line {n}) {comment}
+
+#### Test Inconsistencies
+
+- (Line {n}) Non-blocking: {concise comment}
+
+#### Guideline Violations
+
+- (Line {n}) Nit: {concise comment}
+
 #### Readability & Maintainability
 
 - (Line {n}) Non-blocking: {concise comment}
@@ -233,6 +229,10 @@ directory with this structure:
 #### Performance
 
 - (Line {n}) Non-blocking: {concise comment}
+
+#### Trivial Issues
+
+- (Line {n}) Nit: {concise comment}
 
 #### Typos
 
@@ -245,14 +245,14 @@ directory with this structure:
 ...
 ```
 
-### Step 5: Output Results
+### Step 6: Output Results
 
 - [ ] Save the review file
 - [ ] Display a summary of findings to the user
 - [ ] Report the path to the generated review file
 - [ ] Move to the next commit or exit when in the last commit
 
-### Step 6: Write Final Summary File
+### Step 7: Write Final Summary File
 
 After all commits are reviewed, create a file named `pr-review-summary.md` in
 the current directory with this exact structure:
@@ -262,11 +262,18 @@ the current directory with this exact structure:
 
 ## Overall Verdict
 
-{ "I'd approve this." or "I'd request changes." }
+{ "I'd approve this." or "I'd request changes." Request changes when any
+acceptance criterion is broken, even if every per-commit verdict approves. }
 
 ## Rationale
 
 { 2-3 sentences explaining why. If approving: "I did not find anything blocking, just a couple nits." If requesting changes: "I found X blocking issues that I think we should fix before merge." }
+
+## Blocking Findings
+
+{ Omit this section when there are none. }
+
+- `{file-path}:{line}` ({short-hash}): {one-line summary}
 
 ## Per-Commit Status
 
@@ -276,42 +283,21 @@ the current directory with this exact structure:
 | {short-hash} | {I'd approve / I'd request changes} |
 ```
 
+### Step 8: Humanize All Comments
+
+This step is required. Do not finish without it.
+
+- [ ] Re-read every generated `pr-review-*.md` file, including
+      `pr-review-summary.md`
+- [ ] Rewrite every feedback comment, summary, verdict, and rationale so it
+      sounds as human and natural as possible, per the Writing Style section
+- [ ] Keep line references, prefixes, and meaning unchanged
+- [ ] Save the updated files
+- [ ] End the final output with this checklist, filled in truthfully:
+  - `Ponytail review: ran on N/N commits`
+  - `Humanize pass: done on N files`
+
 ## Issue Categories
-
-### Readability & Maintainability
-
-- Unclear or misleading names
-- Functions doing too many things
-- Deep nesting or complex conditionals
-- Missing error handling
-- Duplicated code
-- Inconsistent code style
-- Missing or outdated comments
-- Poor separation of concerns
-
-### Performance
-
-- O(n^2) or worse algorithms where better exists
-- Unnecessary database queries or API calls
-- Missing caching opportunities
-- Synchronous operations that could be async
-- Large memory allocations
-- Inefficient string concatenation
-- Redundant re-renders (React/frontend)
-
-### Typos
-
-- Misspelled variable/function/class names
-- Typos in comments and documentation
-- Spelling errors in user-facing strings
-- Incorrect technical terms
-
-### Trivial Issues
-
-- Unused imports or variables
-- Dead code or unreachable branches
-- Debugging artifacts (console.log, debugger, print statements)
-- Commented-out code blocks
 
 ### Code Issues
 
@@ -320,6 +306,12 @@ the current directory with this exact structure:
 - Missing error handling
 - Race conditions or async issues
 
+### Spec
+
+- Acceptance criteria not implemented or contradicted
+- User-facing copy that differs from the ticket
+- Open questions the code leaves unanswered
+
 ### Test Inconsistencies
 
 - Missing tests for new functionality
@@ -327,61 +319,81 @@ the current directory with this exact structure:
 - Broken or incomplete test assertions
 - Test coverage gaps for critical paths
 
-## Guidelines
+### Guideline Violations
 
-Follow the guidelines in `AGENTS.md` or `CLAUDE.md` if they exists in the project.
+- Rules from `AGENTS.md` or `CLAUDE.md` that are not followed
+
+### Readability & Maintainability
+
+- Unclear or misleading names
+- Functions doing too many things
+- Deep nesting or complex conditionals
+- Duplicated code
+- Inconsistent code style
+- Missing, misleading, or outdated comments
+- Magic numbers or strings
+- Poor separation of concerns
+
+### Performance
+
+- O(n^2) or worse algorithms where better exists
+- Unnecessary database queries or API calls, N+1 queries
+- Missing caching or memoization opportunities
+- Blocking operations that could be async
+- Large memory allocations
+- Redundant re-renders (React/frontend)
+
+### Trivial Issues
+
+- Unused imports or variables
+- Dead code or unreachable branches
+- Debugging artifacts (console.log, debugger, print statements)
+- Commented-out code blocks
+
+### Typos
+
+- Misspelled variable/function/class names
+- Typos in comments and documentation
+- Spelling errors in user-facing strings
+- Incorrect technical terms
 
 ## Key Requirements
 
+- Follow the guidelines in `AGENTS.md` or `CLAUDE.md` if they exist in the
+  project
 - Use the short commit hash (7 characters) for the filename
-- Be specific about line numbers and provide actionable feedback
 - Only include detailed findings with verified line references. Never guess or
-  approximate a line number.
-- For each issue, explain WHY it's a problem and suggest a fix
-- For each issue, write a message that I can copy and paste to my peer
-- Write summaries, verdicts, rationale, commit-message notes, and findings in a
-  natural first-person voice, as if I wrote them directly to the PR author
-- Use the line reference as context instead of repeating code that is already
-  visible on that line
-- For every individual comment, start with `Non-blocking:` or `Nit:`
-  (after the line reference in parentheses) if it's a suggestion or minor issue
-  that shouldn't block the merge. Only omit the prefix if the issue is critical
-  and should block the PR.
-- Write all feedback messages in a way they look like written by me, a
-  Brazilian developer, using a casual natural voice, so I can copy and
-  paste them into GitHub comments.
-- Skip categories that have no issues for a file
-- If a file has no issues at all, include it with "I did not find issues here"
+  approximate a line number
+- For each issue, explain why it's a problem and suggest a fix
 - Prioritize impactful issues over minor nitpicks
-- If no issues are found in any file, state "I did not find any issues in this PR"
+- If no issues are found in any file, state "I did not find any issues in this
+  PR"
 - NEVER modify any code - only generate the review report
-- NEVER use em dashes (—) or en dashes (–) in ANY output: not in review
-  comments, not in summaries, not in verdicts, not in rationale. Use regular
-  hyphens (-) only.
-- **Sort files alphabetically by path in the report**
-- **Sort issues by line number (ascending) within each category**
+- Sort files alphabetically by path in the report
+- Sort issues by line number (ascending) within each category
 
 ## Writing Style
 
-Review comments must be casual, concise, and sound like they were written by a
-Brazilian developer writing in a natural human voice - direct, friendly, and
-natural. They must be suitable for direct copy-paste into GitHub PR reviews.
+Every comment, summary, verdict, rationale, and commit-message note must follow
+@/Users/willian/dotfiles/config/ai/skills/shared/writing-voice.md. The rules
+below add what is specific to review comments.
 
-**Tone rules:**
+**Line context:**
 
-- Grammar MUST be correct. No broken English, no missing articles.
-- Be concise. One or two sentences max per comment.
-- Casual and conversational: "This might break if...", "Maybe we could..."
-- Use first person when it sounds natural: "I think...", "I'd prefer...",
-  "I'm not sure..."
-- Never robotic: no "ISSUE:", "VIOLATION:", "ERROR:"
-- Never accusatory: no "You forgot...", "This is wrong"
-- Use short, natural phrasing you'd actually type in a PR comment
 - Do not repeat what the referenced line already shows. Use the line reference
-  as context and focus the comment on the concern.
+  as context and focus the comment on the concern:
+  - Bad: "`def some_method_name` is doing too much..."
+  - Good: "This method is doing a bit too much..."
+
+**Length:**
+
+- Non-blocking and nit comments: one or two sentences max
+- Blocking comments: one or two sentences, plus a short concrete failure
+  scenario (inputs or steps, then the wrong result) when the bug is not obvious
 
 **Prefixes:**
 
+- Format: `(Line {n}) {prefix}: {comment}` or `(Lines {n}-{m}) ...`
 - Use `Non-blocking:` for suggestions that are nice-to-haves
 - Use `Nit:` for trivial/minor things (typos, formatting, etc.)
 - No prefix only for actual bugs or blocking issues
@@ -402,6 +414,7 @@ Good (Nit):
 Good (blocking, no prefix):
 
 - "(Line 31) I think this can throw when `user` is null, like during logout. Could we guard this case?"
+- "(Line 58) I think Save can overwrite someone else's note here. If I open Add on Sourcing, you add a Sourcing note, and a revalidate pulls yours in, my Save sends a PATCH to your note. Could we keep the note id from when the form opens?"
 
 Bad (line reference inside comment):
 

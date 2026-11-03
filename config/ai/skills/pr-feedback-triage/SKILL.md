@@ -27,17 +27,17 @@ changes or draft replies for GitHub.
 
 ## Prerequisites
 
-Before making code changes for feedback, ask:
+Before making code changes for feedback:
 
-1. Have you rebased onto the target branch? This helps keep commit ownership
-   clear when amending feedback fixes.
-2. Whose feedback should we address? Default to everyone if the user does not
-   name a reviewer.
+1. Check that the branch is rebased onto the PR's base branch, which keeps
+   commit ownership clear when amending feedback fixes. Run `git fetch`, then
+   `git merge-base --is-ancestor origin/{baseRefName} HEAD`. If it fails, stop
+   before changing code and tell me to rebase first.
+2. Run `git status --porcelain`. If the tree is dirty, stop and tell me.
+3. Ask whose feedback we should address. Default to everyone if the user does
+   not name a reviewer.
 
-If the user has not rebased, stop before changing code and ask them to rebase
-first.
-
-For analysis-only triage, do not require the rebase question.
+For analysis-only triage, skip the rebase and clean-tree checks.
 
 ## Fetch Feedback
 
@@ -140,9 +140,8 @@ Keep quoted comment text short. Paraphrase long comments.
 
 ## Reply Voice
 
-When drafting replies, write in a human, natural voice as if written by me.
-Keep replies concise. Do not repeat context the reviewer already wrote. Never
-use em dashes or en dashes.
+Every drafted reply must follow
+@/Users/willian/dotfiles/config/ai/skills/shared/writing-voice.md.
 
 For pushback, be direct but collaborative:
 

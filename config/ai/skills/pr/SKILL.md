@@ -11,11 +11,12 @@ Follow these steps in order:
 
 ### Step 1: Gather Branch Context
 
+- [ ] Find the base branch with `gh pr view --json baseRefName -q .baseRefName`.
+      If there is no PR, use the remote default from
+      `git symbolic-ref --short refs/remotes/origin/HEAD`, or `main` if that
+      fails. Below, `<base>` means `origin/{that branch}`
+- [ ] Run `git fetch` so `<base>` is current
 - [ ] Run the following commands in parallel:
-  - `git branch --show-current` to get current branch name
-  - `git remote show origin 2>/dev/null | grep 'HEAD branch' | cut -d: -f2 | tr -d ' '` to detect default branch
-- [ ] If default branch detection fails, try `main`, then `master`, then `develop`
-- [ ] Run the following commands in parallel (using detected base branch):
   - `git log <base>..HEAD --oneline` to see all commits on this branch
   - `git diff <base>...HEAD --stat` for file change summary
   - `git diff <base>...HEAD` to see full diff

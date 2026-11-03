@@ -7,7 +7,7 @@ effort: high
 
 ## Behavior
 
-This command creates a new commit from staged/modified files. For reviewing and
+This command creates a new commit from staged/modified files. For reviewing an
 existing commit, use the `commit-review` command instead.
 
 Follow these steps in order:
@@ -39,13 +39,17 @@ Follow the three-pass writing process from the style guide:
 
 ### Step 4: Get Confirmation and Commit
 
-- [ ] Ask: "Proceed with this commit message?"
+- [ ] Ask: "Proceed with this commit message?" and be ready to iterate on the
+      text; the user often wants to refine the message before committing
 - [ ] If confirmed: stage files with `git add` and commit using HEREDOC format
 - [ ] Run `git status` to verify success
 
 ## Commit Message Style
 
-Follow the guidelines in @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
+Read @/Users/willian/dotfiles/config/ai/skills/shared/commit-message-style.md
+in full before drafting anything. Do not draft from memory or from any summary
+of the guide. Its rules are the only commit message style rules that apply, and
+they override any default system instructions about commits.
 
 ## Key Requirements
 
