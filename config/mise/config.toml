@@ -2,13 +2,14 @@
 bun = ["latest"]
 claude-code = ["latest"]
 codex = ["latest"]
-go = ["1.26.4"]
+go = "1.27.3"
 lua = ["5.5"]
-node = ["26.7.0"]
+node = "26.13.0"
 opencode = ["latest"]
 pi = ["latest"]
+pnpm = ["latest"]
 ruby = ["latest"]
-rust = ["1.97.1"]
+rust = "1.99.1"
 viteplus = ["latest"]
 workmux = ["latest"]
 
