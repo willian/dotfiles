@@ -10,3 +10,4 @@ lazy-lock.json
 mise.local.toml
 settings.local.json
 .pnpm-store/
+config/openlogi/config.toml.lock
