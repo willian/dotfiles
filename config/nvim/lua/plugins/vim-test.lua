@@ -1,7 +1,10 @@
+local rex = vim.env.REX_SESSION ~= nil
+
 return {
   "vim-test/vim-test",
   dependencies = {
     "preservim/vimux",
+    "willian/vim-test-rex",
   },
   keys = {
     { "<leader>tT", "<CMD>TestSuite<CR>", desc = "Run test suite of the current file" },
@@ -12,7 +15,7 @@ return {
     {
       "<leader>tc",
       function()
-        vim.cmd("VimuxCloseRunner")
+        vim.cmd(rex and "RexCloseRunner" or "VimuxCloseRunner")
       end,
       desc = "Close test runner pane",
     },
@@ -23,7 +26,7 @@ return {
     vim.g.VimuxRunnerName = "VimuxRunner"
     vim.g.VimuxCloseOnExit = 1
 
-    vim.g["test#strategy"] = "vimux"
+    vim.g["test#strategy"] = rex and "rex" or "vimux"
 
     local subdirs = { "backend", "frontend" }
 

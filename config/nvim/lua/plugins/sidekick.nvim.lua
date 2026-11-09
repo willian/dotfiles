@@ -1,5 +1,12 @@
 return {
   "folke/sidekick.nvim",
+  dependencies = {
+    "willian/sidekick-rex.nvim",
+  },
+  config = function(_, opts)
+    require("sidekick-rex").setup() -- registers the rex backend; a no-op outside Rex
+    require("sidekick").setup(opts)
+  end,
   keys = {
     {
       "<leader>ac",
@@ -33,12 +40,12 @@ return {
   opts = {
     cli = {
       mux = {
-        backend = "tmux",
+        backend = vim.env.REX_SESSION and "rex" or "tmux",
         create = "split",
         enabled = true,
         split = { size = 0.40 },
       },
-      -- tmux spawns tools outside nvim's env; mise exec re-applies per-directory env (e.g. CLAUDE_CONFIG_DIR)
+      -- the mux spawns tools outside nvim's env; mise exec re-applies per-directory env (e.g. CLAUDE_CONFIG_DIR)
       tools = {
         claude = { cmd = { "mise", "exec", "--", "claude" } },
         codex = { cmd = { "mise", "exec", "--", "codex" } },
