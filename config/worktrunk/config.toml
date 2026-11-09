@@ -7,7 +7,7 @@ worktree-path = "{{ repo_path }}/../{{ repo }}__worktrees/{{ branch | sanitize }
 pre-start = "wt step copy-ignored --require-include"
 
 # Close the tmux session wt-open made for the worktree
-post-remove = "tmux kill-session -t \"=$(printf %s '{{ repo }}/{{ branch | sanitize }}' | tr .: __)\" 2>/dev/null || true"
+post-remove = "n=$(printf %s '{{ repo }}/{{ branch | sanitize }}' | tr .: __); tmux kill-session -t \"=$n\" 2>/dev/null; rex kill \"$n\" 2>/dev/null; true"
 
 # Each repo's setup, formerly its .workmux.yaml post_create. pre-start, so it
 # finishes before wt-open starts nvim; it runs after the global pre-start copy.

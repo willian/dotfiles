@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 # Session picker: sesh sessions/configs/zoxide plus worktrunk worktrees across repos.
+# Inside a Rex terminal it lists Rex sessions through sex instead of tmux's.
 # Lines are "display<TAB>name<TAB>worktree path<TAB>path<TAB>main checkout path"
 # (worktree path and main checkout only on worktrees).
 set -u
 shopt -s nullglob
 
+rex=${REX_SESSION:+1}
 wt_icon=$''
 
 # Worktrees under ~/Code, in the <repo>__worktrees dirs worktrunk's config puts
 # them in, named <repo>/<dir> as wt-open names their sessions; green when open
 worktrees() {
   local open d parent repo name color
-  open=$(tmux list-sessions -F '#{session_name}' 2>/dev/null)
+  if [ -n "$rex" ]; then
+    open=$(rex ls --json | jq -r '.sessions[].label')
+  else
+    open=$(tmux list-sessions -F '#{session_name}' 2>/dev/null)
+  fi
   for d in ~/Code/*__worktrees/*/ ~/Code/*/*__worktrees/*/ ~/Code/*/*/*__worktrees/*/; do
     [ -f "$d.git" ] && [ -d "$(sed -n 's/^gitdir: //p' "$d.git")" ] || continue # a leftover, not a worktree
     d=${d%/} parent=${d%/*}
@@ -22,10 +28,21 @@ worktrees() {
   done
 }
 
+# "display<TAB>path" per entry: from sex (-t meaning its Rex sessions) in Rex,
+# from sesh otherwise
+entries() {
+  if [ -n "$rex" ]; then
+    local a=("${@/#-t/-r}")
+    paste <(sex list -i "${a[@]}") <(sex list -j "${a[@]}" | jq -r '.[].path')
+  else
+    sesh list --icons --hide-duplicates --format $'{name}\t{path}' "$@"
+  fi
+}
+
 # sesh entries (path in the 4th field), minus the worktrees' sessions (listed as worktrees instead)
 sessions() {
-  sesh list --icons --hide-duplicates --format $'{name}\t{path}' "$@" |
-    awk -F '\t' '{ name = $1; sub(/^[^ ]+ /, "", name); print $1 "\t" name "\t\t" $2 }' |
+  entries "$@" |
+    awk -F '\t' '{ name = $1; gsub(/\033\[[0-9;]*m/, "", name); sub(/^[^ ]+ /, "", name); print $1 "\t" name "\t\t" $2 }' |
     awk -F '\t' 'FILENAME == ARGV[1] { skip[$2]; next } !($2 in skip)' <(worktrees) -
 }
 
@@ -57,15 +74,20 @@ dirs)
 esac
 
 self=$0
+if [ -n "$rex" ]; then
+  fzf=(fzf) mux=rex # runs in a Rex floating pane already
+else
+  fzf=(fzf-tmux -p 70%,60%) mux=tmux
+fi
 picked=$(
-  "$self" list | fzf-tmux -p 70%,60% --no-border \
+  "$self" list | "${fzf[@]}" --no-border \
     --ansi --delimiter '\t' --with-nth 1 \
     --list-border \
     --no-sort --prompt '  ' \
     --color 'list-border:6,input-border:3,header-bg:-1,header-border:6' \
     --input-border \
     --header-border \
-    --header "^a all  ^t tmux  ^g configs  ^x zoxide  ^w worktrees" \
+    --header "^a all  ^t $mux  ^g configs  ^x zoxide  ^w worktrees" \
     --bind 'tab:down,btab:up' \
     --bind 'ctrl-b:abort' \
     --bind "ctrl-a:change-prompt(  )+reload($self list)" \
@@ -78,8 +100,16 @@ picked=$(
 worktree=$(cut -f3 <<<"$picked")
 if [ -n "$worktree" ]; then
   # Quiet: tmux's run-shell would show any output in a view-mode pane
-  out=$("$HOME/.config/bin/wt-open" "$(cut -f2 <<<"$picked")" "$worktree" 2>&1) ||
-    tmux display-message -d 5000 "wt-open failed: $out"
+  out=$("$HOME/.config/bin/wt-open" "$(cut -f2 <<<"$picked")" "$worktree" 2>&1) || {
+    if [ -n "$rex" ]; then
+      printf 'wt-open failed: %s\nPress Enter.' "$out"
+      read -r _
+    else
+      tmux display-message -d 5000 "wt-open failed: $out"
+    fi
+  }
+elif [ -n "$rex" ]; then
+  sex connect "$(cut -f2 <<<"$picked")"
 else
   sesh connect "$(cut -f2 <<<"$picked")"
 fi

@@ -1,10 +1,19 @@
 #!/bin/sh
-# Switch to the tmux session for a worktree, named <repo>/<branch>, creating it
-# with nvim first. Run by worktrunk after wt-pick, wt-pr and the wt switch picker.
+# Switch to the session for a worktree, named <repo>/<branch>, creating it
+# with nvim first. Uses Rex inside a Rex terminal, tmux otherwise. Run by
+# worktrunk after wt-pick and the wt switch picker.
 # Usage: wt-open <name> <worktree-path>
 set -eu
 
 name=$(printf %s "$1" | tr '.:' '__') # tmux rewrites these in session names
+
+if [ -n "${REX_SESSION:-}" ]; then
+  if ! rex ls --json | jq -e --arg n "$name" '.sessions[] | select(.label == $n)' >/dev/null; then
+    rex new "$name" -c "$2" >/dev/null
+    printf 'nvim\n' | rex send -s "$name"
+  fi
+  exec sex connect "$name"
+fi
 
 if ! tmux has-session -t "=$name" 2>/dev/null; then
   tmux new-session -d -s "$name" -c "$2"
