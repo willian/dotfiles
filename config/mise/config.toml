@@ -11,7 +11,7 @@ pnpm = ["latest"]
 ruby = ["latest"]
 rust = "1.99.1"
 viteplus = ["latest"]
-workmux = ["latest"]
+worktrunk = ["latest"]
 
 [settings]
 idiomatic_version_file_enable_tools = ["ruby"]
@@ -22,7 +22,7 @@ minimum_release_age_excludes = [
   "opencode",
   "pi",
   "ruby",
-  "workmux",
+  "worktrunk",
 ]
 
 [env]

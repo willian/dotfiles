@@ -1,7 +1,6 @@
 **/.DS_Store
 *.http
 .bundle
-.workmux.yaml
 .envrc
 .mise.local.toml
 .tool-versions
@@ -10,4 +9,5 @@ lazy-lock.json
 mise.local.toml
 settings.local.json
 .pnpm-store/
+.worktreeinclude
 config/openlogi/config.toml.lock

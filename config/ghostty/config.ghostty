@@ -73,15 +73,11 @@ keybind = cmd+o=text:\x01u
 keybind = cmd+t=text:\x01c
 # CMD+w -> Sends Ctrl+A + x. Kills the current pane (with confirmation).
 keybind = cmd+w=text:\x01x
-# CMD+` -> Sends Ctrl+A + b. Toggles the workmux sidebar.
-keybind = cmd+`=text:\x01b
-# CMD+Shift+s -> Sends Ctrl+A + S. Opens the worktree picker (workmux).
+# CMD+Shift+s -> Sends Ctrl+A + S. Opens the worktree picker.
 keybind = cmd+shift+s=text:\x01S
-# CMD+Shift+d -> Sends Ctrl+A + D. Picks worktrees to remove (workmux).
+# CMD+Shift+d -> Sends Ctrl+A + D. Picks worktrees to remove.
 keybind = cmd+shift+d=text:\x01D
-# CMD+Shift+a -> Sends Ctrl+A + A. Opens the workmux agent dashboard.
-keybind = cmd+shift+a=text:\x01A
-# CMD+Shift+c -> Sends Ctrl+A + C. Removes worktrees whose remote branch is gone.
+# CMD+Shift+c -> Sends Ctrl+A + C. Removes merged worktrees.
 keybind = cmd+shift+c=text:\x01C
 # CMD+Shift+p -> Sends Ctrl+A + P. Prompts for a PR number and opens its worktree.
 keybind = cmd+shift+p=text:\x01P

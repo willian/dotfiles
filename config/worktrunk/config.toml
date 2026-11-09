@@ -1,0 +1,31 @@
+# Worktrunk user config, see https://worktrunk.dev/config/
+
+# Same place workmux put them: ~/Code/Andela/andela__worktrees/<branch>
+worktree-path = "{{ repo_path }}/../{{ repo }}__worktrees/{{ branch | sanitize }}"
+
+# Copy the gitignored files a repo lists in .worktreeinclude (itself gitignored)
+pre-start = "wt step copy-ignored --require-include"
+
+# Close the tmux session wt-open made for the worktree
+post-remove = "tmux kill-session -t \"=$(printf %s '{{ repo }}/{{ branch | sanitize }}' | tr .: __)\" 2>/dev/null || true"
+
+# Each repo's setup, formerly its .workmux.yaml post_create. pre-start, so it
+# finishes before wt-open starts nvim; it runs after the global pre-start copy.
+# andela*/andela matches the remote as andela:/andela (insteadOf) and expanded
+[projects."andela*/andela"]
+pre-start = """
+set -e
+mise trust
+pnpm install
+pnpm exec husky
+(cd backend && ./bin/bundle install && pnpm install)
+(cd frontend && pnpm install)
+"""
+
+[projects."/Users/willian/Code/Enveloti/enveloti"]
+pre-start = """
+set -e
+mise trust
+bundle install
+pnpm install
+"""
