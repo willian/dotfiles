@@ -10,6 +10,7 @@ pi = ["latest"]
 pnpm = ["latest"]
 ruby = ["latest"]
 rust = "1.99.1"
+"github:rtuszik/sex" = "latest"
 viteplus = ["latest"]
 worktrunk = ["latest"]
 
