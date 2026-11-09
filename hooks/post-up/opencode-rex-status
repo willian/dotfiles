@@ -1,0 +1,9 @@
+#!/bin/sh
+# Load config/opencode/rex-status into opencode's TUI. TUI-only plugins are
+# listed in cli.json, which is not tracked.
+set -eu
+f="$HOME/.config/opencode/cli.json"
+[ -f "$f" ] || exit 0
+plugin="$HOME/dotfiles/config/opencode/rex-status"
+new=$(jq --arg p "$plugin" '.plugins = ((.plugins // []) + [$p] | unique)' "$f")
+printf '%s\n' "$new" >"$f"
