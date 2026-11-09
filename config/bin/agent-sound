@@ -19,9 +19,12 @@ if [ -n "$TMUX_PANE" ]; then
   tmux display -p -t "$TMUX_PANE" '#{pane_active}#{window_active}#{session_name}' 2>/dev/null | looking && exit 0
 else
   # No pane id (e.g. Codex hooks run from its daemon): match panes by working directory.
+  # No matching pane means the agent isn't running in tmux: stay silent.
   cwd=$(pwd -P)
-  tmux list-panes -a -F '#{pane_active}#{window_active}#{session_name}	#{pane_current_path}' 2>/dev/null |
-    while IFS='	' read -r state path; do [ "$path" = "$cwd" ] && echo "$state"; done | looking && exit 0
+  states=$(tmux list-panes -a -F '#{pane_active}#{window_active}#{session_name}	#{pane_current_path}' 2>/dev/null |
+    while IFS='	' read -r state path; do [ "$path" = "$cwd" ] && echo "$state"; done)
+  [ -z "$states" ] && exit 0
+  printf '%s\n' "$states" | looking && exit 0
 fi
 
 afplay "$file" >/dev/null 2>&1 &
