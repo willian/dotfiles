@@ -1,0 +1,30 @@
+#!/bin/bash
+# Pick worktrees (Tab for several) to remove with worktrunk, with their branches;
+# confirms before removing.
+set -u
+
+list=$(wt list --format json </dev/null | jq -r '
+  [.items[] | select(.worktree.main | not)]
+  | sort_by(.worktree.current | not)
+  | .[] | [(if .worktree.current then "▶" elif (.worktree.changes | [.staged, .modified, .untracked] | any) then "●" else " " end), .branch, .worktree.path] | @tsv')
+[ -n "$list" ] || { echo "No worktrees to remove."; sleep 1; exit 0; }
+
+picked=$(fzf --multi --delimiter '\t' --with-nth 1,2 --prompt '  ' \
+  --header '▶ current  ● uncommitted changes  (Tab: select several)' \
+  --preview 'git -C {3} status -sb; echo; git -C {3} log --oneline --color=always -15' \
+  --preview-window right:50% <<<"$list") || exit 0
+[ -n "$picked" ] || exit 0
+
+echo "Remove these worktrees (and their branches)?"
+echo
+cut -f1,2 <<<"$picked" | sed 's/^/  /'
+grep -q '^●' <<<"$picked" && printf '\n⚠ Some have uncommitted changes that will be lost.\n'
+printf '\n[y/N] '
+read -r -n1 answer
+echo
+[ "$answer" = y ] || exit 0
+
+# From the main checkout, so removing the worktree this pane is in works too
+main=$(git worktree list --porcelain | sed -n '1s/^worktree //p')
+# shellcheck disable=SC2046
+wt -C "$main" remove --foreground -f -D $(cut -f2 <<<"$picked")

@@ -1,0 +1,18 @@
+#!/bin/sh
+# Switch to the tmux session for a worktree, named <repo>/<branch>, creating it
+# with nvim first. Run by worktrunk after wt-pick, wt-pr and the wt switch picker.
+# Usage: wt-open <name> <worktree-path>
+set -eu
+
+name=$(printf %s "$1" | tr '.:' '__') # tmux rewrites these in session names
+
+if ! tmux has-session -t "=$name" 2>/dev/null; then
+  tmux new-session -d -s "$name" -c "$2"
+  tmux send-keys -t "=$name:" nvim Enter
+fi
+
+if [ -n "${TMUX:-}" ]; then
+  tmux switch-client -t "=$name"
+else
+  tmux attach -t "=$name"
+fi
