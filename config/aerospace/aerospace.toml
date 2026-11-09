@@ -233,7 +233,7 @@ if.app-name-regex-substring = 'TextEdit'
 run = 'layout floating'
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'X'
+if.app-name-regex-substring = '^X$' # exact: substrings ignore case, so 'X' caught Rex
 run = 'layout floating'
 
 [[on-window-detected]]
@@ -246,6 +246,10 @@ run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Ghostty'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.superlogical.rex'
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
