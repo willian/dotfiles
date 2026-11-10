@@ -164,7 +164,7 @@ alt-e = 'exec-and-forget open /Applications/Spark\ Desktop.app'
 alt-m = 'exec-and-forget open /Applications/Spotify.app'
 alt-o = 'exec-and-forget open /Applications/OrbStack.app'
 alt-s = 'exec-and-forget open /Applications/Slack.app'
-alt-t = 'exec-and-forget open /Applications/Ghostty.app'
+alt-t = 'exec-and-forget open /Applications/Rex\ Beta.app'
 alt-v = 'exec-and-forget open /Applications/Safari.app'           # I only use Safari to consume DRM-protected
 alt-x = 'exec-and-forget open ~/Applications/X.app'
 
