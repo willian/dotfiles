@@ -2,7 +2,8 @@
 # Pick a branch to open (or create) its worktree with worktrunk, then its tmux
 # session (wt-open).
 # Lists branches with a worktree, then local branches, then remote-only ones.
-# Typing a name that matches nothing creates that branch from the base branch.
+# Typing a name that matches nothing creates that branch from the base branch;
+# alt-enter uses the typed name even when it fuzzy-matches an existing branch.
 set -u
 
 worktrees=$(wt list --format json </dev/null | jq -r '.items[].branch // empty')
@@ -16,8 +17,8 @@ out=$({
   sed 's/^/●\t/' <<<"$worktrees"
   grep -vxF -f <(echo "$worktrees") <<<"$local_branches" | sed 's/^/ \t/'
   sed 's/^/↓\t/' <<<"$remote_branches"
-} | grep -v -E '^.\t$' | fzf --print-query --delimiter '\t' --nth 2 \
-  --prompt '  ' --header '● worktree  ↓ remote  (type a new name to create)' \
+} | grep -v -E '^.\t$' | fzf --print-query --delimiter '\t' --nth 2 --bind 'alt-enter:print-query' \
+  --prompt '  ' --header '● worktree  ↓ remote  (alt-enter: create typed name)' \
   --preview 'git log --oneline --color=always -20 {2}' --preview-window right:50%) || [ -n "$out" ] || exit 0
 
 query=$(sed -n 1p <<<"$out")
