@@ -49,6 +49,7 @@ return {
       tools = {
         claude = { cmd = { "mise", "exec", "--", "claude" } },
         codex = { cmd = { "mise", "exec", "--", "codex" } },
+        copilot = { cmd = { "mise", "exec", "--", "copilot" } },
         pi = { cmd = { "mise", "exec", "--", "pi" } },
         opencode = { cmd = { "mise", "exec", "--", "opencode" } },
       },
@@ -58,7 +59,7 @@ return {
         explain = "Explain {this} and its context",
         optimize = "Optimize {this} for performance and readability",
         optimize_all = "Optimize all changed files for performance and readability",
-        create_pr = "/pr\nEnsure it does not give so much in-the-weeds code details.\nDO NOT COPY/PASTE COMMIT MESSAGES INTO THE PR DESCRIPTION.",
+        create_pr = "/pr-create\nEnsure it does not give so much in-the-weeds code details.\nDO NOT COPY/PASTE COMMIT MESSAGES INTO THE PR DESCRIPTION.",
         pr_review = "/pr-review",
         review = "Review {file} for correctness and readability",
         simplify = "Read the guidelines from CLAUDE.md or AGENTS.md file. The guidelines file can be located in parent directories (up to repository root). Then, simplify {file} based on the guidelines. Later, run formatters and linters on the modified files (if any).",

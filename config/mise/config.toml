@@ -1,7 +1,9 @@
 [tools]
+"github:rtuszik/sex" = "latest"
 bun = ["latest"]
 claude-code = ["latest"]
 codex = ["latest"]
+copilot = "latest"
 go = "1.27.3"
 lua = ["5.5"]
 node = "26.13.0"
@@ -10,7 +12,6 @@ pi = ["latest"]
 pnpm = ["latest"]
 ruby = ["latest"]
 rust = "1.99.1"
-"github:rtuszik/sex" = "latest"
 viteplus = ["latest"]
 worktrunk = ["latest"]
 
@@ -20,6 +21,7 @@ legacy_version_file = true
 minimum_release_age_excludes = [
   "claude-code",
   "codex",
+  "copilot",
   "opencode",
   "pi",
   "ruby",
@@ -28,3 +30,4 @@ minimum_release_age_excludes = [
 
 [env]
 CLAUDE_CONFIG_DIR = "{{env.HOME}}/.claude"
+COPILOT_HOME = "{{env.HOME}}/.copilot"
