@@ -1,5 +1,5 @@
 ---
-name: pr
+name: pr-create
 description: Generate PR title and description
 model: claude-opus-5-5
 effort: high
