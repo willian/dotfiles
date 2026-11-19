@@ -140,8 +140,7 @@ Keep quoted comment text short. Paraphrase long comments.
 
 ## Reply Voice
 
-Every drafted reply must follow
-@/Users/willian/dotfiles/config/ai/skills/shared/writing-voice.md.
+Invoke the `writing-voice` skill. Every drafted reply must follow it.
 
 For pushback, be direct but collaborative:
 

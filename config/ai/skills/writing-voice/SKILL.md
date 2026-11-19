@@ -1,5 +1,8 @@
 ---
+name: writing-voice
 description: How text written on my behalf (review comments, PR replies) must read
+model: claude-opus-5-5
+effort: high
 ---
 
 # Writing Voice

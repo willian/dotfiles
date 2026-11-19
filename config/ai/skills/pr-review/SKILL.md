@@ -374,9 +374,9 @@ This step is required. Do not finish without it.
 
 ## Writing Style
 
-Every comment, summary, verdict, rationale, and commit-message note must follow
-@/Users/willian/dotfiles/config/ai/skills/shared/writing-voice.md. The rules
-below add what is specific to review comments.
+Invoke the `writing-voice` skill. Every comment, summary, verdict, rationale,
+and commit-message note must follow it. The rules below add what is specific to
+review comments.
 
 **Line context:**
 
