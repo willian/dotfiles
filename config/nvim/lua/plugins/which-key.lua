@@ -4,12 +4,9 @@ return {
     opts = {
       spec = {
         {
-          { "<leader>T", group = "terminals" },
-          { "<leader>cn", group = "packages" },
-          { "<leader>ct", group = "tailwind" },
-          { "<leader>o", group = "opencode AI" },
-          { "<leader>t", group = "+test" },
-          { "<leader>v", group = "+vimux", icon = "" },
+          { "<leader>T", group = "terminals", icon = "" },
+          { "<leader>cn", group = "packages", icon = "" },
+          { "<leader>t", group = "+test", icon = "" },
         },
       },
     },
